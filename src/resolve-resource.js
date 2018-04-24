@@ -3,8 +3,8 @@ import evaluateComputedAttributes from './evaluate-computed-attributes';
 
 // This function handles pulling in relationships and/or flattening
 // the resource
-export function resolveResource(state, resource, options = {}) {
-  const { flat = true, includeRelationships = true } = options;
+export default function resolveResource(state, resource, options = {}) {
+  const { flat, relationships } = options;
 
   if (!resource) {
     return;
@@ -12,12 +12,25 @@ export function resolveResource(state, resource, options = {}) {
 
   // TODO: warn if resource is malformed
 
-  let relationships;
-  if (!includeRelationships) {
-    relationships = resource.relationships;
-  } else {
-    // TODO: loop thru dis shit and resolve each one
-    relationships = lookupRelationship();
+  let resolvedRelationships = resource.relationships || {};
+  if (relationships) {
+    for (let relationshipKey in relationships) {
+      let relationshipDefinition = resource.relationships[relationshipKey];
+
+      // TODO: warn if relationship requested does not exist
+
+      if (relationshipDefinition instanceof Array) {
+        relationshipDefinition = {
+          resourceType: relationshipKey,
+          ids: relationshipDefinition,
+        };
+      }
+
+      resolvedRelationships[relationshipKey] = lookupRelationship(
+        state,
+        relationshipDefinition
+      );
+    }
   }
 
   let computedAttributes = evaluateComputedAttributes(state, resource, options);
@@ -25,17 +38,19 @@ export function resolveResource(state, resource, options = {}) {
   if (flat) {
     return {
       ...resource.meta,
-      ...relationships,
+      ...resolvedRelationships,
       ...computedAttributes,
       ...resource.attributes,
+      resourceType: resource.resourceType,
       id: resource.id,
     };
   } else {
     return {
       meta: resource.meta,
-      relationships,
+      relationships: resolvedRelationships,
       computedAttributes,
       attributes: resource.attributes,
+      resourceType: resource.resourceType,
       id: resource.id,
     };
   }
