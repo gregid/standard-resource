@@ -1,2 +1,3 @@
-# resource-base
+# Resource Base
+
 Base API for resource management

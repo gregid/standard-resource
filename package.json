@@ -1,0 +1,26 @@
+{
+  "name": "resource-base",
+  "version": "0.0.1",
+  "description": "Base API for resource management",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "eslint src",
+    "prettier": "prettier --write \"./{src}/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesplease/resource-base.git"
+  },
+  "author": "James",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesplease/resource-base/issues"
+  },
+  "homepage": "https://github.com/jamesplease/resource-base#readme",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "jest": "^22.4.3",
+    "prettier": "^1.12.1"
+  }
+}
