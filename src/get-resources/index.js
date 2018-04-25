@@ -40,7 +40,7 @@ export default function getResources(
         }, {});
 
     return res;
-  } else if (typeof filter === 'object') {
+  } else if (typeof filter === 'object' && !(filter instanceof Array)) {
     const resourceList = Object.values(resources)
       .map(resource => resolveResource(state, resource, options))
       .filter(resource => objectMatchesObject(resource, filter));
@@ -64,10 +64,10 @@ export default function getResources(
   }
 
   if (!(idsList && idsList.length)) {
-    return byId ? [] : {};
+    return !byId ? [] : {};
   }
 
-  if (byId) {
+  if (!byId) {
     return idsList
       .map(id => resolveResource(state, resources[id], options))
       .filter(Boolean);
