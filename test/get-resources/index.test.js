@@ -39,6 +39,7 @@ describe('getResources', function() {
 
   it('byId: false: it should return all resources by default', () => {
     const results = getResources(this.state, 'books');
+    expect(console.error).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([
       {
@@ -68,6 +69,7 @@ describe('getResources', function() {
 
   it('byId: true: it should return all resources by default', () => {
     const results = getResources(this.state, 'books', null, { byId: true });
+    expect(console.error).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual({
       1: {
