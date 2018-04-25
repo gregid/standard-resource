@@ -46,10 +46,10 @@ export default function resolveResource(state, resource, options = {}) {
     };
   } else {
     return {
-      meta: resource.meta,
+      meta: resource.meta || {},
       relationships: resolvedRelationships,
       computedAttributes,
-      attributes: resource.attributes,
+      attributes: resource.attributes || {},
       resourceType: resource.resourceType,
       id: resource.id,
     };

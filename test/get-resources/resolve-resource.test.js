@@ -1,4 +1,4 @@
-import resolveResource from '../src/resolve-resource';
+import resolveResource from '../../src/get-resources/resolve-resource';
 
 describe('resolveResource', () => {
   describe('passing no resource', () => {

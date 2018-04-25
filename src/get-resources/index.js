@@ -1,5 +1,6 @@
 import resolveResource from './resolve-resource';
-import warning from './warning';
+import objectMatchesObject from './object-matches-object';
+import warning from '../warning';
 
 // Retrieve resource(s) from the store
 export default function getResources(
@@ -12,14 +13,14 @@ export default function getResources(
 
   const resourceSection = state[resourceType];
 
-  if (resourceSection) {
+  if (!resourceSection) {
     warning(
       `You called getResources with a resourceType that does not exist: ` +
         `${resourceType}. Did you make a typo?`,
       'GET_RESOURCES_NONEXISTENT_TYPE'
     );
 
-    return byId ? [] : {};
+    return byId ? {} : [];
   }
 
   const resources = resourceSection.resources;
@@ -27,15 +28,29 @@ export default function getResources(
 
   if (typeof filter === 'function' || !filter) {
     const appliedFilter = filter ? filter : () => true;
-    // TODO: Return an object here if they specify that!
-    // ALSO: resolve dat shit
-    return Object.values(resources).filter(resource =>
-      appliedFilter(
-        resource,
-        resourceSection.meta[resource.id],
-        resourceSection
-      )
-    );
+    const resourceList = Object.values(resources)
+      .map(resource => resolveResource(state, resource, options))
+      .filter(resource => appliedFilter(resource, resourceSection));
+
+    const res = !byId
+      ? resourceList
+      : resourceList.reduce((result, resource) => {
+          result[resource.id] = resource;
+          return result;
+        }, {});
+
+    return res;
+  } else if (typeof filter === 'object') {
+    const resourceList = Object.values(resources)
+      .map(resource => resolveResource(state, resource, options))
+      .filter(resource => objectMatchesObject(resource, filter));
+
+    return !byId
+      ? resourceList
+      : resourceList.reduce((result, resource) => {
+          result[resource.id] = resource;
+          return result;
+        }, {});
   } else if (typeof filter === 'string') {
     // This conditional handles the situation where `filter` is an list name
     const list = resourceSection.lists[filter];
