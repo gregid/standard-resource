@@ -24,15 +24,6 @@ export default function resolveResource(state, resource, options = {}) {
     for (let relationshipKey in objectToIterate) {
       let relationshipDefinition = resource.relationships[relationshipKey];
 
-      // TODO: warn if relationship requested does not exist
-
-      if (relationshipDefinition instanceof Array) {
-        relationshipDefinition = {
-          resourceType: relationshipKey,
-          ids: relationshipDefinition,
-        };
-      }
-
       resolvedRelationships[relationshipKey] = lookupRelationship(
         state,
         relationshipDefinition

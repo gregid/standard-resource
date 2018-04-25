@@ -61,6 +61,24 @@ describe('objectMatchesObject', () => {
     expect(match).toEqual(true);
   });
 
+  it('should reject on deep match attributes', () => {
+    const resource = {
+      id: '2',
+      attributes: {
+        name: 'plsty',
+      },
+    };
+
+    const test = {
+      attributes: {
+        name: 'pls',
+      },
+    };
+
+    const match = objectMatchesObject(resource, test);
+    expect(match).toEqual(false);
+  });
+
   it('should deep match computedAttributes', () => {
     const resource = {
       id: '2',
