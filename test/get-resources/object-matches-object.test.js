@@ -42,4 +42,85 @@ describe('objectMatchesObject', () => {
 
     expect(match).toEqual(false);
   });
+
+  it('should deep match attributes', () => {
+    const resource = {
+      id: '2',
+      attributes: {
+        name: 'pls',
+      },
+    };
+
+    const test = {
+      attributes: {
+        name: 'pls',
+      },
+    };
+
+    const match = objectMatchesObject(resource, test);
+    expect(match).toEqual(true);
+  });
+
+  it('should deep match computedAttributes', () => {
+    const resource = {
+      id: '2',
+      computedAttributes: {
+        name: 'pls',
+        lastName: 'wot',
+      },
+    };
+
+    const test = {
+      computedAttributes: {
+        name: 'pls',
+      },
+    };
+
+    const match = objectMatchesObject(resource, test);
+    expect(match).toEqual(true);
+  });
+
+  it('should deep match meta', () => {
+    const resource = {
+      id: '2',
+      attributes: {
+        sammies: true,
+      },
+      meta: {
+        name: 'pls',
+        lastName: 'wot',
+      },
+    };
+
+    const test = {
+      meta: {
+        name: 'pls',
+      },
+    };
+
+    const match = objectMatchesObject(resource, test);
+    expect(match).toEqual(true);
+  });
+
+  it('should not deep match other keys', () => {
+    const resource = {
+      id: '2',
+      attributes: {
+        sammies: true,
+      },
+      arbitraryKey: {
+        name: 'pls',
+        lastName: 'wot',
+      },
+    };
+
+    const test = {
+      arbitraryKey: {
+        name: 'pls',
+      },
+    };
+
+    const match = objectMatchesObject(resource, test);
+    expect(match).toEqual(false);
+  });
 });

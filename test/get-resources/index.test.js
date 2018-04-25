@@ -37,11 +37,18 @@ describe('getResources', function() {
   });
 
   it('should warn one time when a nonexistent resource section is attempted to be filtered', () => {
-    const result = getResources(this.state, 'ooglaboogla');
-    const resultTwo = getResources(this.state, 'ooglaboogla2', null, {
-      byId: true,
+    const result = getResources({
+      state: this.state,
+      resourceType: 'ooglaboogla',
     });
-    getResources(this.state, 'ooglaboogla3');
+    const resultTwo = getResources({
+      state: this.state,
+      resourceType: 'ooglaboogla2',
+      options: {
+        byId: true,
+      },
+    });
+    getResources({ state: this.state, resourceType: 'ooglaboogla3' });
 
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(result).toEqual([]);
@@ -49,7 +56,7 @@ describe('getResources', function() {
   });
 
   it('byId: false: it should return all resources by default', () => {
-    const results = getResources(this.state, 'books');
+    const results = getResources({ state: this.state, resourceType: 'books' });
     expect(console.error).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([
@@ -89,7 +96,11 @@ describe('getResources', function() {
   });
 
   it('byId: true: it should return all resources by default', () => {
-    const results = getResources(this.state, 'books', null, { byId: true });
+    const results = getResources({
+      state: this.state,
+      resourceType: 'books',
+      options: { byId: true },
+    });
     expect(console.error).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual({
@@ -132,7 +143,11 @@ describe('getResources', function() {
     it('byId: false; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = getResources(this.state, 'books', filter);
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+      });
       expect(console.error).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
@@ -154,7 +169,12 @@ describe('getResources', function() {
     it('byId: true; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = getResources(this.state, 'books', filter, { byId: true });
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+        options: { byId: true },
+      });
       expect(console.error).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({
@@ -176,8 +196,18 @@ describe('getResources', function() {
 
   describe('calling it with a list of IDs', () => {
     it('should return empty results with an empty set of IDs', () => {
-      const results = getResources(this.state, 'books', []);
-      const resultsById = getResources(this.state, 'books', [], { byId: true });
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: [],
+      });
+      const resultsById = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: [],
+        options: { byId: true },
+      });
+
       expect(results).toEqual([]);
       expect(resultsById).toEqual({});
     });
@@ -185,7 +215,11 @@ describe('getResources', function() {
     it('byId: false; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = getResources(this.state, 'books', filter);
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+      });
       expect(console.error).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
@@ -217,7 +251,12 @@ describe('getResources', function() {
     it('byId: true; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = getResources(this.state, 'books', filter, { byId: true });
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+        options: { byId: true },
+      });
       expect(console.error).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({

@@ -3,19 +3,19 @@ import objectMatchesObject from './object-matches-object';
 import warning from '../warning';
 
 // Retrieve resource(s) from the store
-export default function getResources(
+export default function getResources({
   state,
   resourceType,
   filter,
-  options = {}
-) {
+  options = {},
+}) {
   const { byId = false } = options;
 
   const resourceSection = state[resourceType];
 
   if (!resourceSection) {
     warning(
-      `You called getResources with a resourceType that does not exist: ` +
+      `You called getResources with a resourceType thatxw does not exist: ` +
         `${resourceType}. Did you make a typo?`,
       'GET_RESOURCES_NONEXISTENT_TYPE'
     );
