@@ -28,7 +28,7 @@ describe('resolveResource', () => {
         relationships: {
           author: {
             type: 'people',
-            ids: 'b',
+            data: 'b',
           },
         },
       };
@@ -49,7 +49,7 @@ describe('resolveResource', () => {
         relationships: {
           author: {
             type: 'people',
-            ids: 'b',
+            data: 'b',
           },
         },
       });
@@ -71,7 +71,7 @@ describe('resolveResource', () => {
         relationships: {
           author: {
             type: 'people',
-            ids: 'b',
+            data: 'b',
           },
         },
       };
@@ -88,7 +88,7 @@ describe('resolveResource', () => {
         publishYear: 1985,
         author: {
           type: 'people',
-          ids: 'b',
+          data: 'b',
         },
       });
     });

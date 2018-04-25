@@ -14,7 +14,14 @@ export default function resolveResource(state, resource, options = {}) {
 
   let resolvedRelationships = resource.relationships || {};
   if (relationships) {
-    for (let relationshipKey in relationships) {
+    // If the user passes `true`, then that means they want to resolve every relationship.
+    // Otherwise, they will pass an object specifying the specific relationships that they
+    // want to resolve.
+    const objectToIterate =
+      typeof relationships === 'boolean'
+        ? resolvedRelationships
+        : relationships;
+    for (let relationshipKey in objectToIterate) {
       let relationshipDefinition = resource.relationships[relationshipKey];
 
       // TODO: warn if relationship requested does not exist
