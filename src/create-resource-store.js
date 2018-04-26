@@ -1,15 +1,15 @@
 import getResources from './get-resources';
+import createInitialState from './create-initial-state';
 import warning from './warning';
 
 export default function createResourceStore(
-  resourceDefinitions,
-  initialState = {}
+  schemas = {},
+  initialState = {},
+  options = {}
 ) {
-  let currentState = initialState;
+  let currentState = createInitialState(schemas, initialState, options);
 
-  // TODO: warn if resourceDefinitions is invalid
-
-  const validResources = Object.keys(resourceDefinitions || {});
+  const validResources = Object.keys(schemas || {});
 
   function getState() {
     return currentState;
@@ -28,7 +28,7 @@ export default function createResourceStore(
         filter,
         options,
         validResources,
-        resourceDefinitions,
+        schemas,
       });
     },
     updateResources,
