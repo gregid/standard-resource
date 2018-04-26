@@ -8,7 +8,7 @@ export default function createInitialState(schemas, initialState, options) {
   for (let resourceType in schemas) {
     const schema = schemas[resourceType];
 
-    if (!validateSchema(schema)) {
+    if (!validateSchema(schema) && process.env.NODE_ENV !== 'production') {
       warning('A schema that was created is invalid', 'INVALID_SCHEMA');
     }
 
@@ -22,7 +22,7 @@ export default function createInitialState(schemas, initialState, options) {
     }
   }
 
-  if (strict && process.env.NODE_ENV === 'development') {
+  if (strict && process.env.NODE_ENV !== 'production') {
     for (let resourceType in initialState) {
       if (!schemas[resourceType]) {
         warning(

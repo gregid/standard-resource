@@ -15,11 +15,13 @@ export default function getResources({
   const resourceSection = state[resourceType];
 
   if (!resourceSection) {
-    warning(
-      `You called getResources with a resourceType thatxw does not exist: ` +
-        `${resourceType}. Did you make a typo?`,
-      'GET_RESOURCES_NONEXISTENT_TYPE'
-    );
+    if (process.env.NODE_ENV !== 'production') {
+      warning(
+        `You called getResources with a resourceType that does not exist: ` +
+          `${resourceType}. Did you make a typo?`,
+        'GET_RESOURCES_NONEXISTENT_TYPE'
+      );
+    }
 
     return byId ? {} : [];
   }

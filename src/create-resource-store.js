@@ -16,7 +16,12 @@ export default function createResourceStore(
   }
 
   function updateResources() {
-    warning('updateResources is coming soon.', 'UPDATE_RESOURCES_COMING_SOON');
+    if (process.env.NODE_ENV !== 'production') {
+      warning(
+        'updateResources is coming soon.',
+        'UPDATE_RESOURCES_COMING_SOON'
+      );
+    }
   }
 
   return {
