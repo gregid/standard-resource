@@ -55,7 +55,7 @@ export default function getResources({
     // This conditional handles the situation where `filter` is an list name
     const list = resourceSection.lists[filter];
     if (!list) {
-      return byId ? [] : {};
+      return byId ? {} : [];
     }
 
     idsList = list;

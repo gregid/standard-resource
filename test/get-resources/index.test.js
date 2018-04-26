@@ -6,6 +6,9 @@ describe('getResources', function() {
 
     this.state = {
       books: {
+        lists: {
+          newBooks: [1, 2],
+        },
         resources: {
           1: {
             id: 1,
@@ -286,7 +289,7 @@ describe('getResources', function() {
     });
   });
 
-  describe('calling it with an object', () => {
+  describe('calling it with an object filter', () => {
     it('byId: false; should return the resources that match', () => {
       const filter = {
         meta: {
@@ -345,6 +348,104 @@ describe('getResources', function() {
           },
           attributes: {
             name: 'A',
+          },
+        },
+      });
+    });
+  });
+
+  describe('calling it with a string filter', () => {
+    it('byId: false; should return an empty array for a nonexistent list', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: 'listThatDoesntExist',
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual([]);
+    });
+
+    it('byId: true; should return an empty object for a nonexistent list', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: 'listThatDoesntExist',
+        options: {
+          byId: true,
+        },
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual({});
+    });
+
+    it('byId: false; should return the resources in the list', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: 'newBooks',
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual([
+        {
+          id: 1,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {
+            selected: true,
+          },
+          attributes: {
+            name: 'A',
+          },
+        },
+        {
+          id: 2,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {},
+          attributes: {
+            name: 'B',
+          },
+        },
+      ]);
+    });
+
+    it('byId: true; should return the resources in the list', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter: 'newBooks',
+        options: {
+          byId: true,
+        },
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual({
+        1: {
+          id: 1,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {
+            selected: true,
+          },
+          attributes: {
+            name: 'A',
+          },
+        },
+        2: {
+          id: 2,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {},
+          attributes: {
+            name: 'B',
           },
         },
       });
