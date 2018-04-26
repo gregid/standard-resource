@@ -36,6 +36,20 @@ describe('getResources', function() {
           },
         },
       },
+      authors: {
+        schema: {
+          idAttribute: 'authorId',
+        },
+        resources: {
+          a: {
+            authorId: 'a',
+            resourceType: 'authors',
+            attributes: {
+              name: 'J.K. Rowling',
+            },
+          },
+        },
+      },
     };
   });
 
@@ -449,6 +463,30 @@ describe('getResources', function() {
           },
         },
       });
+    });
+  });
+
+  describe('schema; idAttribute', () => {
+    it('byId: false; should return the resources specified', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'authors',
+        filters: ['a'],
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual([
+        {
+          authorId: 'a',
+          resourceType: 'authors',
+          computedAttributes: {},
+          relationships: {},
+          meta: {},
+          attributes: {
+            name: 'J.K. Rowling',
+          },
+        },
+      ]);
     });
   });
 });
