@@ -5,5 +5,13 @@ export default function validateSchema(schema = {}) {
     return false;
   }
 
+  if (schema.computedAttributes) {
+    for (let attributeName in schema.computedAttributes) {
+      if (typeof schema.computedAttributes[attributeName] !== 'function') {
+        return false;
+      }
+    }
+  }
+
   return true;
 }

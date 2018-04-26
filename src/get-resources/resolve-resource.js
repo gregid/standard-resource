@@ -36,7 +36,12 @@ export default function resolveResource({
     }
   }
 
-  let computedAttributes = evaluateComputedAttributes(state, resource, options);
+  let computedAttributes = evaluateComputedAttributes({
+    state,
+    resource,
+    schema,
+    options,
+  });
 
   if (flat) {
     return {

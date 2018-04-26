@@ -471,7 +471,7 @@ describe('getResources', function() {
       const results = getResources({
         state: this.state,
         resourceType: 'authors',
-        filters: ['a'],
+        filter: ['a'],
       });
       expect(console.error).toHaveBeenCalledTimes(0);
 
