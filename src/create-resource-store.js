@@ -1,7 +1,7 @@
+import createInitialState from './initialization/create-initial-state';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
-import createInitialState from './create-initial-state';
 
 export default function createResourceStore(
   schemas = {},

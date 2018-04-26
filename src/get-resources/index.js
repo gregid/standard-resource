@@ -1,6 +1,5 @@
 import resolveResource from './resolve-resource';
 import objectMatchesObject from './object-matches-object';
-import defaultSchema from '../default-schema';
 import warning from '../diagnostics/warning';
 
 // Retrieve resource(s) from the store
@@ -11,6 +10,16 @@ export default function getResources({
   options = {},
 }) {
   const { byId = false } = options;
+
+  if (typeof resourceType !== 'string') {
+    if (process.env.NODE_ENV !== 'production') {
+      warning(
+        `An invalid resourceType was passed to getResources.` +
+          ` resourceType must be a string.`,
+        'GET_RESOURCES_INVALID_RESOURCE_TYPE'
+      );
+    }
+  }
 
   const resourceSection = state[resourceType];
 
@@ -26,12 +35,47 @@ export default function getResources({
     return byId ? {} : [];
   }
 
-  const schema = resourceSection.schema || defaultSchema;
+  const hasFilter = typeof filter !== 'undefined';
+
+  if (hasFilter && process.env.NODE_ENV !== 'production') {
+    const filterIsString = typeof filter !== 'string';
+    const filterIsArray = Array.isArray(filter);
+    const filterIsObject = filter.constructor !== Object;
+    const filterIsFn = typeof filter !== 'function';
+
+    if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
+      warning(
+        `An invalid filter was passed to getResources. A filter must be a` +
+          ` string, array, object, or function.`,
+        'INVALID_GET_RESOURCES_FILTER'
+      );
+    }
+
+    if (filterIsArray) {
+      filter.forEach(value => {
+        const valueIsString = typeof value === 'string';
+        const valueIsNumber = typeof value === 'number';
+
+        if (!valueIsString && !valueIsNumber) {
+          warning(
+            `An invalid array filter was passed to getResources. Each item` +
+              ` in the array needs to be either a string or a number.` +
+              ` Remember, when a filter is an array, then each item in` +
+              ` the array is a resource ID, and IDs must be strings or` +
+              ` numbers.`,
+            'INVALID_GET_RESOURCES_FILTER_ARRAY_ITEM'
+          );
+        }
+      });
+    }
+  }
+
+  const schema = resourceSection.schema;
 
   const resources = resourceSection.resources;
   let idsList;
 
-  if (typeof filter === 'function' || !filter) {
+  if (typeof filter === 'function' || !hasFilter) {
     const appliedFilter = filter ? filter : () => true;
     const resourceList = Object.values(resources)
       .map(resource => resolveResource({ state, resource, schema, options }))

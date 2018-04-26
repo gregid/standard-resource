@@ -1,4 +1,4 @@
-import validateChange from '../diagnostics/validate-change';
+import validateChange from '../validators/validate-change';
 import warning from '../diagnostics/warning';
 
 // updateResources({

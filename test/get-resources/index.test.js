@@ -1,4 +1,5 @@
 import getResources from '../../src/get-resources';
+import defaultSchema from '../../src/initialization/default-schema';
 
 describe('getResources', function() {
   beforeEach(() => {
@@ -6,6 +7,7 @@ describe('getResources', function() {
 
     this.state = {
       books: {
+        schema: defaultSchema,
         lists: {
           newBooks: [1, 2],
         },
@@ -38,6 +40,7 @@ describe('getResources', function() {
       },
       authors: {
         schema: {
+          ...defaultSchema,
           idAttribute: 'authorId',
         },
         resources: {

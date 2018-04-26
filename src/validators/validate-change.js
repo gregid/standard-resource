@@ -1,4 +1,4 @@
-import warning from './warning';
+import warning from '../diagnostics/warning';
 
 export default function validateChange({ change = {} }) {
   if (change instanceof Array) {

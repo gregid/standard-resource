@@ -1,10 +1,11 @@
 import resolveResource from '../../src/get-resources/resolve-resource';
-import defaultSchema from '../../src/default-schema';
+import defaultSchema from '../../src/initialization/default-schema';
 
 describe('resolveResource', function() {
   beforeEach(() => {
     this.state = {
       books: {
+        schema: defaultSchema,
         resources: {
           1: {
             id: 1,
@@ -40,6 +41,7 @@ describe('resolveResource', function() {
         },
       },
       people: {
+        schema: defaultSchema,
         resources: {
           b: {
             id: 'b',
