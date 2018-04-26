@@ -285,4 +285,69 @@ describe('getResources', function() {
       });
     });
   });
+
+  describe('calling it with an object', () => {
+    it('byId: false; should return the resources that match', () => {
+      const filter = {
+        meta: {
+          selected: true,
+        },
+      };
+
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual([
+        {
+          id: 1,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {
+            selected: true,
+          },
+          attributes: {
+            name: 'A',
+          },
+        },
+      ]);
+    });
+
+    it('byId: true; should return the resources that match', () => {
+      const filter = {
+        meta: {
+          selected: true,
+        },
+      };
+
+      const results = getResources({
+        state: this.state,
+        resourceType: 'books',
+        filter,
+        options: {
+          byId: true,
+        },
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual({
+        1: {
+          id: 1,
+          resourceType: 'books',
+          computedAttributes: {},
+          relationships: {},
+          meta: {
+            selected: true,
+          },
+          attributes: {
+            name: 'A',
+          },
+        },
+      });
+    });
+  });
 });
