@@ -3,7 +3,12 @@ import evaluateComputedAttributes from './evaluate-computed-attributes';
 
 // This function handles pulling in relationships and/or flattening
 // the resource
-export default function resolveResource(state, resource, options = {}) {
+export default function resolveResource({
+  state,
+  resource,
+  schema,
+  options = {},
+}) {
   const { flat, relationships } = options;
 
   if (!resource) {
@@ -40,7 +45,7 @@ export default function resolveResource(state, resource, options = {}) {
       ...computedAttributes,
       ...resource.attributes,
       resourceType: resource.resourceType,
-      id: resource.id,
+      [schema.idAttribute]: resource[schema.idAttribute],
     };
   } else {
     return {
@@ -49,7 +54,7 @@ export default function resolveResource(state, resource, options = {}) {
       computedAttributes,
       attributes: resource.attributes || {},
       resourceType: resource.resourceType,
-      id: resource.id,
+      [schema.idAttribute]: resource[schema.idAttribute],
     };
   }
 }

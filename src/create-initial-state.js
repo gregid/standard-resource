@@ -1,4 +1,5 @@
 import validateSchema from './diagnostics/validate-schema';
+import defaultSchema from './default-schema';
 import warning from './warning';
 
 export default function createInitialState(schemas, initialState, options) {
@@ -13,6 +14,12 @@ export default function createInitialState(schemas, initialState, options) {
 
     initialState[resourceType] = initialState[resourceType] || {};
     initialState[resourceType].schema = schema;
+  }
+
+  for (let resourceType in initialState) {
+    if (!initialState[resourceType].schema) {
+      initialState[resourceType].schema = defaultSchema;
+    }
   }
 
   if (strict && process.env.NODE_ENV === 'development') {

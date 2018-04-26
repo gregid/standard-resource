@@ -1,4 +1,5 @@
 import resolveResource from '../../src/get-resources/resolve-resource';
+import defaultSchema from '../../src/default-schema';
 
 describe('resolveResource', function() {
   beforeEach(() => {
@@ -81,8 +82,13 @@ describe('resolveResource', function() {
       },
     };
 
-    const resolved = resolveResource(this.state, resource, {
-      relationships: true,
+    const resolved = resolveResource({
+      state: this.state,
+      resource,
+      options: {
+        relationships: true,
+      },
+      schema: defaultSchema,
     });
 
     expect(resolved).toEqual({
@@ -130,10 +136,15 @@ describe('resolveResource', function() {
       },
     };
 
-    const resolved = resolveResource(this.state, resource, {
-      relationships: {
-        author: true,
+    const resolved = resolveResource({
+      state: this.state,
+      resource,
+      options: {
+        relationships: {
+          author: true,
+        },
       },
+      schema: defaultSchema,
     });
 
     expect(resolved).toEqual({

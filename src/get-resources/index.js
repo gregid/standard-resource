@@ -1,5 +1,6 @@
 import resolveResource from './resolve-resource';
 import objectMatchesObject from './object-matches-object';
+import defaultSchema from '../default-schema';
 import warning from '../warning';
 
 // Retrieve resource(s) from the store
@@ -23,32 +24,34 @@ export default function getResources({
     return byId ? {} : [];
   }
 
+  const schema = resourceSection.schema || defaultSchema;
+
   const resources = resourceSection.resources;
   let idsList;
 
   if (typeof filter === 'function' || !filter) {
     const appliedFilter = filter ? filter : () => true;
     const resourceList = Object.values(resources)
-      .map(resource => resolveResource(state, resource, options))
+      .map(resource => resolveResource({ state, resource, schema, options }))
       .filter(resource => appliedFilter(resource, resourceSection));
 
     const res = !byId
       ? resourceList
       : resourceList.reduce((result, resource) => {
-          result[resource.id] = resource;
+          result[resource[schema.idAttribute]] = resource;
           return result;
         }, {});
 
     return res;
   } else if (typeof filter === 'object' && !(filter instanceof Array)) {
     const resourceList = Object.values(resources)
-      .map(resource => resolveResource(state, resource, options))
+      .map(resource => resolveResource({ state, resource, schema, options }))
       .filter(resource => objectMatchesObject(resource, filter));
 
     return !byId
       ? resourceList
       : resourceList.reduce((result, resource) => {
-          result[resource.id] = resource;
+          result[resource[schema.idAttribute]] = resource;
           return result;
         }, {});
   } else if (typeof filter === 'string') {
@@ -69,11 +72,18 @@ export default function getResources({
 
   if (!byId) {
     return idsList
-      .map(id => resolveResource(state, resources[id], options))
+      .map(id =>
+        resolveResource({ state, resource: resources[id], options, schema })
+      )
       .filter(Boolean);
   } else {
     return idsList.reduce((result, id) => {
-      result[id] = resolveResource(state, resources[id], options);
+      result[id] = resolveResource({
+        state,
+        resource: resources[id],
+        schema,
+        options,
+      });
       return result;
     }, {});
   }

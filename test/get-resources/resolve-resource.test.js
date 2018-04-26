@@ -1,11 +1,21 @@
 import resolveResource from '../../src/get-resources/resolve-resource';
+import defaultSchema from '../../src/default-schema';
 
 describe('resolveResource', () => {
   describe('passing no resource', () => {
     it('should return undefined object', () => {
-      const resolved = resolveResource({}, null);
-      const resolvedTwo = resolveResource({}, null, {
-        flat: true,
+      const resolved = resolveResource({
+        state: {},
+        resource: null,
+        schema: defaultSchema,
+      });
+      const resolvedTwo = resolveResource({
+        state: {},
+        resource: null,
+        options: {
+          flat: true,
+        },
+        schema: defaultSchema,
       });
 
       expect(resolved).toEqual(undefined);
@@ -33,7 +43,11 @@ describe('resolveResource', () => {
         },
       };
 
-      const resolved = resolveResource({}, resource);
+      const resolved = resolveResource({
+        state: {},
+        resource,
+        schema: defaultSchema,
+      });
 
       expect(resolved).toEqual({
         id: 'a',
@@ -76,8 +90,13 @@ describe('resolveResource', () => {
         },
       };
 
-      const resolved = resolveResource({}, resource, {
-        flat: true,
+      const resolved = resolveResource({
+        state: {},
+        resource,
+        options: {
+          flat: true,
+        },
+        schema: defaultSchema,
       });
 
       expect(resolved).toEqual({
