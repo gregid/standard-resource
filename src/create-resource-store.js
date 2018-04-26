@@ -1,6 +1,6 @@
 import getResources from './get-resources';
 import createInitialState from './create-initial-state';
-import warning from './warning';
+import warning from './diagnostics/warning';
 
 export default function createResourceStore(
   schemas = {},

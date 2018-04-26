@@ -1,6 +1,6 @@
 import validateSchema from './diagnostics/validate-schema';
 import defaultSchema from './default-schema';
-import warning from './warning';
+import warning from './diagnostics/warning';
 
 export default function createInitialState(schemas, initialState, options) {
   const { strict } = options;

@@ -1,7 +1,7 @@
 import resolveResource from './resolve-resource';
 import objectMatchesObject from './object-matches-object';
 import defaultSchema from '../default-schema';
-import warning from '../warning';
+import warning from '../diagnostics/warning';
 
 // Retrieve resource(s) from the store
 export default function getResources({
