@@ -1,7 +1,7 @@
 {
-  "name": "resource-base",
+  "name": "standard-resource",
   "version": "0.0.1",
-  "description": "Base API for resource management",
+  "description": "Standard API for resource management",
   "main": "src/index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jamesplease/resource-base.git"
+    "url": "git+https://github.com/jamesplease/standard-resource.git"
   },
   "author": "James",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jamesplease/resource-base/issues"
+    "url": "https://github.com/jamesplease/standard-resource/issues"
   },
-  "homepage": "https://github.com/jamesplease/resource-base#readme",
+  "homepage": "https://github.com/jamesplease/standard-resource#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
