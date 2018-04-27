@@ -1,6 +1,6 @@
-# Resource Base
+# Standard Resource
 
-Base API for resource management
+An API for resource management.
 
 ### What is this?
 
