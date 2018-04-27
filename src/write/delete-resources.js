@@ -1,4 +1,3 @@
-import validateChange from '../validators/validate-change';
 import warning from '../diagnostics/warning';
 
 // deleteResources({
@@ -12,7 +11,120 @@ import warning from '../diagnostics/warning';
 //   }
 // });
 
-export default function deleteResources({ changes }) {
-  // stuff...
-  // delete the resources and/or the lists
+export default function deleteResources({ state, changes }) {
+  const newState = {
+    ...state,
+  };
+
+  for (let resourceType in changes) {
+    const resourceChange = changes[resourceType];
+    const currentResourceSection = state[resourceType];
+
+    if (!currentResourceSection) {
+      continue;
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (resourceChange && resourceChange.constructor !== Object) {
+        warning(
+          `You called deleteResources with an invalid update for the` +
+            ` resource of type "${resourceType}". Updates must be an Object.`,
+          'DELETE_RESOURCES_INVALID_TYPE'
+        );
+      } else {
+        if (resourceChange.resources) {
+          const resourcesIsObject =
+            resourceChange.resources.constructor === Object;
+          const resourcesIsArray = Array.isArray(resourceChange.resources);
+
+          if (!resourcesIsObject && !resourcesIsArray) {
+            warning(
+              `You called deleteResources with an invalid "resources" value for the` +
+                ` resource of type "${resourceType}". The "resource" value of an update` +
+                ` must be an Object or an array.`,
+              'DELETE_RESOURCES_INVALID_RESOURCES'
+            );
+          }
+        }
+
+        if (resourceChange.lists) {
+          const listIsArray = Array.isArray(resourceChange.lists);
+
+          if (!listIsArray) {
+            warning(
+              `You called deleteResources with an invalid "lists" value for the` +
+                ` resource of type "${resourceType}". The "lists" value when deleting` +
+                ` must be an Array of list names to be deleted.`,
+              'DELETE_RESOURCES_INVALID_LISTS'
+            );
+          }
+        }
+      }
+    }
+
+    const naiveResources = resourceChange && resourceChange.resources;
+    const naiveLists = (resourceChange && resourceChange.lists) || [];
+    const schema = currentResourceSection.schema;
+    const idAttribute = schema.idAttribute;
+
+    let idList = [];
+    if (Array.isArray(naiveResources)) {
+      idList = naiveResources.map(resource => {
+        if (typeof resource === 'object') {
+          if (process.env.NODE_ENV !== 'production') {
+            if (
+              (!resource[idAttribute] && resource[idAttribute] !== 0) ||
+              (typeof resource[idAttribute] !== 'string' &&
+                typeof resource[idAttribute] !== 'number')
+            ) {
+              warning(
+                `An invalid resource was passed to deleteResources.`,
+                'NO_RESOURCE_ID'
+              );
+            }
+          }
+          return resource[idAttribute];
+        } else {
+          if (process.env.NODE_ENV !== 'production') {
+            if (typeof resource !== 'string' && typeof resource !== 'number') {
+              warning(
+                `An invalid resource was passed to deleteResources.`,
+                'NO_RESOURCE_ID'
+              );
+            }
+          }
+          return resource;
+        }
+      });
+    }
+
+    const hasIds = idList && idList.length;
+    const newResources = Object.assign({}, currentResourceSection.resources);
+
+    if (hasIds) {
+      idList.map(id => {
+        delete newResources[id];
+      });
+    }
+
+    const newLists = {};
+    const lists = currentResourceSection.lists;
+
+    // We iterate every existing list
+    for (let resourceList in lists) {
+      // We only consider the lists that aren't slated to be deleted
+      if (!naiveLists.includes(resourceList)) {
+        const existingList = lists[resourceList];
+        newLists[resourceList] = existingList.filter(r => !idList.includes(r));
+      }
+    }
+
+    newState[resourceType] = {
+      ...currentResourceSection,
+      resources: newResources,
+      lists: newLists,
+    };
+  }
+
+  return newState;
 }
