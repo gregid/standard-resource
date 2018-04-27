@@ -36,6 +36,7 @@ state {
 
 #### Resource
 
+```
 {
   id,
   resourceType,
@@ -44,3 +45,4 @@ state {
   relationships,
   computedAttributes
 }
+```
