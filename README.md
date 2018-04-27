@@ -4,10 +4,10 @@
 
 A standard API for resource management.
 
-✓ Works in Node or in the browser
-✓ Normalizes data
-✓ Flexible: define schemas for extra robustness, or choose not to
-✓ Sophisticated relationship support
+✓ Works in Node or in the browser  
+✓ Normalizes data  
+✓ Flexible: define schemas for extra robustness, or choose not to  
+✓ Sophisticated relationship support  
 
 ### Data Models
 
