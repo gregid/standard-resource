@@ -1,5 +1,6 @@
 import idFromResource from '../utils/id-from-resource';
 import defaultSchema from '../initialization/default-schema';
+import validateResource from '../utils/validate-resource';
 import warning from '../utils/warning';
 
 // updateResources({
@@ -141,6 +142,10 @@ export default function updateResources({ state, changes }) {
           };
         }
 
+        if (process.env.NODE_ENV !== 'production') {
+          validateResource({ resource: resourceToInsert, schema });
+        }
+
         newResources[id] = resourceToInsert;
       });
     } else {
@@ -182,6 +187,10 @@ export default function updateResources({ state, changes }) {
               ...resource.meta,
             },
           };
+        }
+
+        if (process.env.NODE_ENV !== 'production') {
+          validateResource({ resource: resourceToInsert, schema });
         }
 
         newResources[id] = resourceToInsert;
