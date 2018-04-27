@@ -1,6 +1,6 @@
 import resolveResource from './resolve-resource';
 import objectMatchesObject from './object-matches-object';
-import warning from '../diagnostics/warning';
+import warning from '../utils/warning';
 
 // Retrieve resource(s) from the store
 export default function getResources({

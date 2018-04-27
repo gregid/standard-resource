@@ -1,6 +1,6 @@
 import idFromResource from '../utils/id-from-resource';
 import defaultSchema from '../initialization/default-schema';
-import warning from '../diagnostics/warning';
+import warning from '../utils/warning';
 
 // updateResources({
 //   authors: {

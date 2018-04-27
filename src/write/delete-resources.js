@@ -1,5 +1,5 @@
 import idFromResource from '../utils/id-from-resource';
-import warning from '../diagnostics/warning';
+import warning from '../utils/warning';
 
 // deleteResources({
 //   authors: {
