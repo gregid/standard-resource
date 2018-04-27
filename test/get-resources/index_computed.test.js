@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import getResources from '../../src/get-resources';
+import defaultSchema from '../../src/initialization/default-schema';
 
 describe('getResources', function() {
   beforeEach(() => {
@@ -8,6 +9,7 @@ describe('getResources', function() {
     this.state = {
       authors: {
         schema: {
+          ...defaultSchema,
           idAttribute: 'id',
           computedAttributes: {
             // Regular functions work, but you may want to use selectors
