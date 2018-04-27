@@ -182,5 +182,82 @@ describe('resolveResource', () => {
         },
       });
     });
+
+    it('should overwrite data in the expected way when flattening', () => {
+      const resource = {
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          author: 'Lord of da Flies',
+        },
+        relationships: {
+          author: {
+            resourceType: 'people',
+            data: 'b',
+          },
+          blah: {
+            resourceType: 'people',
+            data: 'b',
+          },
+        },
+      };
+
+      const resolved = resolveResource({
+        state: {
+          people: {
+            schema: defaultSchema,
+            resources: {
+              b: {
+                id: 'b',
+                resourceType: 'people',
+                attributes: {
+                  firstName: 'Rosie',
+                },
+              },
+            },
+          },
+        },
+        resource,
+        options: {
+          flat: true,
+          relationships: {
+            author: true,
+          },
+        },
+        schema: {
+          ...defaultSchema,
+          computedAttributes: {
+            blah(resource) {
+              return `${resource.meta.author} pls & ty`;
+            },
+            name() {
+              return 'i will be squashed';
+            },
+          },
+        },
+      });
+
+      expect(resolved).toEqual({
+        id: 'a',
+        resourceType: 'books',
+        name: 'Lord of the Flies',
+        blah: 'Lord of da Flies pls & ty',
+        publishYear: 1985,
+        author: {
+          id: 'b',
+          resourceType: 'people',
+          computedAttributes: {},
+          meta: {},
+          relationships: {},
+          attributes: {
+            firstName: 'Rosie',
+          },
+        },
+      });
+    });
   });
 });
