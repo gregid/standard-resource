@@ -37,7 +37,7 @@ describe('resolveResource', () => {
         },
         relationships: {
           author: {
-            type: 'people',
+            resourceType: 'people',
             data: 'b',
           },
         },
@@ -62,7 +62,7 @@ describe('resolveResource', () => {
         computedAttributes: {},
         relationships: {
           author: {
-            type: 'people',
+            resourceType: 'people',
             data: 'b',
           },
         },
@@ -84,7 +84,7 @@ describe('resolveResource', () => {
         },
         relationships: {
           author: {
-            type: 'people',
+            resourceType: 'people',
             data: 'b',
           },
         },
@@ -106,8 +106,79 @@ describe('resolveResource', () => {
         changedName: 'Lord of da Flies',
         publishYear: 1985,
         author: {
-          type: 'people',
+          resourceType: 'people',
           data: 'b',
+        },
+      });
+    });
+
+    it('should return a flat object with relationships and schema', () => {
+      const resource = {
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          changedName: 'Lord of da Flies',
+        },
+        relationships: {
+          author: {
+            resourceType: 'people',
+            data: 'b',
+          },
+        },
+      };
+
+      const resolved = resolveResource({
+        state: {
+          people: {
+            schema: defaultSchema,
+            resources: {
+              b: {
+                id: 'b',
+                resourceType: 'people',
+                attributes: {
+                  firstName: 'Rosie',
+                },
+              },
+            },
+          },
+        },
+        resource,
+        options: {
+          flat: true,
+          relationships: {
+            author: true,
+          },
+        },
+        schema: {
+          ...defaultSchema,
+          computedAttributes: {
+            blah(resource) {
+              return `${resource.meta.changedName} pls & ty`;
+            },
+          },
+        },
+      });
+
+      expect(resolved).toEqual({
+        id: 'a',
+        resourceType: 'books',
+        name: 'Lord of the Flies',
+        changedName: 'Lord of da Flies',
+        blah: 'Lord of da Flies pls & ty',
+        publishYear: 1985,
+        author: {
+          id: 'b',
+          resourceType: 'people',
+          computedAttributes: {},
+          meta: {},
+          relationships: {},
+          attributes: {
+            firstName: 'Rosie',
+          },
         },
       });
     });
