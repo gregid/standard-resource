@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // Do I need to validate a full or a flat resource?
 export default function validateResource({ resource, schema }) {
@@ -7,5 +7,5 @@ export default function validateResource({ resource, schema }) {
     return false;
   }
 
-  const idObj = { id: resource[schema.idAttribute] };
+  // const idObj = { id: resource[schema.idAttribute] };
 }

@@ -2,6 +2,7 @@ import createInitialState from './initialization/create-initial-state';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
+import warning from './diagnostics/warning';
 
 export default function createResourceStore(
   schemas = {},
@@ -9,40 +10,85 @@ export default function createResourceStore(
   options = {}
 ) {
   let currentState = createInitialState(schemas, initialState, options);
-
-  const validResourceTypes = Object.keys(schemas || {});
+  let listeners = [];
 
   function getState() {
     return currentState;
   }
 
+  function subscribe(listener) {
+    if (typeof listener !== 'function') {
+      if (process.env.NODE_ENV !== 'production') {
+        warning(
+          `You passed an invalid listener to store.subscribe.` +
+            ` Listeners must be functions.`,
+          'LISTENER_INVALID_TYPE'
+        );
+      }
+    } else {
+      listeners.push(listener);
+    }
+
+    let subscribed = true;
+
+    return function unsubscribe() {
+      if (!subscribed) {
+        return;
+      }
+
+      subscribed = false;
+
+      const index = listeners.indexOf(listener);
+      listeners.splice(index, 1);
+    };
+  }
+
+  function onUpdate() {
+    for (let i = 0; i < listeners.length; i++) {
+      const listener = listeners[i];
+      listener();
+    }
+  }
+
   return {
     getState,
+    subscribe,
     getResources(resourceType, filter, options) {
       return getResources({
         state: currentState,
         resourceType,
         filter,
         options,
-        validResourceTypes,
         schemas,
       });
     },
     updateResources(changes) {
-      return updateResources({
+      const newState = updateResources({
         state: currentState,
         changes,
         options,
-        validResourceTypes,
       });
+
+      currentState = {
+        ...currentState,
+        ...newState,
+      };
+
+      onUpdate();
     },
     deleteResources(changes) {
-      return deleteResources({
+      const newState = deleteResources({
         state: currentState,
         changes,
         options,
-        validResourceTypes,
       });
+
+      currentState = {
+        ...currentState,
+        ...newState,
+      };
+
+      onUpdate();
     },
   };
 }

@@ -1,3 +1,3 @@
-export default function createSection({ input, defaultSection, schema }) {
+export default function createSection({ input }) {
   return input;
 }
