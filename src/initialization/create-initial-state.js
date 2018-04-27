@@ -5,19 +5,25 @@ import warning from '../utils/warning';
 export default function createInitialState(schemas, initialState, options) {
   const { strict } = options;
 
+  const state = {
+    resourceTypes: {},
+  };
+
   for (let resourceType in schemas) {
     const schema = schemas[resourceType];
 
-    initialState[resourceType] = initialState[resourceType] || {};
-    initialState[resourceType].schema = createSchema({
+    state.resourceTypes[resourceType] = initialState[resourceType] || {};
+    state.resourceTypes[resourceType].schema = createSchema({
       input: schema,
       defaultSchema,
     });
   }
 
   for (let resourceType in initialState) {
-    if (!initialState[resourceType].schema) {
-      initialState[resourceType].schema = defaultSchema;
+    state.resourceTypes[resourceType] = initialState[resourceType] || {};
+
+    if (!state.resourceTypes[resourceType].schema) {
+      state.resourceTypes[resourceType].schema = defaultSchema;
     }
   }
 
@@ -33,5 +39,5 @@ export default function createInitialState(schemas, initialState, options) {
     }
   }
 
-  return initialState;
+  return state;
 }

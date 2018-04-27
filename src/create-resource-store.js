@@ -9,11 +9,20 @@ export default function createResourceStore(
   initialState = {},
   options = {}
 ) {
+  const { computedAttributes } = options;
   let currentState = createInitialState(schemas, initialState, options);
   let listeners = [];
 
   function getState() {
-    return currentState;
+    const result = {
+      ...currentState,
+    };
+
+    for (let attributeName in computedAttributes) {
+      result[attributeName] = computedAttributes[attributeName](currentState);
+    }
+
+    return result;
   }
 
   function subscribe(listener) {
@@ -55,7 +64,7 @@ export default function createResourceStore(
     subscribe,
     getResources(resourceType, filter, options) {
       return getResources({
-        state: currentState,
+        state: currentState.resourceTypes,
         resourceType,
         filter,
         options,
@@ -64,28 +73,34 @@ export default function createResourceStore(
     },
     updateResources(changes) {
       const newState = updateResources({
-        state: currentState,
+        state: currentState.resourceTypes,
         changes,
         options,
       });
 
       currentState = {
         ...currentState,
-        ...newState,
+        resourceTypes: {
+          ...currentState.resourceTypes,
+          ...newState,
+        },
       };
 
       onUpdate();
     },
     deleteResources(changes) {
       const newState = deleteResources({
-        state: currentState,
+        state: currentState.resourceTypes,
         changes,
         options,
       });
 
       currentState = {
         ...currentState,
-        ...newState,
+        resourceTypes: {
+          ...currentState.resourceTypes,
+          ...newState,
+        },
       };
 
       onUpdate();
