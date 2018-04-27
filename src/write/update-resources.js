@@ -1,4 +1,5 @@
 import idFromResource from '../utils/id-from-resource';
+import defaultSchema from '../initialization/default-schema';
 import warning from '../diagnostics/warning';
 
 // updateResources({
@@ -15,18 +16,14 @@ import warning from '../diagnostics/warning';
 //   }
 // });
 
-export default function updateResources({ state, changes, options }) {
+export default function updateResources({ state, changes }) {
   const newState = {
     ...state,
   };
 
   for (let resourceType in changes) {
     const resourceChange = changes[resourceType];
-    const currentResourceSection = state[resourceType];
-
-    if (!currentResourceSection) {
-      continue;
-    }
+    const currentResourceSection = state[resourceType] || {};
 
     if (process.env.NODE_ENV !== 'production') {
       if (resourceChange && resourceChange.constructor !== Object) {
@@ -68,7 +65,7 @@ export default function updateResources({ state, changes, options }) {
 
     const naiveResources = resourceChange && resourceChange.resources;
     const naiveLists = (resourceChange && resourceChange.lists) || [];
-    const schema = currentResourceSection.schema;
+    const schema = currentResourceSection.schema || defaultSchema;
     const idAttribute = schema.idAttribute;
     const concatLists =
       resourceChange && typeof resourceChange.concatLists === 'boolean'
@@ -102,10 +99,13 @@ export default function updateResources({ state, changes, options }) {
           return;
         }
 
-        const resourceObj = resourceIsObject ? resource : { id: resource };
+        const resourceObj = resourceIsObject
+          ? resource
+          : { [idAttribute]: resource };
 
         const resourceAlreadyExists = Boolean(
-          currentResourceSection.resources[id]
+          currentResourceSection.resources &&
+            currentResourceSection.resources[id]
         );
 
         // If there is no existing resource, we just add it to the resources object
@@ -117,19 +117,39 @@ export default function updateResources({ state, changes, options }) {
         let resourceToInsert;
         if (mergeResources) {
           const currentResource = newResources[id];
-          resourceToInsert = Object.assign({}, currentResource, resourceObj);
+
+          resourceToInsert = {
+            [idAttribute]: currentResource[idAttribute],
+            resourceType,
+            attributes: Object.assign(
+              {},
+              currentResource.attributes,
+              resourceObj.attributes
+            ),
+            meta: Object.assign({}, currentResource.meta, resourceObj.meta),
+          };
         } else {
-          resourceToInsert = resourceObj;
+          resourceToInsert = {
+            [idAttribute]: resourceObj[idAttribute],
+            resourceType,
+            attributes: {
+              ...resourceObj.attributes,
+            },
+            meta: {
+              ...resourceObj.meta,
+            },
+          };
         }
 
         newResources[id] = resourceToInsert;
       });
     } else {
       for (let id in naiveResources) {
-        const resource = newResources[id];
+        const resource = naiveResources[id];
 
         const resourceAlreadyExists = Boolean(
-          currentResourceSection.resources[id]
+          currentResourceSection.resources &&
+            currentResourceSection.resources[id]
         );
 
         // If there is no existing resource, we just add it to the resources object
@@ -141,10 +161,26 @@ export default function updateResources({ state, changes, options }) {
         let resourceToInsert;
         if (mergeResources) {
           const currentResource = newResources[id];
-          resourceToInsert = Object.assign({}, currentResource, resource);
-        } else {
           resourceToInsert = {
-            ...resource,
+            [idAttribute]: currentResource[idAttribute],
+            resourceType: resourceType,
+            attributes: Object.assign(
+              {},
+              currentResource.attributes,
+              resource.attributes
+            ),
+            meta: Object.assign({}, currentResource.meta, resource.meta),
+          };
+        } else {
+          resourceToInsert = resourceToInsert = {
+            [idAttribute]: resource[idAttribute],
+            resourceType,
+            attributes: {
+              ...resource.attributes,
+            },
+            meta: {
+              ...resource.meta,
+            },
           };
         }
 
@@ -175,6 +211,7 @@ export default function updateResources({ state, changes, options }) {
 
     newState[resourceType] = {
       ...currentResourceSection,
+      schema,
       resources: newResources,
       lists: newLists,
     };
