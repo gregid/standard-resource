@@ -22,6 +22,18 @@ export default function updateResources({ schemas, state, changes }) {
     ...state,
   };
 
+  if (
+    changes &&
+    changes.constructor !== Object &&
+    process.env.NODE_ENV !== 'production'
+  ) {
+    warning(
+      `You called updateResources with an invalid changes object. Changes must be an Object.`,
+      'UPDATE_RESOURCES_INVALID_CHANGES_OBJECT',
+      'error'
+    );
+  }
+
   for (let resourceType in changes) {
     const resourceChange = changes[resourceType];
     const currentResourceSection = state[resourceType] || { resourceType };
@@ -31,7 +43,8 @@ export default function updateResources({ schemas, state, changes }) {
         warning(
           `You called updateResources with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
-          'UPDATE_RESOURCES_INVALID_TYPE'
+          'UPDATE_RESOURCES_INVALID_TYPE',
+          'error'
         );
       } else {
         if (resourceChange.resources) {
@@ -44,7 +57,8 @@ export default function updateResources({ schemas, state, changes }) {
               `You called updateResources with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
                 ` must be an Object or an array.`,
-              'UPDATE_RESOURCES_INVALID_RESOURCES'
+              'UPDATE_RESOURCES_INVALID_RESOURCES',
+              'error'
             );
           }
         }
@@ -57,7 +71,8 @@ export default function updateResources({ schemas, state, changes }) {
               `You called updateResources with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when updating` +
                 ` must be an Object of new lists.`,
-              'UPDATE_RESOURCES_INVALID_LISTS'
+              'UPDATE_RESOURCES_INVALID_LISTS',
+              'error'
             );
           }
         }
@@ -93,7 +108,8 @@ export default function updateResources({ schemas, state, changes }) {
             warning(
               `You attempted to update or add a resource without an ID attribute. ` +
                 `Standard Resource requires that all resources have an ID.`,
-              'MISSING_ID_UPSERT'
+              'MISSING_ID_UPSERT',
+              'error'
             );
           }
 
