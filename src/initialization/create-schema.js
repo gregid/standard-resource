@@ -1,4 +1,4 @@
-import warning from '../utils/warning';
+import { warning } from '../utils/warning';
 
 export default function createSchema({ input, defaultSchema }) {
   const newSchema = {

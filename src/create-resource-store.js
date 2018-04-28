@@ -4,7 +4,7 @@ import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
 import createChanges from './utils/create-changes';
-import warning from './utils/warning';
+import { warning } from './utils/warning';
 
 export default function createResourceStore(
   schemaInputs = {},

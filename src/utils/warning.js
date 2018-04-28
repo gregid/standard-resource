@@ -1,6 +1,6 @@
 let codeCache = {};
 
-export default function warning(message, code) {
+export function warning(message, code) {
   // This ensures that each warning type is only logged out one time
   if (code) {
     if (codeCache[code]) {

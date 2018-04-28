@@ -1,11 +1,16 @@
-import { resetCodeCache } from '../src/utils/warning';
+import * as warning from '../src/utils/warning';
 
 beforeEach(() => {
   if (console.error.mockRestore) {
     console.error.mockRestore();
   }
 
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  if (warning.warning.mockRestore) {
+    warning.warning.mockRestore();
+  }
 
-  resetCodeCache();
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(warning, 'warning').mockImplementation(() => {});
+
+  warning.resetCodeCache();
 });
