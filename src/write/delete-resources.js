@@ -1,5 +1,6 @@
 import defaultSchema from '../utils/default-schema';
 import idFromResource from '../utils/id-from-resource';
+import merge from '../utils/merge';
 import { exists, isArray, isObject, isNull } from '../utils/identification';
 import { warning } from '../utils/warning';
 import createChanges from '../utils/create-changes';
@@ -16,9 +17,7 @@ import createChanges from '../utils/create-changes';
 // });
 
 export default function deleteResources({ path, schemas, state, changes }) {
-  const newState = {
-    ...state,
-  };
+  const newState = merge(state);
 
   changes = createChanges(path, changes);
 
@@ -112,7 +111,7 @@ export default function deleteResources({ path, schemas, state, changes }) {
     }
 
     const hasIds = idList && idList.length;
-    const newResources = Object.assign({}, currentResourceSection.resources);
+    const newResources = merge(currentResourceSection.resources);
 
     if (hasIds) {
       idList.map(id => {
@@ -139,11 +138,10 @@ export default function deleteResources({ path, schemas, state, changes }) {
       }
     }
 
-    newState[resourceType] = {
-      ...currentResourceSection,
+    newState[resourceType] = merge(currentResourceSection, {
       resources: newResources,
       lists: newLists,
-    };
+    });
   }
 
   return newState;

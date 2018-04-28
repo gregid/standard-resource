@@ -4,6 +4,7 @@ import validateResource from '../utils/validate-resource';
 import createChanges from '../utils/create-changes';
 import createResource from '../utils/create-resource';
 import { exists, isObject, isArray, isBoolean } from '../utils/identification';
+import merge from '../utils/merge';
 import { warning } from '../utils/warning';
 
 // updateResources({
@@ -21,9 +22,7 @@ import { warning } from '../utils/warning';
 // });
 
 export default function updateResources({ path, schemas, state, changes }) {
-  const newState = {
-    ...state,
-  };
+  const newState = merge(state);
 
   changes = createChanges(path, changes);
 
@@ -99,7 +98,7 @@ export default function updateResources({ path, schemas, state, changes }) {
       mergeResources = true;
     }
 
-    let newResources = Object.assign({}, currentResourceSection.resources);
+    let newResources = merge(currentResourceSection.resources);
 
     if (isArray(naiveResources)) {
       naiveResources.forEach(resource => {
@@ -142,12 +141,11 @@ export default function updateResources({ path, schemas, state, changes }) {
           resourceToInsert = {
             [idAttribute]: currentResource[idAttribute],
             resourceType,
-            attributes: Object.assign(
-              {},
+            attributes: merge(
               currentResource.attributes,
               resourceObj.attributes
             ),
-            meta: Object.assign({}, currentResource.meta, resourceObj.meta),
+            meta: merge(currentResource.meta, resourceObj.meta),
           };
         } else {
           resourceToInsert = {
@@ -189,12 +187,8 @@ export default function updateResources({ path, schemas, state, changes }) {
           resourceToInsert = {
             [idAttribute]: currentResource[idAttribute],
             resourceType: resourceType,
-            attributes: Object.assign(
-              {},
-              currentResource.attributes,
-              resource.attributes
-            ),
-            meta: Object.assign({}, currentResource.meta, resource.meta),
+            attributes: merge(currentResource.attributes, resource.attributes),
+            meta: merge(currentResource.meta, resource.meta),
           };
         } else {
           resourceToInsert = resourceToInsert = {

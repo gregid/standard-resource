@@ -1,3 +1,4 @@
+import merge from './merge';
 import { isObject } from './identification';
 
 export default function createResource({
@@ -5,7 +6,7 @@ export default function createResource({
   existing,
   schema,
   resourceType,
-  merge,
+  mergeResource,
 }) {
   const inputObject = isObject(input)
     ? input
@@ -13,23 +14,19 @@ export default function createResource({
         [schema.idAttribute]: input,
       };
 
-  if (!merge) {
+  if (!mergeResource) {
     return {
       [schema.idAttribute]: inputObject[schema.idAttribute],
       resourceType,
-      attributes: {
-        ...inputObject.attributes,
-      },
-      meta: {
-        ...inputObject.meta,
-      },
+      attributes: merge(inputObject.attributes),
+      meta: merge(inputObject.meta),
     };
   }
 
   return {
     [schema.idAttribute]: existing[schema.idAttribute],
     resourceType,
-    attributes: Object.assign({}, existing.attributes, inputObject.attributes),
-    meta: Object.assign({}, existing.meta, inputObject.meta),
+    attributes: merge(existing.attributes, inputObject.attributes),
+    meta: merge(existing.meta, inputObject.meta),
   };
 }
