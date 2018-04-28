@@ -16,9 +16,12 @@ const booksSchema = {
 
 describe('updateResources – PropTypes with a custom schema', function() {
   beforeEach(() => {
+    this.schemas = {
+      books: booksSchema,
+    };
+
     this.state = {
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -48,6 +51,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   it('should not warn when an update is valid', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -63,7 +67,6 @@ describe('updateResources – PropTypes with a custom schema', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -97,6 +100,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   it('should warn when an update sets an invalid type on a prop', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -113,7 +117,6 @@ describe('updateResources – PropTypes with a custom schema', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -151,6 +154,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   it('should warn when an update does not set a required prop on a resource', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -168,7 +172,6 @@ describe('updateResources – PropTypes with a custom schema', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -205,6 +208,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   it('should not warn when meta is the right value', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -220,7 +224,6 @@ describe('updateResources – PropTypes with a custom schema', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -256,6 +259,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   it('should warn when meta is not the right value (array syntax)', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [
@@ -272,7 +276,6 @@ describe('updateResources – PropTypes with a custom schema', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: booksSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],

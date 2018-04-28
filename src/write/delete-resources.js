@@ -1,3 +1,4 @@
+import defaultSchema from '../initialization/default-schema';
 import idFromResource from '../utils/id-from-resource';
 import warning from '../utils/warning';
 
@@ -12,7 +13,7 @@ import warning from '../utils/warning';
 //   }
 // });
 
-export default function deleteResources({ state, changes }) {
+export default function deleteResources({ schemas, state, changes }) {
   const newState = {
     ...state,
   };
@@ -65,7 +66,7 @@ export default function deleteResources({ state, changes }) {
 
     const naiveResources = resourceChange && resourceChange.resources;
     const naiveLists = (resourceChange && resourceChange.lists) || [];
-    const schema = currentResourceSection.schema;
+    const schema = schemas[resourceType] || defaultSchema;
 
     let idList = [];
     if (Array.isArray(naiveResources)) {

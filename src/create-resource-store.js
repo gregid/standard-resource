@@ -1,4 +1,5 @@
-import createInitialState from './initialization/create-initial-state';
+import createSchema from './initialization/create-schema';
+import defaultSchema from './initialization/default-schema';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
@@ -6,11 +7,23 @@ import createChanges from './utils/create-changes';
 import warning from './utils/warning';
 
 export default function createResourceStore(
-  schemas = {},
+  schemaInputs = {},
   initialState = {},
   options = {}
 ) {
-  let currentState = createInitialState(schemas, initialState, options);
+  let schemas;
+
+  for (let resourceType in schemaInputs) {
+    const schema = schemaInputs[resourceType];
+
+    schemas[resourceType] = createSchema({
+      input: schema,
+      defaultSchema,
+    });
+  }
+
+  let currentState = initialState;
+
   let listeners = [];
 
   function getState() {
@@ -56,15 +69,16 @@ export default function createResourceStore(
     subscribe,
     getResources(resourceType, filter, options) {
       return getResources({
+        schemas,
         state: currentState.resourceTypes,
         resourceType,
         filter,
         options,
-        schemas,
       });
     },
     updateResources(path, changes) {
       const newState = updateResources({
+        schemas,
         state: currentState.resourceTypes,
         changes: createChanges(path, changes),
         options,
@@ -82,6 +96,7 @@ export default function createResourceStore(
     },
     deleteResources(path, changes) {
       const newState = deleteResources({
+        schemas,
         state: currentState.resourceTypes,
         changes: createChanges(path, changes),
         options,

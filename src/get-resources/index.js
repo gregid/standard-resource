@@ -1,4 +1,5 @@
 import resolveResource from './resolve-resource';
+import defaultSchema from '../initialization/default-schema';
 import objectMatchesObject from '../utils/is-subset';
 import warning from '../utils/warning';
 
@@ -7,6 +8,7 @@ export default function getResources({
   state,
   resourceType,
   filter,
+  schemas,
   options = {},
 }) {
   const { byId = false } = options;
@@ -70,7 +72,7 @@ export default function getResources({
     }
   }
 
-  const schema = resourceSection.schema;
+  const schema = schemas[resourceType] || defaultSchema;
 
   const resources = resourceSection.resources;
   let idsList;
@@ -78,7 +80,9 @@ export default function getResources({
   if (typeof filter === 'function' || !hasFilter) {
     const appliedFilter = filter ? filter : () => true;
     const resourceList = Object.values(resources)
-      .map(resource => resolveResource({ state, resource, schema, options }))
+      .map(resource =>
+        resolveResource({ state, resource, schema, options, schemas })
+      )
       .filter(resource => appliedFilter(resource, resourceSection));
 
     const res = !byId
@@ -91,7 +95,9 @@ export default function getResources({
     return res;
   } else if (typeof filter === 'object' && !(filter instanceof Array)) {
     const resourceList = Object.values(resources)
-      .map(resource => resolveResource({ state, resource, schema, options }))
+      .map(resource =>
+        resolveResource({ state, resource, schema, options, schemas })
+      )
       .filter(resource => objectMatchesObject(resource, filter));
 
     return !byId
@@ -119,7 +125,13 @@ export default function getResources({
   if (!byId) {
     return idsList
       .map(id =>
-        resolveResource({ state, resource: resources[id], options, schema })
+        resolveResource({
+          state,
+          resource: resources[id],
+          options,
+          schema,
+          schemas,
+        })
       )
       .filter(Boolean);
   } else {
@@ -128,6 +140,7 @@ export default function getResources({
         state,
         resource: resources[id],
         schema,
+        schemas,
         options,
       });
       return result;

@@ -15,9 +15,7 @@ describe('createResourceStore', () => {
     it('with no initial state returns an empty object', () => {
       const store = createResourceStore();
       const state = store.getState();
-      expect(state).toEqual({
-        resourceTypes: {},
-      });
+      expect(state).toEqual({});
     });
   });
 });

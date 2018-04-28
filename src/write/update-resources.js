@@ -17,7 +17,7 @@ import warning from '../utils/warning';
 //   }
 // });
 
-export default function updateResources({ state, changes }) {
+export default function updateResources({ schemas, state, changes }) {
   const newState = {
     ...state,
   };
@@ -66,7 +66,7 @@ export default function updateResources({ state, changes }) {
 
     const naiveResources = resourceChange && resourceChange.resources;
     const naiveLists = (resourceChange && resourceChange.lists) || [];
-    const schema = currentResourceSection.schema || defaultSchema;
+    const schema = schemas[resourceType] || defaultSchema;
     const idAttribute = schema.idAttribute;
     const concatLists =
       resourceChange && typeof resourceChange.concatLists === 'boolean'
@@ -220,7 +220,6 @@ export default function updateResources({ state, changes }) {
 
     newState[resourceType] = {
       ...currentResourceSection,
-      schema,
       resources: newResources,
       lists: newLists,
     };
