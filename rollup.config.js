@@ -5,11 +5,19 @@ import commonjs from 'rollup-plugin-commonjs';
 import replace from 'rollup-plugin-replace';
 
 var env = process.env.NODE_ENV;
+
+let external;
+if (env === 'production') {
+  external = ['prop-types'];
+}
+
 var config = {
   output: {
     format: 'umd',
     name: 'StandardResource',
   },
+
+  external,
 
   plugins: [
     nodeResolve({

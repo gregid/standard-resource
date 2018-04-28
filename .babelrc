@@ -4,6 +4,19 @@
       "presets": [["env", { "modules": false }], "stage-3"],
       "plugins": ["external-helpers"]
     },
+    "buildProd": {
+      "presets": [["env", { "modules": false }], "stage-3"],
+      "plugins": [
+        "external-helpers",
+        [
+          "transform-react-remove-prop-types",
+          {
+            "mode": "remove",
+            "removeImport": true
+          }
+        ]
+      ]
+    },
     "es": {
       "presets": [["env", { "modules": false }], "stage-3"]
     },
