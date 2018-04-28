@@ -24,7 +24,7 @@ export default function updateResources({ state, changes }) {
 
   for (let resourceType in changes) {
     const resourceChange = changes[resourceType];
-    const currentResourceSection = state[resourceType] || {};
+    const currentResourceSection = state[resourceType] || { resourceType };
 
     if (process.env.NODE_ENV !== 'production') {
       if (resourceChange && resourceChange.constructor !== Object) {

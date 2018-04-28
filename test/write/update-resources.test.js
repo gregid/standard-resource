@@ -618,6 +618,7 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       sandwiches: {
+        resourceType: 'sandwiches',
         schema: defaultSchema,
         lists: {},
         resources: {
