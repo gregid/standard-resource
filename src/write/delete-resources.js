@@ -1,6 +1,6 @@
 import defaultSchema from '../initialization/default-schema';
 import idFromResource from '../utils/id-from-resource';
-import warning from '../utils/warning';
+import { warning } from '../utils/warning';
 
 // deleteResources({
 //   authors: {

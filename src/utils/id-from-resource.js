@@ -1,4 +1,4 @@
-import warning from '../utils/warning';
+import { warning } from '../utils/warning';
 
 export default function idFromResource({ resource, schema }) {
   if (typeof resource === 'object') {

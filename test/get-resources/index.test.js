@@ -1,4 +1,5 @@
 import getResources from '../../src/get-resources';
+import { warning } from '../../src/utils/warning';
 import defaultSchema from '../../src/initialization/default-schema';
 
 describe('getResources', function() {
@@ -87,7 +88,7 @@ describe('getResources', function() {
       schemas: this.schemas,
     });
 
-    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(warning).toHaveBeenCalledTimes(3);
     expect(result).toEqual([]);
     expect(resultTwo).toEqual({});
   });
@@ -98,7 +99,7 @@ describe('getResources', function() {
       schemas: this.schemas,
       resourceType: 'books',
     });
-    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(warning).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([
       {
@@ -143,7 +144,7 @@ describe('getResources', function() {
       resourceType: 'books',
       options: { byId: true },
     });
-    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(warning).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual({
       1: {
@@ -191,7 +192,7 @@ describe('getResources', function() {
         resourceType: 'books',
         filter,
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {
@@ -219,7 +220,7 @@ describe('getResources', function() {
         filter,
         options: { byId: true },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({
         1: {
@@ -267,7 +268,7 @@ describe('getResources', function() {
         resourceType: 'books',
         filter,
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {
@@ -305,7 +306,7 @@ describe('getResources', function() {
         filter,
         options: { byId: true },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({
         50: {
@@ -348,7 +349,7 @@ describe('getResources', function() {
         resourceType: 'books',
         filter,
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {
@@ -382,7 +383,7 @@ describe('getResources', function() {
           byId: true,
         },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({
         1: {
@@ -409,7 +410,7 @@ describe('getResources', function() {
         resourceType: 'books',
         filter: 'listThatDoesntExist',
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([]);
     });
@@ -424,7 +425,7 @@ describe('getResources', function() {
           byId: true,
         },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({});
     });
@@ -436,7 +437,7 @@ describe('getResources', function() {
         resourceType: 'books',
         filter: 'newBooks',
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {
@@ -474,7 +475,7 @@ describe('getResources', function() {
           byId: true,
         },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual({
         1: {
@@ -511,7 +512,7 @@ describe('getResources', function() {
         resourceType: 'authors',
         filter: ['a'],
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {
@@ -550,7 +551,7 @@ describe('getResources', function() {
           },
         },
       });
-      expect(console.error).toHaveBeenCalledTimes(0);
+      expect(warning).toHaveBeenCalledTimes(0);
 
       expect(results).toEqual([
         {

@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import getResources from '../../src/get-resources';
 import defaultSchema from '../../src/initialization/default-schema';
+import { warning } from '../../src/utils/warning';
 
 describe('getResources', function() {
   beforeEach(() => {
@@ -58,7 +59,7 @@ describe('getResources', function() {
       resourceType: 'authors',
       filter: [1],
     });
-    expect(console.error).toHaveBeenCalledTimes(0);
+    expect(warning).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([
       {

@@ -1,7 +1,7 @@
 import resolveResource from './resolve-resource';
 import defaultSchema from '../initialization/default-schema';
 import objectMatchesObject from '../utils/is-subset';
-import warning from '../utils/warning';
+import { warning } from '../utils/warning';
 
 // Retrieve resource(s) from the store
 export default function getResources({
