@@ -1,5 +1,4 @@
 import lookupRelationship from './lookup-relationship';
-import evaluateComputedAttributes from './evaluate-computed-attributes';
 
 // This function handles pulling in relationships and/or flattening
 // the resource
@@ -41,12 +40,12 @@ export default function resolveResource({
     }
   }
 
-  let computedAttributes = evaluateComputedAttributes({
-    state,
-    resource,
-    schema,
-    options,
-  });
+  const computedAttributes = {};
+  for (let attributeName in schema.computedAttributes) {
+    computedAttributes[attributeName] = schema.computedAttributes[
+      attributeName
+    ](resource);
+  }
 
   if (flat) {
     return {
