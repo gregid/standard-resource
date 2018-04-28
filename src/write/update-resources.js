@@ -223,8 +223,8 @@ export default function updateResources({ schemas, state, changes }) {
         .filter(Boolean);
 
       if (concatLists) {
-        const currentList = newLists[resourceList];
-        if (currentList && currentList.length === 0) {
+        const currentList = newLists[resourceList] || [];
+        if (currentList.length === 0) {
           newLists[resourceList] = resourceIds;
         } else {
           // Only add IDs that don't already exist in the list

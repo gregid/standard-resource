@@ -606,6 +606,55 @@ describe('updateResources', function() {
     });
   });
 
+  it('should concatenate a list that didnt exist before with concatList: true', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        books: {
+          lists: {
+            newList: [10],
+          },
+          concatLists: true,
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          newList: [10],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+  });
+
   it('should concatenate a list with concatList: true, preventing duplicates', () => {
     const newState = updateResources({
       state: this.state,

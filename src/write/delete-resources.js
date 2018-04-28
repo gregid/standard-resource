@@ -18,6 +18,18 @@ export default function deleteResources({ schemas, state, changes }) {
     ...state,
   };
 
+  if (
+    changes &&
+    changes.constructor !== Object &&
+    process.env.NODE_ENV !== 'production'
+  ) {
+    warning(
+      `You called deleteResources with an invalid changes object. Changes must be an Object.`,
+      'DELETE_RESOURCES_INVALID_CHANGES_OBJECT',
+      'error'
+    );
+  }
+
   for (let resourceType in changes) {
     const resourceChange = changes[resourceType];
     const currentResourceSection = state[resourceType];
@@ -31,7 +43,8 @@ export default function deleteResources({ schemas, state, changes }) {
         warning(
           `You called deleteResources with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
-          'DELETE_RESOURCES_INVALID_TYPE'
+          'DELETE_RESOURCES_INVALID_TYPE',
+          'error'
         );
       } else {
         if (resourceChange.resources) {
@@ -44,7 +57,8 @@ export default function deleteResources({ schemas, state, changes }) {
               `You called deleteResources with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
                 ` must be an Object or an array.`,
-              'DELETE_RESOURCES_INVALID_RESOURCES'
+              'DELETE_RESOURCES_INVALID_RESOURCES',
+              'error'
             );
           }
         }
@@ -57,15 +71,18 @@ export default function deleteResources({ schemas, state, changes }) {
               `You called deleteResources with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when deleting` +
                 ` must be an Array of list names to be deleted.`,
-              'DELETE_RESOURCES_INVALID_LISTS'
+              'DELETE_RESOURCES_INVALID_LISTS',
+              'error'
             );
           }
         }
       }
     }
 
+    const hasList = resourceChange && Array.isArray(resourceChange.lists);
+
     const naiveResources = resourceChange && resourceChange.resources;
-    const naiveLists = (resourceChange && resourceChange.lists) || [];
+    const naiveLists = hasList ? resourceChange.lists : [];
     const schema = schemas[resourceType] || defaultSchema;
 
     let idList = [];
