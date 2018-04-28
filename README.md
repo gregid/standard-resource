@@ -15,7 +15,19 @@ A standard API for resource management.
 
 ### Installation
 
-This library is not yet ready to be used.
+> Note: this library is not yet ready to be used.
+
+Install using [npm](https://www.npmjs.com):
+
+```
+npm install standard-resource
+```
+
+or [yarn](https://yarnpkg.com/):
+
+```
+yarn add standard-resource
+```
 
 ### Data Models
 
