@@ -19,19 +19,22 @@ export default function resolveResource({
 
   let resolvedRelationships = resource.relationships || {};
   if (relationships) {
+    const allRelationships = typeof relationships === 'boolean';
+
     // If the user passes `true`, then that means they want to resolve every relationship.
     // Otherwise, they will pass an object specifying the specific relationships that they
     // want to resolve.
-    const objectToIterate =
-      typeof relationships === 'boolean'
-        ? resolvedRelationships
-        : relationships;
+    const objectToIterate = allRelationships
+      ? resolvedRelationships
+      : relationships;
     for (let relationshipKey in objectToIterate) {
       let relationshipDefinition = resource.relationships[relationshipKey];
+      let getOptions = allRelationships ? {} : objectToIterate[relationshipKey];
 
       resolvedRelationships[relationshipKey] = lookupRelationship(
         state,
-        relationshipDefinition
+        relationshipDefinition,
+        getOptions
       );
     }
   }
