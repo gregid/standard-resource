@@ -2,12 +2,11 @@
 
 ### Step One
 
-* [ ] No relationship support
+* [x] No relationship support
+* [x] No flat input
+* [x] 100% coverage
+* [x] Serializable store
 * [ ] Robust developer experience with warnings
-* [ ] No flat input
-* [ ] 100% coverage
-* [ ] Serializable store
-* [ ] `getResources` figured out
 
 ### Later
 
