@@ -2,7 +2,8 @@ import idFromResource from '../utils/id-from-resource';
 import defaultSchema from '../utils/default-schema';
 import validateResource from '../utils/validate-resource';
 import createChanges from '../utils/create-changes';
-import { isObject, isArray, isBoolean } from '../utils/identification';
+import createResource from '../utils/create-resource';
+import { exists, isObject, isArray, isBoolean } from '../utils/identification';
 import { warning } from '../utils/warning';
 
 // updateResources({
@@ -221,9 +222,26 @@ export default function updateResources({ path, schemas, state, changes }) {
     };
 
     for (let resourceList in naiveLists) {
-      const resourceIds = naiveLists[resourceList]
-        .map(resource => idFromResource({ resource, schema }))
-        .filter(Boolean);
+      const resourceIds = [];
+
+      naiveLists[resourceList].forEach(resource => {
+        const id = idFromResource({ resource, schema });
+        const hasId = exists(id);
+
+        if (hasId) {
+          resourceIds.push(id);
+
+          // This allows you to add a resource by specifying it in
+          // a list.
+          if (!newResources[id]) {
+            newResources[id] = createResource({
+              input: resource,
+              resourceType,
+              schema,
+            });
+          }
+        }
+      });
 
       if (concatLists) {
         const currentList = newLists[resourceList] || [];
