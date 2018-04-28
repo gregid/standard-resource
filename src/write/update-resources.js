@@ -4,6 +4,7 @@ import validateResource from '../utils/validate-resource';
 import createChanges from '../utils/create-changes';
 import createResource from '../utils/create-resource';
 import { exists, isObject, isArray, isBoolean } from '../utils/identification';
+import merge from '../utils/merge';
 import { warning } from '../utils/warning';
 
 // updateResources({
@@ -21,9 +22,7 @@ import { warning } from '../utils/warning';
 // });
 
 export default function updateResources({ path, schemas, state, changes }) {
-  const newState = {
-    ...state,
-  };
+  const newState = merge(state);
 
   changes = createChanges(path, changes);
 
@@ -99,7 +98,7 @@ export default function updateResources({ path, schemas, state, changes }) {
       mergeResources = true;
     }
 
-    let newResources = Object.assign({}, currentResourceSection.resources);
+    let newResources = merge(currentResourceSection.resources);
 
     if (isArray(naiveResources)) {
       naiveResources.forEach(resource => {
@@ -120,47 +119,13 @@ export default function updateResources({ path, schemas, state, changes }) {
           return;
         }
 
-        const resourceObj = resourceIsObject
-          ? resource
-          : { [idAttribute]: resource };
-
-        const resourceAlreadyExists = Boolean(
-          currentResourceSection.resources &&
-            currentResourceSection.resources[id]
-        );
-
-        // If there is no existing resource, we just add it to the resources object
-        if (!resourceAlreadyExists) {
-          newResources[id] = resourceObj;
-          return newResources;
-        }
-
-        let resourceToInsert;
-        if (mergeResources) {
-          const currentResource = newResources[id];
-
-          resourceToInsert = {
-            [idAttribute]: currentResource[idAttribute],
-            resourceType,
-            attributes: Object.assign(
-              {},
-              currentResource.attributes,
-              resourceObj.attributes
-            ),
-            meta: Object.assign({}, currentResource.meta, resourceObj.meta),
-          };
-        } else {
-          resourceToInsert = {
-            [idAttribute]: resourceObj[idAttribute],
-            resourceType,
-            attributes: {
-              ...resourceObj.attributes,
-            },
-            meta: {
-              ...resourceObj.meta,
-            },
-          };
-        }
+        const resourceToInsert = createResource({
+          input: resource,
+          existing: newResources[id],
+          resourceType,
+          schema,
+          mergeResource: mergeResources,
+        });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });
@@ -183,31 +148,13 @@ export default function updateResources({ path, schemas, state, changes }) {
           continue;
         }
 
-        let resourceToInsert;
-        if (mergeResources) {
-          const currentResource = newResources[id];
-          resourceToInsert = {
-            [idAttribute]: currentResource[idAttribute],
-            resourceType: resourceType,
-            attributes: Object.assign(
-              {},
-              currentResource.attributes,
-              resource.attributes
-            ),
-            meta: Object.assign({}, currentResource.meta, resource.meta),
-          };
-        } else {
-          resourceToInsert = resourceToInsert = {
-            [idAttribute]: resource[idAttribute],
-            resourceType,
-            attributes: {
-              ...resource.attributes,
-            },
-            meta: {
-              ...resource.meta,
-            },
-          };
-        }
+        const resourceToInsert = createResource({
+          input: resource,
+          existing: newResources[id],
+          resourceType,
+          schema,
+          mergeResource: mergeResources,
+        });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });

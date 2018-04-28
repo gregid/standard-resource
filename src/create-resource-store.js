@@ -2,6 +2,7 @@ import createSchema from './utils/create-schema';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
+import merge from './utils/merge';
 import { isFunction } from './utils/identification';
 import { warning } from './utils/warning';
 
@@ -78,13 +79,9 @@ export default function createResourceStore(initialState = {}, options = {}) {
         options,
       });
 
-      currentState = {
-        ...currentState,
-        resourceTypes: {
-          ...currentState.resourceTypes,
-          ...newState,
-        },
-      };
+      currentState = merge(currentState, {
+        resourceTypes: merge(currentState.resourceTypes, newState),
+      });
 
       onUpdate();
     },
@@ -97,13 +94,9 @@ export default function createResourceStore(initialState = {}, options = {}) {
         options,
       });
 
-      currentState = {
-        ...currentState,
-        resourceTypes: {
-          ...currentState.resourceTypes,
-          ...newState,
-        },
-      };
+      currentState = merge(currentState, {
+        resourceTypes: merge(currentState.resourceTypes, newState),
+      });
 
       onUpdate();
     },
