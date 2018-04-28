@@ -1,8 +1,9 @@
 {
   "name": "standard-resource",
   "version": "0.0.1",
-  "description": "Standard API for resource management",
-  "main": "src/index.js",
+  "description": "A standard API for resource management",
+  "main": "lib/index.js",
+  "module": "es/index.js",
   "scripts": {
     "test": "npm run lint && npm run test:unit",
     "test:unit": "jest",
@@ -20,11 +21,39 @@
     "type": "git",
     "url": "git+https://github.com/jamesplease/standard-resource.git"
   },
-  "author": "James",
+  "keywords": [
+    "resource",
+    "resources",
+    "database",
+    "store",
+    "normalize",
+    "normalized",
+    "relationships",
+    "jsonapi",
+    "json",
+    "api",
+    "graphql",
+    "graph",
+    "data",
+    "table",
+    "relations",
+    "relational",
+    "attributes",
+    "crud",
+    "rest",
+    "restful",
+    "json api"
+  ],
+  "author": "James Smith <jamesplease2@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jamesplease/standard-resource/issues"
   },
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
   "homepage": "https://github.com/jamesplease/standard-resource#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
