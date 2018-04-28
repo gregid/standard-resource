@@ -4,8 +4,8 @@ import getResources from './';
 // retrievalOptions => this determines how this particular relationship should be resolved
 export default function lookupRelationship(
   state,
-  relationshipDefinition = {}
-  // retrievalOptions = {}
+  relationshipDefinition = {},
+  getOptions
 ) {
   const { resourceType, data } = relationshipDefinition;
 
@@ -16,6 +16,7 @@ export default function lookupRelationship(
     state,
     resourceType,
     filter: dataIsArray ? data : [data],
+    options: getOptions,
     // TODO: convert the retrievalOptions into getResources options
   });
 

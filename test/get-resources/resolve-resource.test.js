@@ -68,6 +68,231 @@ describe('resolveResource', () => {
         },
       });
     });
+
+    it('should handle circular relationships; requesting one level deep', () => {
+      const resource = {
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          changedName: 'Lord of da Flies',
+        },
+        relationships: {
+          author: {
+            resourceType: 'people',
+            data: 'b',
+          },
+        },
+      };
+
+      const state = {
+        books: {
+          resources: {
+            a: {
+              id: 'a',
+              resourceType: 'books',
+              attributes: {
+                name: 'Lord of the Flies',
+                publishYear: 1985,
+              },
+              meta: {
+                changedName: 'Lord of da Flies',
+              },
+              relationships: {
+                author: {
+                  resourceType: 'people',
+                  data: 'b',
+                },
+              },
+            },
+          },
+        },
+        people: {
+          schema: defaultSchema,
+          resources: {
+            b: {
+              id: 'b',
+              resourceType: 'people',
+              attributes: {
+                stuff: 'hello',
+              },
+              relationships: {
+                books: {
+                  resourceType: 'books',
+                  data: 'a',
+                },
+              },
+            },
+          },
+        },
+      };
+
+      const resolved = resolveResource({
+        state,
+        resource,
+        schema: defaultSchema,
+        options: {
+          relationships: {
+            author: true,
+          },
+        },
+      });
+
+      expect(resolved).toEqual({
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          changedName: 'Lord of da Flies',
+        },
+        computedAttributes: {},
+        relationships: {
+          author: {
+            id: 'b',
+            resourceType: 'people',
+            attributes: {
+              stuff: 'hello',
+            },
+            computedAttributes: {},
+            meta: {},
+            relationships: {
+              books: {
+                resourceType: 'books',
+                data: 'a',
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it.only('should handle circular relationships; requesting 2 levels deep', () => {
+      const resource = {
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          changedName: 'Lord of da Flies',
+        },
+        relationships: {
+          author: {
+            resourceType: 'people',
+            data: 'b',
+          },
+        },
+      };
+
+      const state = {
+        books: {
+          schema: defaultSchema,
+          resources: {
+            a: {
+              id: 'a',
+              resourceType: 'books',
+              attributes: {
+                name: 'Lord of the Flies',
+                publishYear: 1985,
+              },
+              meta: {
+                changedName: 'Lord of da Flies',
+              },
+              relationships: {
+                author: {
+                  resourceType: 'people',
+                  data: 'b',
+                },
+              },
+            },
+          },
+        },
+        people: {
+          schema: defaultSchema,
+          resources: {
+            b: {
+              id: 'b',
+              resourceType: 'people',
+              attributes: {
+                stuff: 'hello',
+              },
+              relationships: {
+                books: {
+                  resourceType: 'books',
+                  data: 'a',
+                },
+              },
+            },
+          },
+        },
+      };
+
+      const resolved = resolveResource({
+        state,
+        resource,
+        schema: defaultSchema,
+        options: {
+          relationships: {
+            author: {
+              relationships: {
+                books: true,
+              },
+            },
+          },
+        },
+      });
+
+      expect(resolved).toEqual({
+        id: 'a',
+        resourceType: 'books',
+        attributes: {
+          name: 'Lord of the Flies',
+          publishYear: 1985,
+        },
+        meta: {
+          changedName: 'Lord of da Flies',
+        },
+        computedAttributes: {},
+        relationships: {
+          author: {
+            id: 'b',
+            resourceType: 'people',
+            attributes: {
+              stuff: 'hello',
+            },
+            computedAttributes: {},
+            meta: {},
+            relationships: {
+              books: {
+                id: 'a',
+                resourceType: 'books',
+                attributes: {
+                  name: 'Lord of the Flies',
+                  publishYear: 1985,
+                },
+                meta: {
+                  changedName: 'Lord of da Flies',
+                },
+                computedAttributes: {},
+                relationships: {
+                  author: {
+                    resourceType: 'people',
+                    data: 'b',
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+    });
   });
 
   describe('flat', () => {
