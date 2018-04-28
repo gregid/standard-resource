@@ -2,6 +2,7 @@ import createInitialState from './initialization/create-initial-state';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
+import createChanges from './utils/create-changes';
 import warning from './utils/warning';
 
 export default function createResourceStore(
@@ -71,10 +72,10 @@ export default function createResourceStore(
         schemas,
       });
     },
-    updateResources(changes) {
+    updateResources(path, changes) {
       const newState = updateResources({
         state: currentState.resourceTypes,
-        changes,
+        changes: createChanges(path, changes),
         options,
       });
 
@@ -88,10 +89,10 @@ export default function createResourceStore(
 
       onUpdate();
     },
-    deleteResources(changes) {
+    deleteResources(path, changes) {
       const newState = deleteResources({
         state: currentState.resourceTypes,
-        changes,
+        changes: createChanges(path, changes),
         options,
       });
 
