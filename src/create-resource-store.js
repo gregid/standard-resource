@@ -10,20 +10,11 @@ export default function createResourceStore(
   initialState = {},
   options = {}
 ) {
-  const { computedAttributes } = options;
   let currentState = createInitialState(schemas, initialState, options);
   let listeners = [];
 
   function getState() {
-    const result = {
-      ...currentState,
-    };
-
-    for (let attributeName in computedAttributes) {
-      result[attributeName] = computedAttributes[attributeName](currentState);
-    }
-
-    return result;
+    return currentState;
   }
 
   function subscribe(listener) {
