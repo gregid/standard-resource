@@ -1,5 +1,4 @@
 import createSchema from './utils/create-schema';
-import defaultSchema from './utils/default-schema';
 import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
@@ -13,10 +12,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
   for (let resourceType in schemaInputs) {
     const schema = schemaInputs[resourceType];
 
-    schemas[resourceType] = createSchema({
-      input: schema,
-      defaultSchema,
-    });
+    schemas[resourceType] = createSchema(schema);
   }
 
   let currentState = initialState;

@@ -1,6 +1,6 @@
 let codeCache = {};
 
-export function warning(message, code) {
+export function warning(message, code, level = 'warn') {
   // This ensures that each warning type is only logged out one time
   if (code) {
     if (codeCache[code]) {
@@ -10,8 +10,8 @@ export function warning(message, code) {
     codeCache[code] = true;
   }
 
-  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-    console.error(message);
+  if (typeof console !== 'undefined' && typeof console[level] === 'function') {
+    console[level](message);
   }
 
   try {
