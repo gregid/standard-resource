@@ -69,7 +69,6 @@ describe('getResources', function() {
           fullName: 'James Please',
           reverseName: 'Please James',
         },
-        relationships: {},
         meta: {
           selected: true,
         },
