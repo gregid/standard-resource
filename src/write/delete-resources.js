@@ -1,5 +1,6 @@
 import defaultSchema from '../utils/default-schema';
 import idFromResource from '../utils/id-from-resource';
+import { exists, isArray, isObject } from '../utils/identification';
 import { warning } from '../utils/warning';
 
 // deleteResources({
@@ -18,11 +19,7 @@ export default function deleteResources({ schemas, state, changes }) {
     ...state,
   };
 
-  if (
-    changes &&
-    changes.constructor !== Object &&
-    process.env.NODE_ENV !== 'production'
-  ) {
+  if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
       `You called deleteResources with an invalid changes object. Changes must be an Object.`,
       'DELETE_RESOURCES_INVALID_CHANGES_OBJECT',
@@ -47,12 +44,11 @@ export default function deleteResources({ schemas, state, changes }) {
           'error'
         );
       } else {
-        if (resourceChange.resources) {
-          const resourcesIsObject =
-            resourceChange.resources.constructor === Object;
-          const resourcesIsArray = Array.isArray(resourceChange.resources);
-
-          if (!resourcesIsObject && !resourcesIsArray) {
+        if (exists(resourceChange.resources)) {
+          if (
+            !isObject(resourceChange.resources) &&
+            !isArray(resourceChange.resources)
+          ) {
             warning(
               `You called deleteResources with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
@@ -63,10 +59,8 @@ export default function deleteResources({ schemas, state, changes }) {
           }
         }
 
-        if (resourceChange.lists) {
-          const listIsArray = Array.isArray(resourceChange.lists);
-
-          if (!listIsArray) {
+        if (exists(resourceChange.lists)) {
+          if (!isArray(resourceChange.lists)) {
             warning(
               `You called deleteResources with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when deleting` +
@@ -79,14 +73,14 @@ export default function deleteResources({ schemas, state, changes }) {
       }
     }
 
-    const hasList = resourceChange && Array.isArray(resourceChange.lists);
+    const hasList = resourceChange && isArray(resourceChange.lists);
 
     const naiveResources = resourceChange && resourceChange.resources;
     const naiveLists = hasList ? resourceChange.lists : [];
     const schema = schemas[resourceType] || defaultSchema;
 
     let idList = [];
-    if (Array.isArray(naiveResources)) {
+    if (isArray(naiveResources)) {
       idList = naiveResources.map(resource =>
         idFromResource({ schema, resource })
       );

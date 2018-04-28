@@ -1,6 +1,14 @@
 import resolveResource from './resolve-resource';
 import defaultSchema from '../utils/default-schema';
 import objectMatchesObject from '../utils/is-subset';
+import {
+  exists,
+  isArray,
+  isString,
+  isObject,
+  isFunction,
+  isNumber,
+} from '../utils/identification';
 import { warning } from '../utils/warning';
 
 // Retrieve resource(s) from the store
@@ -15,7 +23,7 @@ export default function getResources({
 
   const defaultResponse = byId ? {} : [];
 
-  if (typeof resourceType !== 'string') {
+  if (!isString(resourceType)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
         `An invalid resourceType was passed to getResources.` +
@@ -42,13 +50,13 @@ export default function getResources({
     return defaultResponse;
   }
 
-  const hasFilter = typeof filter !== 'undefined';
+  const hasFilter = exists(filter);
 
   if (hasFilter && process.env.NODE_ENV !== 'production') {
-    const filterIsString = typeof filter === 'string';
-    const filterIsArray = Array.isArray(filter);
-    const filterIsObject = filter.constructor === Object;
-    const filterIsFn = typeof filter === 'function';
+    const filterIsString = isString(filter);
+    const filterIsArray = isArray(filter);
+    const filterIsObject = isObject(filter);
+    const filterIsFn = isFunction(filter);
 
     if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
       warning(
@@ -61,10 +69,7 @@ export default function getResources({
 
     if (filterIsArray) {
       filter.forEach(value => {
-        const valueIsString = typeof value === 'string';
-        const valueIsNumber = typeof value === 'number';
-
-        if (!valueIsString && !valueIsNumber) {
+        if (!isString(value) && !isNumber(value)) {
           warning(
             `An invalid array filter was passed to getResources. Each item` +
               ` in the array needs to be either a string or a number.` +
@@ -84,7 +89,7 @@ export default function getResources({
   const resources = resourceSection.resources;
   let idsList;
 
-  if (typeof filter === 'function' || !hasFilter) {
+  if (isFunction(filter) || !hasFilter) {
     const appliedFilter = filter ? filter : () => true;
     const resourceList = Object.values(resources)
       .map(resource =>
@@ -100,7 +105,7 @@ export default function getResources({
         }, {});
 
     return res;
-  } else if (typeof filter === 'object' && !(filter instanceof Array)) {
+  } else if (isObject(filter) && !isArray(filter)) {
     const resourceList = Object.values(resources)
       .map(resource =>
         resolveResource({ state, resource, schema, options, schemas })
@@ -113,7 +118,7 @@ export default function getResources({
           result[resource[schema.idAttribute]] = resource;
           return result;
         }, {});
-  } else if (typeof filter === 'string') {
+  } else if (isString(filter)) {
     // This conditional handles the situation where `filter` is an list name
     const list = resourceSection.lists[filter];
     if (!list) {

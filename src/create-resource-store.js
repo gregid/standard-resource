@@ -3,6 +3,7 @@ import getResources from './get-resources';
 import updateResources from './write/update-resources';
 import deleteResources from './write/delete-resources';
 import createChanges from './utils/create-changes';
+import { isFunction } from './utils/identification';
 import { warning } from './utils/warning';
 
 export default function createResourceStore(initialState = {}, options = {}) {
@@ -24,7 +25,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
   }
 
   function subscribe(listener) {
-    if (typeof listener !== 'function') {
+    if (!isFunction(isFunction)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
           `You passed an invalid listener to store.subscribe.` +

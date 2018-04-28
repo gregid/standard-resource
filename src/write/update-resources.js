@@ -1,6 +1,7 @@
 import idFromResource from '../utils/id-from-resource';
 import defaultSchema from '../utils/default-schema';
 import validateResource from '../utils/validate-resource';
+import { isObject, isArray, isBoolean } from '../utils/identification';
 import { warning } from '../utils/warning';
 
 // updateResources({
@@ -39,7 +40,7 @@ export default function updateResources({ schemas, state, changes }) {
     const currentResourceSection = state[resourceType] || { resourceType };
 
     if (process.env.NODE_ENV !== 'production') {
-      if (resourceChange && resourceChange.constructor !== Object) {
+      if (!isObject(resourceChange)) {
         warning(
           `You called updateResources with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
@@ -48,9 +49,8 @@ export default function updateResources({ schemas, state, changes }) {
         );
       } else {
         if (resourceChange.resources) {
-          const resourcesIsObject =
-            resourceChange.resources.constructor === Object;
-          const resourcesIsArray = Array.isArray(resourceChange.resources);
+          const resourcesIsObject = isObject(resourceChange.resources);
+          const resourcesIsArray = isArray(resourceChange.resources);
 
           if (!resourcesIsObject && !resourcesIsArray) {
             warning(
@@ -64,7 +64,7 @@ export default function updateResources({ schemas, state, changes }) {
         }
 
         if (resourceChange.lists) {
-          const listIsObject = resourceChange.lists.constructor === Object;
+          const listIsObject = isObject(resourceChange.lists);
 
           if (!listIsObject) {
             warning(
@@ -84,12 +84,12 @@ export default function updateResources({ schemas, state, changes }) {
     const schema = schemas[resourceType] || defaultSchema;
     const idAttribute = schema.idAttribute;
     const concatLists =
-      resourceChange && typeof resourceChange.concatLists === 'boolean'
+      resourceChange && isBoolean(resourceChange.concatLists)
         ? resourceChange.concatLists
         : false;
 
     let mergeResources;
-    if (typeof resourceChange.mergeResources === 'boolean') {
+    if (isBoolean(resourceChange.mergeResources)) {
       mergeResources = resourceChange.mergeResources;
     } else {
       mergeResources = true;
@@ -97,9 +97,9 @@ export default function updateResources({ schemas, state, changes }) {
 
     let newResources = Object.assign({}, currentResourceSection.resources);
 
-    if (naiveResources instanceof Array) {
+    if (isArray(naiveResources)) {
       naiveResources.forEach(resource => {
-        const resourceIsObject = resource.constructor === Object;
+        const resourceIsObject = isObject(resource);
         const id = resourceIsObject ? resource[idAttribute] : resource;
 
         // If a resource doesn't have an ID, then it cannot be tracked
