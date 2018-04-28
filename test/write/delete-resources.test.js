@@ -251,6 +251,12 @@ describe('deleteResources', function() {
         },
       },
     });
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual(
+      'DELETE_RESOURCES_INVALID_CHANGES_OBJECT'
+    );
+    expect(warning.mock.calls[0][2]).toEqual('error');
   });
 
   it('should not change the state when called when no resource types match', () => {
@@ -292,6 +298,7 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should not change the state when called when no resource IDs match', () => {
@@ -333,6 +340,7 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should not change the state when called when no list names match', () => {
@@ -374,6 +382,7 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should delete a single resource (ID form) that matches, leaving the rest of the state unchanged', () => {
@@ -412,6 +421,7 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should delete a single resource (object form) that matches, leaving the rest of the state unchanged', () => {
@@ -454,6 +464,7 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should delete a list that matches, array format', () => {
@@ -622,5 +633,6 @@ describe('deleteResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 });
