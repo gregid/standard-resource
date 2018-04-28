@@ -2,6 +2,7 @@ import defaultSchema from '../utils/default-schema';
 import idFromResource from '../utils/id-from-resource';
 import { exists, isArray, isObject } from '../utils/identification';
 import { warning } from '../utils/warning';
+import createChanges from '../utils/create-changes';
 
 // deleteResources({
 //   authors: {
@@ -14,10 +15,12 @@ import { warning } from '../utils/warning';
 //   }
 // });
 
-export default function deleteResources({ schemas, state, changes }) {
+export default function deleteResources({ path, schemas, state, changes }) {
   const newState = {
     ...state,
   };
+
+  changes = createChanges(path, changes);
 
   if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(

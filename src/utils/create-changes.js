@@ -27,6 +27,8 @@ export default function createChanges(path = '', changes) {
 
   if (!changes) {
     changesToApply = path;
+  } else if (!path) {
+    changesToApply = changes;
   } else {
     const splitPath = path.split('.');
     const resourceSlice = splitPath[0];

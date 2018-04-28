@@ -1,6 +1,7 @@
 import idFromResource from '../utils/id-from-resource';
 import defaultSchema from '../utils/default-schema';
 import validateResource from '../utils/validate-resource';
+import createChanges from '../utils/create-changes';
 import { isObject, isArray, isBoolean } from '../utils/identification';
 import { warning } from '../utils/warning';
 
@@ -18,10 +19,12 @@ import { warning } from '../utils/warning';
 //   }
 // });
 
-export default function updateResources({ schemas, state, changes }) {
+export default function updateResources({ path, schemas, state, changes }) {
   const newState = {
     ...state,
   };
+
+  changes = createChanges(path, changes);
 
   if (
     changes &&
