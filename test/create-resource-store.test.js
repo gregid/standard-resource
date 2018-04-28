@@ -23,10 +23,11 @@ describe('createResourceStore', () => {
       });
       const state = store.getState();
       expect(state).toEqual({});
+      expect(warning).toHaveBeenCalledTimes(0);
     });
   });
 
-  describe('allows you to create and then retrieve a resource', () => {
+  it('allows you to create and then retrieve a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -47,9 +48,10 @@ describe('createResourceStore', () => {
         computedAttributes: {},
       },
     ]);
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  describe('allows you to create and then delete a resource', () => {
+  it('allows you to create and then delete a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -73,6 +75,7 @@ describe('createResourceStore', () => {
     store.deleteResources('books.resources', [{ bookId: 5 }]);
 
     expect(store.getResources('books', [5])).toEqual([]);
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   describe('subscribing', () => {
@@ -108,6 +111,7 @@ describe('createResourceStore', () => {
 
       store.updateResources('books.resources', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
+      expect(warning).toHaveBeenCalledTimes(0);
     });
 
     it('allows you to unsubscribe', () => {
@@ -132,6 +136,7 @@ describe('createResourceStore', () => {
 
       store.updateResources('books.resources', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
+      expect(warning).toHaveBeenCalledTimes(0);
     });
   });
 });
