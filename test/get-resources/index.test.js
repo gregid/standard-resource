@@ -49,6 +49,14 @@ describe('getResources', function() {
             resourceType: 'authors',
             attributes: {
               name: 'J.K. Rowling',
+              contracts: {
+                en: {
+                  purpose: 'book',
+                },
+                es: {
+                  purpose: 'talk',
+                },
+              },
             },
           },
         },
@@ -487,6 +495,52 @@ describe('getResources', function() {
           meta: {},
           attributes: {
             name: 'J.K. Rowling',
+            contracts: {
+              en: {
+                purpose: 'book',
+              },
+              es: {
+                purpose: 'talk',
+              },
+            },
+          },
+        },
+      ]);
+    });
+
+    it('byId: false; should return the resources specified with a deep object match', () => {
+      const results = getResources({
+        state: this.state,
+        resourceType: 'authors',
+        filter: {
+          attributes: {
+            contracts: {
+              en: {
+                purpose: 'book',
+              },
+            },
+          },
+        },
+      });
+      expect(console.error).toHaveBeenCalledTimes(0);
+
+      expect(results).toEqual([
+        {
+          authorId: 'a',
+          resourceType: 'authors',
+          computedAttributes: {},
+          relationships: {},
+          meta: {},
+          attributes: {
+            name: 'J.K. Rowling',
+            contracts: {
+              en: {
+                purpose: 'book',
+              },
+              es: {
+                purpose: 'talk',
+              },
+            },
           },
         },
       ]);
