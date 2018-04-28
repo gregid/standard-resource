@@ -12,7 +12,9 @@ export default function createInitialState(schemas, initialState, options) {
   for (let resourceType in schemas) {
     const schema = schemas[resourceType];
 
-    state.resourceTypes[resourceType] = initialState[resourceType] || {};
+    state.resourceTypes[resourceType] = initialState[resourceType] || {
+      resourceType,
+    };
     state.resourceTypes[resourceType].schema = createSchema({
       input: schema,
       defaultSchema,
