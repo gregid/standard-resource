@@ -1,6 +1,8 @@
 import defaultSchema from '../utils/default-schema';
 import idFromResource from '../utils/id-from-resource';
+import { exists, isArray, isObject, isNull } from '../utils/identification';
 import { warning } from '../utils/warning';
+import createChanges from '../utils/create-changes';
 
 // deleteResources({
 //   authors: {
@@ -13,16 +15,14 @@ import { warning } from '../utils/warning';
 //   }
 // });
 
-export default function deleteResources({ schemas, state, changes }) {
+export default function deleteResources({ path, schemas, state, changes }) {
   const newState = {
     ...state,
   };
 
-  if (
-    changes &&
-    changes.constructor !== Object &&
-    process.env.NODE_ENV !== 'production'
-  ) {
+  changes = createChanges(path, changes);
+
+  if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
       `You called deleteResources with an invalid changes object. Changes must be an Object.`,
       'DELETE_RESOURCES_INVALID_CHANGES_OBJECT',
@@ -47,12 +47,11 @@ export default function deleteResources({ schemas, state, changes }) {
           'error'
         );
       } else {
-        if (resourceChange.resources) {
-          const resourcesIsObject =
-            resourceChange.resources.constructor === Object;
-          const resourcesIsArray = Array.isArray(resourceChange.resources);
-
-          if (!resourcesIsObject && !resourcesIsArray) {
+        if (exists(resourceChange.resources)) {
+          if (
+            !isObject(resourceChange.resources) &&
+            !isArray(resourceChange.resources)
+          ) {
             warning(
               `You called deleteResources with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
@@ -63,14 +62,15 @@ export default function deleteResources({ schemas, state, changes }) {
           }
         }
 
-        if (resourceChange.lists) {
-          const listIsArray = Array.isArray(resourceChange.lists);
-
-          if (!listIsArray) {
+        if (exists(resourceChange.lists)) {
+          if (
+            !isArray(resourceChange.lists) &&
+            !isObject(resourceChange.lists)
+          ) {
             warning(
               `You called deleteResources with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when deleting` +
-                ` must be an Array of list names to be deleted.`,
+                ` must be an array or an object.`,
               'DELETE_RESOURCES_INVALID_LISTS',
               'error'
             );
@@ -79,14 +79,33 @@ export default function deleteResources({ schemas, state, changes }) {
       }
     }
 
-    const hasList = resourceChange && Array.isArray(resourceChange.lists);
+    const listIsArray = isArray(resourceChange.lists);
+    const listIsObject = isObject(resourceChange.lists);
+
+    let listsToUse;
+    if (listIsArray || listIsObject) {
+      listsToUse = resourceChange.lists;
+    } else {
+      listsToUse = [];
+    }
+
+    let listsToDelete = [];
+    if (listIsArray) {
+      listsToDelete = listsToUse;
+    } else if (listIsObject) {
+      for (let listName in listsToUse) {
+        if (isNull(listsToUse[listName])) {
+          listsToDelete.push(listName);
+        }
+      }
+      listsToDelete;
+    }
 
     const naiveResources = resourceChange && resourceChange.resources;
-    const naiveLists = hasList ? resourceChange.lists : [];
     const schema = schemas[resourceType] || defaultSchema;
 
     let idList = [];
-    if (Array.isArray(naiveResources)) {
+    if (isArray(naiveResources)) {
       idList = naiveResources.map(resource =>
         idFromResource({ schema, resource })
       );
@@ -101,15 +120,22 @@ export default function deleteResources({ schemas, state, changes }) {
       });
     }
 
-    const newLists = {};
+    let newLists = {};
     const lists = currentResourceSection.lists;
 
     // We iterate every existing list
     for (let resourceList in lists) {
       // We only consider the lists that aren't slated to be deleted
-      if (!naiveLists.includes(resourceList)) {
+      if (!listsToDelete.includes(resourceList)) {
         const existingList = lists[resourceList];
-        newLists[resourceList] = existingList.filter(r => !idList.includes(r));
+        const thisListFromChange = listIsObject ? listsToUse[resourceList] : [];
+        const thisListIsArray = isArray(thisListFromChange);
+        newLists[resourceList] = existingList.filter(r => {
+          const removedFromStore = idList.includes(r);
+          const removeFromThisList =
+            thisListIsArray && thisListFromChange.includes(r);
+          return !removedFromStore && !removeFromThisList;
+        });
       }
     }
 

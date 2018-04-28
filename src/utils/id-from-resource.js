@@ -1,15 +1,15 @@
-import { warning } from '../utils/warning';
+import { isString, isNumber, exists } from './identification';
+import { warning } from './warning';
 
 export default function idFromResource({ resource, schema }) {
   if (resource && resource.constructor === Object) {
     const idAttribute = schema.idAttribute;
 
-    const missingAttribute =
-      !resource[idAttribute] && resource[idAttribute] !== 0;
+    const missingAttribute = !exists(resource[idAttribute]);
     const invalidAttribute =
       !missingAttribute &&
-      typeof resource[idAttribute] !== 'string' &&
-      typeof resource[idAttribute] !== 'number';
+      !isString(resource[idAttribute]) &&
+      !isNumber(resource[idAttribute]);
 
     if (process.env.NODE_ENV !== 'production') {
       if (missingAttribute) {
@@ -34,7 +34,7 @@ export default function idFromResource({ resource, schema }) {
 
     return resource[idAttribute];
   } else {
-    if (typeof resource !== 'string' && typeof resource !== 'number') {
+    if (!isString(resource) && !isNumber(resource)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
           `An invalid resource ID was passed in a list. IDs must be strings or numbers.`,

@@ -1,3 +1,5 @@
+import { isObject, isArray } from './identification';
+
 export default function isSubset(object, test) {
   // Handles primitives and exact object matches
   if (object === test) {
@@ -7,8 +9,8 @@ export default function isSubset(object, test) {
   // We can only handle comparing "regular" objects and
   // arrays; everything else is considered not equal.
   else if (
-    (object.constructor === Object || Array.isArray(object)) &&
-    (test.constructor === Object || Array.isArray(test))
+    (isObject(object) || isArray(object)) &&
+    (isObject(test) || isArray(test))
   ) {
     for (var prop in test) {
       if (object.hasOwnProperty(prop)) {

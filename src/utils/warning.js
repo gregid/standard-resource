@@ -1,3 +1,5 @@
+import { exists, isFunction } from './identification';
+
 let codeCache = {};
 
 export function warning(message, code, level = 'warn') {
@@ -10,7 +12,7 @@ export function warning(message, code, level = 'warn') {
     codeCache[code] = true;
   }
 
-  if (typeof console !== 'undefined' && typeof console[level] === 'function') {
+  if (exists(exists) && isFunction(console[level])) {
     console[level](message);
   }
 

@@ -456,7 +456,7 @@ describe('deleteResources', function() {
     });
   });
 
-  it('should delete a list that matches', () => {
+  it('should delete a list that matches, array format', () => {
     const newState = deleteResources({
       state: this.state,
       schemas: this.schemas,
@@ -471,6 +471,96 @@ describe('deleteResources', function() {
       books: {
         lists: {
           favorites: [2, 5],
+        },
+        resources: {
+          2: {
+            id: 2,
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
+  it('should delete a list that matches, object format, leaving behind non-null lists', () => {
+    const newState = deleteResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        books: {
+          lists: {
+            new: null,
+            favorites: [],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+        },
+        resources: {
+          2: {
+            id: 2,
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
+  it('should remove resources from a list', () => {
+    const newState = deleteResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        books: {
+          lists: {
+            favorites: [2],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          new: [1, 5, 10],
+          favorites: [5],
         },
         resources: {
           2: {

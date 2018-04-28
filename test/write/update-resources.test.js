@@ -703,6 +703,67 @@ describe('updateResources', function() {
     });
   });
 
+  it('should create a new resource, array format with a path', () => {
+    const newState = updateResources({
+      path: 'books.resources',
+      state: this.state,
+      schemas: this.schemas,
+      changes: [
+        {
+          id: 100,
+          attributes: {
+            what: true,
+          },
+          meta: {
+            selected: true,
+          },
+        },
+      ],
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+          100: {
+            id: 100,
+            attributes: {
+              what: true,
+            },
+            meta: {
+              selected: true,
+            },
+          },
+        },
+      },
+      authors: {
+        lists: {
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+  });
+
   it('should create a new resource, object format', () => {
     const newState = updateResources({
       state: this.state,

@@ -1,3 +1,4 @@
+import { exists, isFunction, isString, isObject } from './identification';
 import { warning } from './warning';
 import defaultSchema from './default-schema';
 
@@ -10,8 +11,8 @@ export default function createSchema(schema) {
     computedAttributes: {},
   };
 
-  const hasIdType = typeof newSchema.idType !== 'undefined';
-  const invalidIdType = hasIdType && typeof newSchema.idType !== 'function';
+  const hasIdType = exists(newSchema.idType);
+  const invalidIdType = hasIdType && !isFunction(newSchema.idType);
 
   if (invalidIdType && process.env.NODE_ENV !== 'production') {
     warning(
@@ -28,9 +29,8 @@ export default function createSchema(schema) {
     newSchema.idType = defaultSchema.idType;
   }
 
-  const hasIdAttribute = typeof newSchema.idAttribute !== 'undefined';
-  const invalidIdAttribute =
-    hasIdAttribute && typeof newSchema.idAttribute !== 'string';
+  const hasIdAttribute = exists(newSchema.idAttribute);
+  const invalidIdAttribute = hasIdAttribute && !isString(newSchema.idAttribute);
 
   if (invalidIdAttribute && process.env.NODE_ENV !== 'production') {
     warning(
@@ -49,12 +49,11 @@ export default function createSchema(schema) {
 
   newSchema.computedAttributes = {};
 
-  const hasComputedAttributes =
-    typeof schema.computedAttributes !== 'undefined';
+  const hasComputedAttributes = exists(schema.computedAttributes);
 
   if (
     hasComputedAttributes &&
-    schema.computedAttributes.constructor !== Object &&
+    !isObject(schema.computedAttributes) &&
     process.env.NODE_ENV !== 'production'
   ) {
     warning(
@@ -67,7 +66,7 @@ export default function createSchema(schema) {
 
   if (hasComputedAttributes) {
     for (let attributeName in schema.computedAttributes) {
-      if (typeof schema.computedAttributes[attributeName] !== 'function') {
+      if (!isFunction(schema.computedAttributes[attributeName])) {
         if (process.env.NODE_ENV !== 'production') {
           warning(
             `A schema with an invalid computed attribute was passed to createResourceStore.` +
@@ -83,11 +82,11 @@ export default function createSchema(schema) {
     }
   }
 
-  const hasAttributes = typeof schema.attributes !== 'undefined';
+  const hasAttributes = exists(schema.attributes);
 
   if (
     hasAttributes &&
-    schema.attributes.constructor !== Object &&
+    !isObject(schema.attributes) &&
     process.env.NODE_ENV !== 'production'
   ) {
     warning(
@@ -100,7 +99,7 @@ export default function createSchema(schema) {
 
   if (hasAttributes) {
     for (let attributeName in schema.attributes) {
-      if (typeof schema.attributes[attributeName] !== 'function') {
+      if (!isFunction(schema.attributes[attributeName])) {
         if (process.env.NODE_ENV !== 'production') {
           warning(
             `A schema with an invalid attribute was passed to createResourceStore.` +
@@ -115,11 +114,11 @@ export default function createSchema(schema) {
     }
   }
 
-  const hasMeta = typeof schema.meta !== 'undefined';
+  const hasMeta = exists(schema.meta);
 
   if (
     hasMeta &&
-    schema.meta.constructor !== Object &&
+    !isObject(schema.meta) &&
     process.env.NODE_ENV !== 'production'
   ) {
     warning(
@@ -132,7 +131,7 @@ export default function createSchema(schema) {
 
   if (hasMeta) {
     for (let attributeName in schema.meta) {
-      if (typeof schema.meta[attributeName] !== 'function') {
+      if (!isFunction(schema.meta[attributeName])) {
         if (process.env.NODE_ENV !== 'production') {
           warning(
             `A schema with an invalid meta was passed to createResourceStore.` +
