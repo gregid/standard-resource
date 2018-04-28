@@ -507,6 +507,8 @@ describe('updateResources', function() {
         },
       },
     });
+
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should replace a list', () => {
@@ -554,6 +556,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should concatenate a list with concatList: true', () => {
@@ -602,6 +605,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should concatenate a list that didnt exist before with concatList: true', () => {
@@ -651,6 +655,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should concatenate a list with concatList: true, preventing duplicates', () => {
@@ -699,6 +704,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should create a new resource, array format with a path', () => {
@@ -761,6 +767,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should create a new resource, object format', () => {
@@ -825,6 +832,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should create a new resource, array format', () => {
@@ -890,6 +898,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should create a new resource, array/ID format', () => {
@@ -941,6 +950,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should merge a resource with an existing resource, object format', () => {
@@ -1001,6 +1011,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should merge a resource with an existing resource, array format', () => {
@@ -1061,6 +1072,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should replace a resource with an existing resource, object format', () => {
@@ -1120,6 +1132,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should replace a resource with an existing resource, array format', () => {
@@ -1179,6 +1192,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('should create a new resource type, object format', () => {
@@ -1249,6 +1263,7 @@ describe('updateResources', function() {
         },
       },
     });
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 
   it('allows you to create a resource by specifying it in a list (ID form)', () => {
