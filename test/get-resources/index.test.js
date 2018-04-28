@@ -1,6 +1,6 @@
 import getResources from '../../src/get-resources';
 import { warning } from '../../src/utils/warning';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 
 describe('getResources', function() {
   beforeEach(() => {

@@ -1,5 +1,5 @@
 import updateResources from '../../src/write/update-resources';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 
 describe('updateResources', function() {
   beforeEach(() => {

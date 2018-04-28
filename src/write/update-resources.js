@@ -1,5 +1,5 @@
 import idFromResource from '../utils/id-from-resource';
-import defaultSchema from '../initialization/default-schema';
+import defaultSchema from '../utils/default-schema';
 import validateResource from '../utils/validate-resource';
 import { warning } from '../utils/warning';
 

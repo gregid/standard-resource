@@ -1,5 +1,5 @@
 import resolveResource from '../../src/get-resources/resolve-resource';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 
 describe('resolveResource', () => {
   describe('passing no resource', () => {

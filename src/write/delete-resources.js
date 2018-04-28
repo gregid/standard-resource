@@ -1,4 +1,4 @@
-import defaultSchema from '../initialization/default-schema';
+import defaultSchema from '../utils/default-schema';
 import idFromResource from '../utils/id-from-resource';
 import { warning } from '../utils/warning';
 

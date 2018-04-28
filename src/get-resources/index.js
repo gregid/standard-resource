@@ -1,5 +1,5 @@
 import resolveResource from './resolve-resource';
-import defaultSchema from '../initialization/default-schema';
+import defaultSchema from '../utils/default-schema';
 import objectMatchesObject from '../utils/is-subset';
 import { warning } from '../utils/warning';
 
