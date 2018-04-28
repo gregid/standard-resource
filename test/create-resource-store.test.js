@@ -1,4 +1,4 @@
-import createResourceStore from '../src/create-resource-store';
+import { createResourceStore } from '../src';
 
 describe('createResourceStore', () => {
   it('returns an object with the right shape', () => {
