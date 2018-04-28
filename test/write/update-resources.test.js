@@ -189,6 +189,166 @@ describe('updateResources', function() {
     expect(warning.mock.calls[0][2]).toEqual('error');
   });
 
+  it('warn and ignore invalid resource.lists ids', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        authors: {
+          lists: {
+            favorites: [2, true],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          favorites: [2],
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('ID_FROM_RESOURCE_INVALID_ID');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('warn and ignore missing resource.lists ids, object form', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        authors: {
+          lists: {
+            favorites: [2, {}],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          favorites: [2],
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual(
+      'ID_FROM_RESOURCE_MISSING_ID_IN_OBJECT'
+    );
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('warn and ignore invalid resource.lists ids, object form', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        authors: {
+          lists: {
+            favorites: [2, { id: {} }],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          favorites: [2],
+          things: [10],
+        },
+        resources: {
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual(
+      'ID_FROM_RESOURCE_INVALID_ID_OBJECT'
+    );
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
   it('warn and not should not change the state when called with an invalid resource.lists object', () => {
     const newState = updateResources({
       state: this.state,

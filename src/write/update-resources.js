@@ -218,19 +218,24 @@ export default function updateResources({ schemas, state, changes }) {
     };
 
     for (let resourceList in naiveLists) {
-      if (concatLists) {
-        const resourceIds = naiveLists[resourceList].map(resource =>
-          idFromResource({ resource, schema })
-        );
+      const resourceIds = naiveLists[resourceList]
+        .map(resource => idFromResource({ resource, schema }))
+        .filter(Boolean);
 
-        // Only add IDs that don't already exist in the list
-        resourceIds.forEach(id => {
-          if (!newLists[resourceList].includes(id)) {
-            newLists[resourceList].push(id);
-          }
-        });
+      if (concatLists) {
+        const currentList = newLists[resourceList];
+        if (currentList && currentList.length === 0) {
+          newLists[resourceList] = resourceIds;
+        } else {
+          // Only add IDs that don't already exist in the list
+          resourceIds.forEach(id => {
+            if (!newLists[resourceList].includes(id)) {
+              newLists[resourceList].push(id);
+            }
+          });
+        }
       } else {
-        newLists[resourceList] = naiveLists[resourceList];
+        newLists[resourceList] = resourceIds;
       }
     }
 
