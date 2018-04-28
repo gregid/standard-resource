@@ -1,5 +1,5 @@
 import deleteResources from '../../src/write/delete-resources';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 
 describe('deleteResources', function() {
   beforeEach(() => {

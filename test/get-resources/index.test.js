@@ -1,11 +1,9 @@
 import getResources from '../../src/get-resources';
 import { warning } from '../../src/utils/warning';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 
 describe('getResources', function() {
   beforeEach(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-
     this.schemas = {
       books: defaultSchema,
       authors: {
@@ -68,29 +66,65 @@ describe('getResources', function() {
     };
   });
 
-  it('should warn one time when a nonexistent resource section is attempted to be filtered', () => {
+  it('should warn when an invalid resourceType is passed', () => {
+    const result = getResources({
+      state: this.state,
+      schemas: this.schemas,
+      resourceType: true,
+    });
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual(
+      'GET_RESOURCES_INVALID_RESOURCE_TYPE'
+    );
+    expect(warning.mock.calls[0][2]).toEqual('error');
+    expect(result).toEqual([]);
+  });
+
+  it('should warn when a nonexistent resource section is attempted to be filtered', () => {
     const result = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'ooglaboogla',
     });
-    const resultTwo = getResources({
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('GET_RESOURCES_NONEXISTENT_TYPE');
+    expect(result).toEqual([]);
+  });
+
+  it('should warn when an invalid filter is passed', () => {
+    const result = getResources({
       state: this.state,
       schemas: this.schemas,
-      resourceType: 'ooglaboogla2',
-      options: {
-        byId: true,
-      },
-    });
-    getResources({
-      state: this.state,
-      resourceType: 'ooglaboogla3',
-      schemas: this.schemas,
+      resourceType: 'books',
+      filter: /a/,
     });
 
-    expect(warning).toHaveBeenCalledTimes(3);
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('INVALID_GET_RESOURCES_FILTER');
+    expect(warning.mock.calls[0][2]).toEqual('error');
     expect(result).toEqual([]);
-    expect(resultTwo).toEqual({});
+  });
+
+  it('should warn when an invalid filter array is passed', () => {
+    const result = getResources({
+      state: this.state,
+      schemas: this.schemas,
+      resourceType: 'books',
+      filter: [1000, /a/, {}],
+    });
+
+    expect(warning).toHaveBeenCalledTimes(2);
+    expect(warning.mock.calls[0][1]).toEqual(
+      'INVALID_GET_RESOURCES_FILTER_ARRAY_ITEM'
+    );
+    expect(warning.mock.calls[0][2]).toEqual('error');
+    expect(warning.mock.calls[1][1]).toEqual(
+      'INVALID_GET_RESOURCES_FILTER_ARRAY_ITEM'
+    );
+    expect(warning.mock.calls[1][2]).toEqual('error');
+    expect(result).toEqual([]);
   });
 
   it('byId: false: it should return all resources by default', () => {

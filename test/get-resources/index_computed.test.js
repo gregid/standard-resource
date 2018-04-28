@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import getResources from '../../src/get-resources';
-import defaultSchema from '../../src/initialization/default-schema';
+import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
 describe('getResources', function() {
