@@ -85,4 +85,64 @@ describe('createSchema', () => {
     expect(warning.mock.calls[0][1]).toEqual('TYPE_MISMATCH_COMPUTED_ATTR');
     expect(warning.mock.calls[0][2]).toEqual('error');
   });
+
+  it('warns if an invalid attributes is passed; ignoring it', () => {
+    const result = createSchema({
+      attributes: /aa/,
+    });
+    expect(result).toEqual(defaultSchema);
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('TYPE_MISMATCH_ATTRIBUTES');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('warns if an invalid attribute within attributes is passed; ignoring it', () => {
+    function sandwiches() {}
+
+    const result = createSchema({
+      attributes: {
+        sandwiches,
+        other: true,
+      },
+    });
+    expect(result).toEqual({
+      ...defaultSchema,
+      attributes: {
+        sandwiches,
+      },
+    });
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('TYPE_MISMATCH_ATTR');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('warns if an invalid meta is passed; ignoring it', () => {
+    const result = createSchema({
+      meta: /aa/,
+    });
+    expect(result).toEqual(defaultSchema);
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('TYPE_MISMATCH_META');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('warns if an invalid meta value within meta is passed; ignoring it', () => {
+    function sandwiches() {}
+
+    const result = createSchema({
+      meta: {
+        sandwiches,
+        other: true,
+      },
+    });
+    expect(result).toEqual({
+      ...defaultSchema,
+      meta: {
+        sandwiches,
+      },
+    });
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('TYPE_MISMATCH_META_ATTRIBUTE');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
 });
