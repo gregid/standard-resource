@@ -13,5 +13,4 @@ export default {
   // Enforce prop types for attributes or meta
   attributes: {},
   meta: {},
-  relationships: {},
 };

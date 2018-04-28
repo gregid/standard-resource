@@ -94,63 +94,6 @@ describe('resolveResource', () => {
       });
     });
 
-    it('should return a flat object with relationships and schema', () => {
-      const resource = {
-        id: 'a',
-        resourceType: 'books',
-        attributes: {
-          name: 'Lord of the Flies',
-          publishYear: 1985,
-        },
-        meta: {
-          changedName: 'Lord of da Flies',
-        },
-      };
-
-      const resolved = resolveResource({
-        state: {
-          people: {
-            resources: {
-              b: {
-                id: 'b',
-                resourceType: 'people',
-                attributes: {
-                  firstName: 'Rosie',
-                },
-              },
-            },
-          },
-        },
-        resource,
-        schemas: {
-          people: defaultSchema,
-        },
-        options: {
-          flat: true,
-          relationships: {
-            author: true,
-          },
-        },
-        schema: {
-          ...defaultSchema,
-          computedAttributes: {
-            blah(resource) {
-              return `${resource.meta.changedName} pls & ty`;
-            },
-          },
-        },
-      });
-
-      expect(resolved).toEqual({
-        id: 'a',
-        resourceType: 'books',
-        name: 'Lord of the Flies',
-        changedName: 'Lord of da Flies',
-        blah: 'Lord of da Flies pls & ty',
-        publishYear: 1985,
-      });
-    });
-
     it('should overwrite data in the expected way when flattening', () => {
       const resource = {
         id: 'a',
@@ -184,9 +127,6 @@ describe('resolveResource', () => {
         resource,
         options: {
           flat: true,
-          relationships: {
-            author: true,
-          },
         },
         schema: {
           ...defaultSchema,

@@ -5,7 +5,6 @@ export default function createSchema(schema) {
   const newSchema = {
     idType: schema.idType,
     idAttribute: schema.idAttribute,
-    relationships: Object.assign({}, schema.relationships),
     attributes: {},
     meta: {},
     computedAttributes: {},
