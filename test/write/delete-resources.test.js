@@ -3,9 +3,13 @@ import defaultSchema from '../../src/initialization/default-schema';
 
 describe('deleteResources', function() {
   beforeEach(() => {
+    this.schemas = {
+      books: defaultSchema,
+      author: defaultSchema,
+    };
+
     this.state = {
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -23,7 +27,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -36,11 +39,13 @@ describe('deleteResources', function() {
   });
 
   it('should not change the state when called with an empty object', () => {
-    const newState = deleteResources({ state: this.state });
+    const newState = deleteResources({
+      state: this.state,
+      schemas: this.schemas,
+    });
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -58,7 +63,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -73,6 +77,7 @@ describe('deleteResources', function() {
   it('should not change the state when called when no resource types match', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         sandwiches: {
           resources: [1],
@@ -82,7 +87,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -100,7 +104,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -115,6 +118,7 @@ describe('deleteResources', function() {
   it('should not change the state when called when no resource IDs match', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [100],
@@ -124,7 +128,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -142,7 +145,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -157,6 +159,7 @@ describe('deleteResources', function() {
   it('should not change the state when called when no list names match', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           lists: ['blah'],
@@ -166,7 +169,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -184,7 +186,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -199,6 +200,7 @@ describe('deleteResources', function() {
   it('should delete a single resource (ID form) that matches, leaving the rest of the state unchanged', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [10],
@@ -208,7 +210,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5],
@@ -223,7 +224,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -238,6 +238,7 @@ describe('deleteResources', function() {
   it('should delete a single resource (object form) that matches, leaving the rest of the state unchanged', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [
@@ -251,7 +252,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5],
@@ -266,7 +266,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -281,6 +280,7 @@ describe('deleteResources', function() {
   it('should delete a list that matches', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           lists: ['new'],
@@ -290,7 +290,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
         },
@@ -307,7 +306,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -322,6 +320,7 @@ describe('deleteResources', function() {
   it('should delete a bulk selection of things', () => {
     const newState = deleteResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [{ id: 2 }, 5],
@@ -336,7 +335,6 @@ describe('deleteResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [],
         },
@@ -347,7 +345,6 @@ describe('deleteResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {},
         resources: {
           b: { id: 'b' },

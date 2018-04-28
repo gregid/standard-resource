@@ -5,9 +5,16 @@ describe('getResources', function() {
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
+    this.schemas = {
+      books: defaultSchema,
+      authors: {
+        ...defaultSchema,
+        idAttribute: 'authorId',
+      },
+    };
+
     this.state = {
       books: {
-        schema: defaultSchema,
         lists: {
           newBooks: [1, 2],
         },
@@ -39,10 +46,6 @@ describe('getResources', function() {
         },
       },
       authors: {
-        schema: {
-          ...defaultSchema,
-          idAttribute: 'authorId',
-        },
         resources: {
           a: {
             authorId: 'a',
@@ -67,16 +70,22 @@ describe('getResources', function() {
   it('should warn one time when a nonexistent resource section is attempted to be filtered', () => {
     const result = getResources({
       state: this.state,
+      schemas: this.schemas,
       resourceType: 'ooglaboogla',
     });
     const resultTwo = getResources({
       state: this.state,
+      schemas: this.schemas,
       resourceType: 'ooglaboogla2',
       options: {
         byId: true,
       },
     });
-    getResources({ state: this.state, resourceType: 'ooglaboogla3' });
+    getResources({
+      state: this.state,
+      resourceType: 'ooglaboogla3',
+      schemas: this.schemas,
+    });
 
     expect(console.error).toHaveBeenCalledTimes(1);
     expect(result).toEqual([]);
@@ -84,7 +93,11 @@ describe('getResources', function() {
   });
 
   it('byId: false: it should return all resources by default', () => {
-    const results = getResources({ state: this.state, resourceType: 'books' });
+    const results = getResources({
+      state: this.state,
+      schemas: this.schemas,
+      resourceType: 'books',
+    });
     expect(console.error).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([
@@ -126,6 +139,7 @@ describe('getResources', function() {
   it('byId: true: it should return all resources by default', () => {
     const results = getResources({
       state: this.state,
+      schemas: this.schemas,
       resourceType: 'books',
       options: { byId: true },
     });
@@ -173,6 +187,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
       });
@@ -199,6 +214,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
         options: { byId: true },
@@ -226,11 +242,13 @@ describe('getResources', function() {
     it('should return empty results with an empty set of IDs', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: [],
       });
       const resultsById = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: [],
         options: { byId: true },
@@ -245,6 +263,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
       });
@@ -281,6 +300,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
         options: { byId: true },
@@ -324,6 +344,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
       });
@@ -354,6 +375,7 @@ describe('getResources', function() {
 
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter,
         options: {
@@ -383,6 +405,7 @@ describe('getResources', function() {
     it('byId: false; should return an empty array for a nonexistent list', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: 'listThatDoesntExist',
       });
@@ -394,6 +417,7 @@ describe('getResources', function() {
     it('byId: true; should return an empty object for a nonexistent list', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: 'listThatDoesntExist',
         options: {
@@ -408,6 +432,7 @@ describe('getResources', function() {
     it('byId: false; should return the resources in the list', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: 'newBooks',
       });
@@ -442,6 +467,7 @@ describe('getResources', function() {
     it('byId: true; should return the resources in the list', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'books',
         filter: 'newBooks',
         options: {
@@ -481,6 +507,7 @@ describe('getResources', function() {
     it('byId: false; should return the resources specified', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'authors',
         filter: ['a'],
       });
@@ -511,6 +538,7 @@ describe('getResources', function() {
     it('byId: false; should return the resources specified with a deep object match', () => {
       const results = getResources({
         state: this.state,
+        schemas: this.schemas,
         resourceType: 'authors',
         filter: {
           attributes: {

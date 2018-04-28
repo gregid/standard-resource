@@ -3,9 +3,13 @@ import defaultSchema from '../../src/initialization/default-schema';
 
 describe('updateResources', function() {
   beforeEach(() => {
+    this.schemas = {
+      books: defaultSchema,
+      authors: defaultSchema,
+    };
+
     this.state = {
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -27,7 +31,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -40,11 +43,13 @@ describe('updateResources', function() {
   });
 
   it('should not change the state when called with an empty object', () => {
-    const newState = updateResources({ state: this.state });
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+    });
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -66,7 +71,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -81,6 +85,7 @@ describe('updateResources', function() {
   it('should replace a list', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           lists: {
@@ -92,7 +97,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [10],
           new: [1, 5, 10],
@@ -114,7 +118,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -129,6 +132,7 @@ describe('updateResources', function() {
   it('should concatenate a list with concatList: true', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           lists: {
@@ -141,7 +145,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5, 10],
           new: [1, 5, 10],
@@ -163,7 +166,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -178,6 +180,7 @@ describe('updateResources', function() {
   it('should concatenate a list with concatList: true, preventing duplicates', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           lists: {
@@ -190,7 +193,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5, 10],
           new: [1, 5, 10],
@@ -212,7 +214,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -227,6 +228,7 @@ describe('updateResources', function() {
   it('should create a new resource, object format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -246,7 +248,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -277,7 +278,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -292,6 +292,7 @@ describe('updateResources', function() {
   it('should create a new resource, array format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [
@@ -311,7 +312,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -342,7 +342,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -357,6 +356,7 @@ describe('updateResources', function() {
   it('should merge a resource with an existing resource, object format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -376,7 +376,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -403,7 +402,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -418,6 +416,7 @@ describe('updateResources', function() {
   it('should merge a resource with an existing resource, array format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [
@@ -437,7 +436,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -464,7 +462,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -479,6 +476,7 @@ describe('updateResources', function() {
   it('should replace a resource with an existing resource, object format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: {
@@ -499,7 +497,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -524,7 +521,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -539,6 +535,7 @@ describe('updateResources', function() {
   it('should replace a resource with an existing resource, array format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         books: {
           resources: [
@@ -559,7 +556,6 @@ describe('updateResources', function() {
 
     expect(newState).toEqual({
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -584,7 +580,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },
@@ -599,6 +594,7 @@ describe('updateResources', function() {
   it('should create a new resource type, object format', () => {
     const newState = updateResources({
       state: this.state,
+      schemas: this.schemas,
       changes: {
         sandwiches: {
           resources: {
@@ -619,7 +615,6 @@ describe('updateResources', function() {
     expect(newState).toEqual({
       sandwiches: {
         resourceType: 'sandwiches',
-        schema: defaultSchema,
         lists: {},
         resources: {
           100: {
@@ -634,7 +629,6 @@ describe('updateResources', function() {
         },
       },
       books: {
-        schema: defaultSchema,
         lists: {
           favorites: [2, 5],
           new: [1, 5, 10],
@@ -656,7 +650,6 @@ describe('updateResources', function() {
         },
       },
       authors: {
-        schema: defaultSchema,
         lists: {
           things: [10],
         },

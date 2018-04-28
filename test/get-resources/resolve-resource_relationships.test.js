@@ -3,9 +3,13 @@ import defaultSchema from '../../src/initialization/default-schema';
 
 describe('resolveResource', function() {
   beforeEach(() => {
+    this.schemas = {
+      books: defaultSchema,
+      people: defaultSchema,
+    };
+
     this.state = {
       books: {
-        schema: defaultSchema,
         resources: {
           1: {
             id: 1,
@@ -41,7 +45,6 @@ describe('resolveResource', function() {
         },
       },
       people: {
-        schema: defaultSchema,
         resources: {
           b: {
             id: 'b',
@@ -86,6 +89,7 @@ describe('resolveResource', function() {
 
     const resolved = resolveResource({
       state: this.state,
+      schemas: this.schemas,
       resource,
       options: {
         relationships: true,
@@ -140,6 +144,7 @@ describe('resolveResource', function() {
 
     const resolved = resolveResource({
       state: this.state,
+      schemas: this.schemas,
       resource,
       options: {
         relationships: {

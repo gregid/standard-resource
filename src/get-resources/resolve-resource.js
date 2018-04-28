@@ -7,6 +7,7 @@ export default function resolveResource({
   state,
   resource,
   schema,
+  schemas,
   options = {},
 }) {
   const { flat, relationships } = options;
@@ -34,7 +35,8 @@ export default function resolveResource({
       resolvedRelationships[relationshipKey] = lookupRelationship(
         state,
         relationshipDefinition,
-        getOptions
+        getOptions,
+        schemas
       );
     }
   }

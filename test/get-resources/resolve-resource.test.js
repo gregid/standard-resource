@@ -6,11 +6,13 @@ describe('resolveResource', () => {
     it('should return undefined object', () => {
       const resolved = resolveResource({
         state: {},
+        schemas: {},
         resource: null,
         schema: defaultSchema,
       });
       const resolvedTwo = resolveResource({
         state: {},
+        schemas: {},
         resource: null,
         options: {
           flat: true,
@@ -45,6 +47,7 @@ describe('resolveResource', () => {
 
       const resolved = resolveResource({
         state: {},
+        schemas: {},
         resource,
         schema: defaultSchema,
       });
@@ -88,6 +91,11 @@ describe('resolveResource', () => {
         },
       };
 
+      const schemas = {
+        books: defaultSchema,
+        people: defaultSchema,
+      };
+
       const state = {
         books: {
           resources: {
@@ -111,7 +119,6 @@ describe('resolveResource', () => {
           },
         },
         people: {
-          schema: defaultSchema,
           resources: {
             b: {
               id: 'b',
@@ -132,6 +139,7 @@ describe('resolveResource', () => {
 
       const resolved = resolveResource({
         state,
+        schemas,
         resource,
         schema: defaultSchema,
         options: {
@@ -172,7 +180,7 @@ describe('resolveResource', () => {
       });
     });
 
-    it.only('should handle circular relationships; requesting 2 levels deep', () => {
+    it('should handle circular relationships; requesting 2 levels deep', () => {
       const resource = {
         id: 'a',
         resourceType: 'books',
@@ -191,9 +199,13 @@ describe('resolveResource', () => {
         },
       };
 
+      const schemas = {
+        books: defaultSchema,
+        people: defaultSchema,
+      };
+
       const state = {
         books: {
-          schema: defaultSchema,
           resources: {
             a: {
               id: 'a',
@@ -215,7 +227,6 @@ describe('resolveResource', () => {
           },
         },
         people: {
-          schema: defaultSchema,
           resources: {
             b: {
               id: 'b',
@@ -236,6 +247,7 @@ describe('resolveResource', () => {
 
       const resolved = resolveResource({
         state,
+        schemas,
         resource,
         schema: defaultSchema,
         options: {
@@ -317,6 +329,7 @@ describe('resolveResource', () => {
 
       const resolved = resolveResource({
         state: {},
+        schemas: {},
         resource,
         options: {
           flat: true,
@@ -359,7 +372,6 @@ describe('resolveResource', () => {
       const resolved = resolveResource({
         state: {
           people: {
-            schema: defaultSchema,
             resources: {
               b: {
                 id: 'b',
@@ -372,6 +384,9 @@ describe('resolveResource', () => {
           },
         },
         resource,
+        schemas: {
+          people: defaultSchema,
+        },
         options: {
           flat: true,
           relationships: {
@@ -434,7 +449,6 @@ describe('resolveResource', () => {
       const resolved = resolveResource({
         state: {
           people: {
-            schema: defaultSchema,
             resources: {
               b: {
                 id: 'b',
@@ -445,6 +459,9 @@ describe('resolveResource', () => {
               },
             },
           },
+        },
+        schemas: {
+          people: defaultSchema,
         },
         resource,
         options: {

@@ -5,19 +5,19 @@ import getResources from './';
 export default function lookupRelationship(
   state,
   relationshipDefinition = {},
-  getOptions
+  getOptions,
+  schemas
 ) {
   const { resourceType, data } = relationshipDefinition;
 
   const dataIsArray = Array.isArray(data);
 
-  // TODO: preserve array or not-array stuff
   const result = getResources({
+    schemas,
     state,
     resourceType,
     filter: dataIsArray ? data : [data],
     options: getOptions,
-    // TODO: convert the retrievalOptions into getResources options
   });
 
   return dataIsArray ? result : result[0];
