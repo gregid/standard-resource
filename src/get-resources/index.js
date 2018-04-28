@@ -1,5 +1,5 @@
 import resolveResource from './resolve-resource';
-import objectMatchesObject from './object-matches-object';
+import objectMatchesObject from '../utils/is-subset';
 import warning from '../utils/warning';
 
 // Retrieve resource(s) from the store
