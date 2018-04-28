@@ -194,9 +194,9 @@ describe('updateResources', function() {
       state: this.state,
       schemas: this.schemas,
       changes: {
-        authors: {
+        books: {
           lists: {
-            favorites: [2, true],
+            favorites: [2, 5, true],
           },
         },
       },
@@ -226,7 +226,6 @@ describe('updateResources', function() {
       },
       authors: {
         lists: {
-          favorites: [2],
           things: [10],
         },
         resources: {
@@ -246,9 +245,9 @@ describe('updateResources', function() {
       state: this.state,
       schemas: this.schemas,
       changes: {
-        authors: {
+        books: {
           lists: {
-            favorites: [2, {}],
+            favorites: [2, 5, {}],
           },
         },
       },
@@ -278,7 +277,6 @@ describe('updateResources', function() {
       },
       authors: {
         lists: {
-          favorites: [2],
           things: [10],
         },
         resources: {
@@ -300,9 +298,9 @@ describe('updateResources', function() {
       state: this.state,
       schemas: this.schemas,
       changes: {
-        authors: {
+        books: {
           lists: {
-            favorites: [2, { id: {} }],
+            favorites: [2, 5, { id: {} }],
           },
         },
       },
@@ -332,7 +330,6 @@ describe('updateResources', function() {
       },
       authors: {
         lists: {
-          favorites: [2],
           things: [10],
         },
         resources: {
@@ -1246,5 +1243,133 @@ describe('updateResources', function() {
         },
       },
     });
+  });
+
+  it('allows you to create a resource by specifying it in a list (ID form)', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        authors: {
+          lists: {
+            favorites: [2],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          favorites: [2],
+          things: [10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            resourceType: 'authors',
+            attributes: {},
+            meta: {},
+          },
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
+  it('allows you to create a resource by specifying it in a list (object form)', () => {
+    const newState = updateResources({
+      state: this.state,
+      schemas: this.schemas,
+      changes: {
+        authors: {
+          lists: {
+            favorites: [
+              {
+                id: 2,
+                attributes: {
+                  firstName: 'wot',
+                  lastName: 'pls',
+                },
+                meta: {
+                  isSelected: false,
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
+
+    expect(newState).toEqual({
+      books: {
+        lists: {
+          favorites: [2, 5],
+          new: [1, 5, 10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            attributes: {
+              firstName: 'James',
+              lastName: 'Please',
+            },
+          },
+          5: {
+            id: 5,
+          },
+          10: {
+            id: 10,
+          },
+        },
+      },
+      authors: {
+        lists: {
+          favorites: [2],
+          things: [10],
+        },
+        resources: {
+          2: {
+            id: 2,
+            resourceType: 'authors',
+            attributes: {
+              firstName: 'wot',
+              lastName: 'pls',
+            },
+            meta: {
+              isSelected: false,
+            },
+          },
+          a: { id: 'a' },
+          b: { id: 'b' },
+        },
+      },
+    });
+
+    expect(warning).toHaveBeenCalledTimes(0);
   });
 });
