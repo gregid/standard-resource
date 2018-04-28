@@ -1,8 +1,15 @@
 import PropTypes from 'prop-types';
 
+let defaultIdProp;
+if (process.env.NODE_ENV !== 'development') {
+  defaultIdProp = () => {};
+} else {
+  defaultIdProp = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
+}
+
 export default {
   // The "type" of the ID.
-  idType: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  idType: defaultIdProp,
 
   // The ID attribute
   idAttribute: 'id',
