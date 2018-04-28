@@ -37,12 +37,6 @@ describe('resolveResource', () => {
         meta: {
           changedName: 'Lord of da Flies',
         },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
-        },
       };
 
       const resolved = resolveResource({
@@ -63,246 +57,6 @@ describe('resolveResource', () => {
           changedName: 'Lord of da Flies',
         },
         computedAttributes: {},
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
-        },
-      });
-    });
-
-    it('should handle circular relationships; requesting one level deep', () => {
-      const resource = {
-        id: 'a',
-        resourceType: 'books',
-        attributes: {
-          name: 'Lord of the Flies',
-          publishYear: 1985,
-        },
-        meta: {
-          changedName: 'Lord of da Flies',
-        },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
-        },
-      };
-
-      const schemas = {
-        books: defaultSchema,
-        people: defaultSchema,
-      };
-
-      const state = {
-        books: {
-          resources: {
-            a: {
-              id: 'a',
-              resourceType: 'books',
-              attributes: {
-                name: 'Lord of the Flies',
-                publishYear: 1985,
-              },
-              meta: {
-                changedName: 'Lord of da Flies',
-              },
-              relationships: {
-                author: {
-                  resourceType: 'people',
-                  data: 'b',
-                },
-              },
-            },
-          },
-        },
-        people: {
-          resources: {
-            b: {
-              id: 'b',
-              resourceType: 'people',
-              attributes: {
-                stuff: 'hello',
-              },
-              relationships: {
-                books: {
-                  resourceType: 'books',
-                  data: 'a',
-                },
-              },
-            },
-          },
-        },
-      };
-
-      const resolved = resolveResource({
-        state,
-        schemas,
-        resource,
-        schema: defaultSchema,
-        options: {
-          relationships: {
-            author: true,
-          },
-        },
-      });
-
-      expect(resolved).toEqual({
-        id: 'a',
-        resourceType: 'books',
-        attributes: {
-          name: 'Lord of the Flies',
-          publishYear: 1985,
-        },
-        meta: {
-          changedName: 'Lord of da Flies',
-        },
-        computedAttributes: {},
-        relationships: {
-          author: {
-            id: 'b',
-            resourceType: 'people',
-            attributes: {
-              stuff: 'hello',
-            },
-            computedAttributes: {},
-            meta: {},
-            relationships: {
-              books: {
-                resourceType: 'books',
-                data: 'a',
-              },
-            },
-          },
-        },
-      });
-    });
-
-    it('should handle circular relationships; requesting 2 levels deep', () => {
-      const resource = {
-        id: 'a',
-        resourceType: 'books',
-        attributes: {
-          name: 'Lord of the Flies',
-          publishYear: 1985,
-        },
-        meta: {
-          changedName: 'Lord of da Flies',
-        },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
-        },
-      };
-
-      const schemas = {
-        books: defaultSchema,
-        people: defaultSchema,
-      };
-
-      const state = {
-        books: {
-          resources: {
-            a: {
-              id: 'a',
-              resourceType: 'books',
-              attributes: {
-                name: 'Lord of the Flies',
-                publishYear: 1985,
-              },
-              meta: {
-                changedName: 'Lord of da Flies',
-              },
-              relationships: {
-                author: {
-                  resourceType: 'people',
-                  data: 'b',
-                },
-              },
-            },
-          },
-        },
-        people: {
-          resources: {
-            b: {
-              id: 'b',
-              resourceType: 'people',
-              attributes: {
-                stuff: 'hello',
-              },
-              relationships: {
-                books: {
-                  resourceType: 'books',
-                  data: 'a',
-                },
-              },
-            },
-          },
-        },
-      };
-
-      const resolved = resolveResource({
-        state,
-        schemas,
-        resource,
-        schema: defaultSchema,
-        options: {
-          relationships: {
-            author: {
-              relationships: {
-                books: true,
-              },
-            },
-          },
-        },
-      });
-
-      expect(resolved).toEqual({
-        id: 'a',
-        resourceType: 'books',
-        attributes: {
-          name: 'Lord of the Flies',
-          publishYear: 1985,
-        },
-        meta: {
-          changedName: 'Lord of da Flies',
-        },
-        computedAttributes: {},
-        relationships: {
-          author: {
-            id: 'b',
-            resourceType: 'people',
-            attributes: {
-              stuff: 'hello',
-            },
-            computedAttributes: {},
-            meta: {},
-            relationships: {
-              books: {
-                id: 'a',
-                resourceType: 'books',
-                attributes: {
-                  name: 'Lord of the Flies',
-                  publishYear: 1985,
-                },
-                meta: {
-                  changedName: 'Lord of da Flies',
-                },
-                computedAttributes: {},
-                relationships: {
-                  author: {
-                    resourceType: 'people',
-                    data: 'b',
-                  },
-                },
-              },
-            },
-          },
-        },
       });
     });
   });
@@ -318,12 +72,6 @@ describe('resolveResource', () => {
         },
         meta: {
           changedName: 'Lord of da Flies',
-        },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
         },
       };
 
@@ -343,10 +91,6 @@ describe('resolveResource', () => {
         name: 'Lord of the Flies',
         changedName: 'Lord of da Flies',
         publishYear: 1985,
-        author: {
-          resourceType: 'people',
-          data: 'b',
-        },
       });
     });
 
@@ -360,12 +104,6 @@ describe('resolveResource', () => {
         },
         meta: {
           changedName: 'Lord of da Flies',
-        },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
         },
       };
 
@@ -410,16 +148,6 @@ describe('resolveResource', () => {
         changedName: 'Lord of da Flies',
         blah: 'Lord of da Flies pls & ty',
         publishYear: 1985,
-        author: {
-          id: 'b',
-          resourceType: 'people',
-          computedAttributes: {},
-          meta: {},
-          relationships: {},
-          attributes: {
-            firstName: 'Rosie',
-          },
-        },
       });
     });
 
@@ -433,16 +161,6 @@ describe('resolveResource', () => {
         },
         meta: {
           author: 'Lord of da Flies',
-        },
-        relationships: {
-          author: {
-            resourceType: 'people',
-            data: 'b',
-          },
-          blah: {
-            resourceType: 'people',
-            data: 'b',
-          },
         },
       };
 
@@ -489,16 +207,7 @@ describe('resolveResource', () => {
         name: 'Lord of the Flies',
         blah: 'Lord of da Flies pls & ty',
         publishYear: 1985,
-        author: {
-          id: 'b',
-          resourceType: 'people',
-          computedAttributes: {},
-          meta: {},
-          relationships: {},
-          attributes: {
-            firstName: 'Rosie',
-          },
-        },
+        author: 'Lord of da Flies',
       });
     });
   });

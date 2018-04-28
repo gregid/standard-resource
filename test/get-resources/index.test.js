@@ -140,7 +140,6 @@ describe('getResources', function() {
         id: 1,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {
           selected: true,
         },
@@ -152,7 +151,6 @@ describe('getResources', function() {
         id: 2,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {},
         attributes: {
           name: 'B',
@@ -162,7 +160,6 @@ describe('getResources', function() {
         id: 50,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {
           selected: false,
         },
@@ -185,7 +182,6 @@ describe('getResources', function() {
         id: 1,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {
           selected: true,
         },
@@ -197,7 +193,6 @@ describe('getResources', function() {
         id: 2,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {},
         attributes: {
           name: 'B',
@@ -207,7 +202,6 @@ describe('getResources', function() {
         id: 50,
         resourceType: 'books',
         computedAttributes: {},
-        relationships: {},
         meta: {
           selected: false,
         },
@@ -233,7 +227,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -261,7 +254,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -309,7 +301,6 @@ describe('getResources', function() {
           id: 50,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: false,
           },
@@ -319,7 +310,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -347,7 +337,6 @@ describe('getResources', function() {
           id: 50,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: false,
           },
@@ -357,7 +346,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -390,7 +378,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -424,7 +411,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -478,7 +464,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -490,7 +475,6 @@ describe('getResources', function() {
           id: 2,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {},
           attributes: {
             name: 'B',
@@ -516,7 +500,6 @@ describe('getResources', function() {
           id: 1,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {
             selected: true,
           },
@@ -528,7 +511,6 @@ describe('getResources', function() {
           id: 2,
           resourceType: 'books',
           computedAttributes: {},
-          relationships: {},
           meta: {},
           attributes: {
             name: 'B',
@@ -553,7 +535,6 @@ describe('getResources', function() {
           authorId: 'a',
           resourceType: 'authors',
           computedAttributes: {},
-          relationships: {},
           meta: {},
           attributes: {
             name: 'J.K. Rowling',
@@ -592,7 +573,6 @@ describe('getResources', function() {
           authorId: 'a',
           resourceType: 'authors',
           computedAttributes: {},
-          relationships: {},
           meta: {},
           attributes: {
             name: 'J.K. Rowling',
