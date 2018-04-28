@@ -1,6 +1,6 @@
 {
   "name": "standard-resource",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A standard API for resource management",
   "main": "lib/index.js",
   "module": "es/index.js",
