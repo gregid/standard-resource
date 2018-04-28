@@ -13,14 +13,19 @@ export default function getResources({
 }) {
   const { byId = false } = options;
 
+  const defaultResponse = byId ? {} : [];
+
   if (typeof resourceType !== 'string') {
     if (process.env.NODE_ENV !== 'production') {
       warning(
         `An invalid resourceType was passed to getResources.` +
           ` resourceType must be a string.`,
-        'GET_RESOURCES_INVALID_RESOURCE_TYPE'
+        'GET_RESOURCES_INVALID_RESOURCE_TYPE',
+        'error'
       );
     }
+
+    return defaultResponse;
   }
 
   const resourceSection = state[resourceType];
@@ -34,22 +39,23 @@ export default function getResources({
       );
     }
 
-    return byId ? {} : [];
+    return defaultResponse;
   }
 
   const hasFilter = typeof filter !== 'undefined';
 
   if (hasFilter && process.env.NODE_ENV !== 'production') {
-    const filterIsString = typeof filter !== 'string';
+    const filterIsString = typeof filter === 'string';
     const filterIsArray = Array.isArray(filter);
-    const filterIsObject = filter.constructor !== Object;
-    const filterIsFn = typeof filter !== 'function';
+    const filterIsObject = filter.constructor === Object;
+    const filterIsFn = typeof filter === 'function';
 
     if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
       warning(
         `An invalid filter was passed to getResources. A filter must be a` +
           ` string, array, object, or function.`,
-        'INVALID_GET_RESOURCES_FILTER'
+        'INVALID_GET_RESOURCES_FILTER',
+        'error'
       );
     }
 
@@ -65,7 +71,8 @@ export default function getResources({
               ` Remember, when a filter is an array, then each item in` +
               ` the array is a resource ID, and IDs must be strings or` +
               ` numbers.`,
-            'INVALID_GET_RESOURCES_FILTER_ARRAY_ITEM'
+            'INVALID_GET_RESOURCES_FILTER_ARRAY_ITEM',
+            'error'
           );
         }
       });
@@ -110,7 +117,7 @@ export default function getResources({
     // This conditional handles the situation where `filter` is an list name
     const list = resourceSection.lists[filter];
     if (!list) {
-      return byId ? {} : [];
+      return defaultResponse;
     }
 
     idsList = list;
