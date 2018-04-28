@@ -7,8 +7,8 @@ import { isFunction } from './utils/identification';
 import { warning } from './utils/warning';
 
 export default function createResourceStore(initialState = {}, options = {}) {
-  const schemaInputs = options.schemaInputs;
-  let schemas;
+  const schemaInputs = options.schemas;
+  let schemas = {};
 
   for (let resourceType in schemaInputs) {
     const schema = schemaInputs[resourceType];
@@ -16,7 +16,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     schemas[resourceType] = createSchema(schema);
   }
 
-  let currentState = initialState;
+  let currentState = initialState || {};
 
   let listeners = [];
 
@@ -25,12 +25,13 @@ export default function createResourceStore(initialState = {}, options = {}) {
   }
 
   function subscribe(listener) {
-    if (!isFunction(isFunction)) {
+    if (!isFunction(listener)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
           `You passed an invalid listener to store.subscribe.` +
             ` Listeners must be functions.`,
-          'LISTENER_INVALID_TYPE'
+          'LISTENER_INVALID_TYPE',
+          'error'
         );
       }
     } else {
@@ -64,7 +65,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     getResources(resourceType, filter, options) {
       return getResources({
         schemas,
-        state: currentState.resourceTypes,
+        state: currentState.resourceTypes || {},
         resourceType,
         filter,
         options,
@@ -72,7 +73,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     },
     updateResources(path, changes) {
       const newState = updateResources({
-        state: currentState.resourceTypes,
+        state: currentState.resourceTypes || {},
         schemas,
         path,
         changes,
@@ -87,7 +88,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     },
     deleteResources(path, changes) {
       const newState = deleteResources({
-        state: currentState.resourceTypes,
+        state: currentState.resourceTypes || {},
         schemas,
         path,
         changes,
