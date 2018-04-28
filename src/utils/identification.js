@@ -28,3 +28,7 @@ export function isBoolean(val) {
 export function isFunction(val) {
   return typeof val === 'function';
 }
+
+export function isNull(val) {
+  return val === null;
+}
