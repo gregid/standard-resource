@@ -14,6 +14,8 @@ export default function createResource({
         [schema.idAttribute]: input,
       };
 
+  const existingObj = isObject(existing) ? existing : {};
+
   if (!mergeResource) {
     return {
       [schema.idAttribute]: inputObject[schema.idAttribute],
@@ -23,10 +25,14 @@ export default function createResource({
     };
   }
 
+  const idValue = isObject(existing)
+    ? existing[schema.idAttribute]
+    : inputObject[schema.idAttribute];
+
   return {
-    [schema.idAttribute]: existing[schema.idAttribute],
+    [schema.idAttribute]: idValue,
     resourceType,
-    attributes: merge(existing.attributes, inputObject.attributes),
-    meta: merge(existing.meta, inputObject.meta),
+    attributes: merge(existingObj.attributes, inputObject.attributes),
+    meta: merge(existingObj.meta, inputObject.meta),
   };
 }

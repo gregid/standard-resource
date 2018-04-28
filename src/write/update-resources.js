@@ -119,46 +119,13 @@ export default function updateResources({ path, schemas, state, changes }) {
           return;
         }
 
-        const resourceObj = resourceIsObject
-          ? resource
-          : { [idAttribute]: resource };
-
-        const resourceAlreadyExists = Boolean(
-          currentResourceSection.resources &&
-            currentResourceSection.resources[id]
-        );
-
-        // If there is no existing resource, we just add it to the resources object
-        if (!resourceAlreadyExists) {
-          newResources[id] = resourceObj;
-          return newResources;
-        }
-
-        let resourceToInsert;
-        if (mergeResources) {
-          const currentResource = newResources[id];
-
-          resourceToInsert = {
-            [idAttribute]: currentResource[idAttribute],
-            resourceType,
-            attributes: merge(
-              currentResource.attributes,
-              resourceObj.attributes
-            ),
-            meta: merge(currentResource.meta, resourceObj.meta),
-          };
-        } else {
-          resourceToInsert = {
-            [idAttribute]: resourceObj[idAttribute],
-            resourceType,
-            attributes: {
-              ...resourceObj.attributes,
-            },
-            meta: {
-              ...resourceObj.meta,
-            },
-          };
-        }
+        const resourceToInsert = createResource({
+          input: resource,
+          existing: newResources[id],
+          resourceType,
+          schema,
+          mergeResource: mergeResources,
+        });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });
@@ -181,27 +148,13 @@ export default function updateResources({ path, schemas, state, changes }) {
           continue;
         }
 
-        let resourceToInsert;
-        if (mergeResources) {
-          const currentResource = newResources[id];
-          resourceToInsert = {
-            [idAttribute]: currentResource[idAttribute],
-            resourceType: resourceType,
-            attributes: merge(currentResource.attributes, resource.attributes),
-            meta: merge(currentResource.meta, resource.meta),
-          };
-        } else {
-          resourceToInsert = resourceToInsert = {
-            [idAttribute]: resource[idAttribute],
-            resourceType,
-            attributes: {
-              ...resource.attributes,
-            },
-            meta: {
-              ...resource.meta,
-            },
-          };
-        }
+        const resourceToInsert = createResource({
+          input: resource,
+          existing: newResources[id],
+          resourceType,
+          schema,
+          mergeResource: mergeResources,
+        });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });

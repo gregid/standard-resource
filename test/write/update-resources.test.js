@@ -443,6 +443,7 @@ describe('updateResources', function() {
           },
           100: {
             id: 100,
+            resourceType: 'books',
             attributes: {
               what: true,
             },
@@ -740,6 +741,7 @@ describe('updateResources', function() {
           },
           100: {
             id: 100,
+            resourceType: 'books',
             attributes: {
               what: true,
             },
@@ -868,6 +870,7 @@ describe('updateResources', function() {
           },
           100: {
             id: 100,
+            resourceType: 'books',
             attributes: {
               what: true,
             },
@@ -921,6 +924,9 @@ describe('updateResources', function() {
             id: 10,
           },
           100: {
+            resourceType: 'books',
+            attributes: {},
+            meta: {},
             id: 100,
           },
         },
