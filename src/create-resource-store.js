@@ -62,7 +62,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
   return {
     getState,
     subscribe,
-    getResources(resourceType, filter, options) {
+    read(resourceType, filter, options) {
       return getResources({
         schemas,
         state: currentState.resourceTypes || {},
@@ -71,7 +71,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
         options,
       });
     },
-    updateResources(path, changes) {
+    update(path, changes) {
       const newState = updateResources({
         state: currentState.resourceTypes || {},
         schemas,
@@ -86,7 +86,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
 
       onUpdate();
     },
-    deleteResources(path, changes) {
+    remove(path, changes) {
       const newState = deleteResources({
         state: currentState.resourceTypes || {},
         schemas,
