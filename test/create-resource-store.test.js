@@ -6,9 +6,9 @@ describe('createResourceStore', () => {
     const store = createResourceStore();
 
     expect(typeof store.getState).toEqual('function');
-    expect(typeof store.getResources).toEqual('function');
-    expect(typeof store.updateResources).toEqual('function');
-    expect(typeof store.deleteResources).toEqual('function');
+    expect(typeof store.read).toEqual('function');
+    expect(typeof store.update).toEqual('function');
+    expect(typeof store.remove).toEqual('function');
     expect(typeof store.subscribe).toEqual('function');
   });
 
@@ -36,9 +36,9 @@ describe('createResourceStore', () => {
       },
     });
 
-    store.updateResources('books.resources', [{ bookId: 5 }]);
+    store.update('books.resources', [{ bookId: 5 }]);
 
-    const resources = store.getResources('books', [5]);
+    const resources = store.read('books', [5]);
     expect(resources).toEqual([
       {
         bookId: 5,
@@ -60,9 +60,9 @@ describe('createResourceStore', () => {
       },
     });
 
-    store.updateResources('books.resources', [{ bookId: 5 }]);
+    store.update('books.resources', [{ bookId: 5 }]);
 
-    expect(store.getResources('books', [5])).toEqual([
+    expect(store.read('books', [5])).toEqual([
       {
         bookId: 5,
         resourceType: 'books',
@@ -72,9 +72,9 @@ describe('createResourceStore', () => {
       },
     ]);
 
-    store.deleteResources('books.resources', [{ bookId: 5 }]);
+    store.remove('books.resources', [{ bookId: 5 }]);
 
-    expect(store.getResources('books', [5])).toEqual([]);
+    expect(store.read('books', [5])).toEqual([]);
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
@@ -109,7 +109,7 @@ describe('createResourceStore', () => {
       store.subscribe(cb);
       expect(cb).toHaveBeenCalledTimes(0);
 
-      store.updateResources('books.resources', [{ bookId: 5 }]);
+      store.update('books.resources', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
       expect(warning).toHaveBeenCalledTimes(0);
     });
@@ -128,13 +128,13 @@ describe('createResourceStore', () => {
       const unsubscribe = store.subscribe(cb);
       expect(cb).toHaveBeenCalledTimes(0);
 
-      store.updateResources('books.resources', [{ bookId: 5 }]);
+      store.update('books.resources', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
 
       unsubscribe();
       unsubscribe();
 
-      store.updateResources('books.resources', [{ bookId: 5 }]);
+      store.update('books.resources', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
       expect(warning).toHaveBeenCalledTimes(0);
     });
