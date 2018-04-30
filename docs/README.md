@@ -8,6 +8,7 @@
   * [Prior Art](introduction/prior-art.md)
   * [Examples](introduction/examples.md)
 * [Resources](resources/README.md)
+  * [Type](resources/type.md)
   * [IDs](resources/ids.md)
   * [Attributes](resources/attributes.md)
   * [Computed Attributes](resources/computed-attributes.md)
