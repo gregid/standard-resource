@@ -17,7 +17,7 @@
   * [Creating a Store](store/creating-a-store.md)
   * [Reading](store/reading.md)
   * [Updating](store/updating.md)
-  * [Removing](store/removing-data.md)
+  * [Removing](store/removing.md)
 * [API Reference](api-reference/README.md)
   * [createResourceStore](api-reference/create-resource-store.md)
   * [Store](api-reference/store.md)
