@@ -22,14 +22,14 @@ describe('createSchema', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('accepts a custom idAttribute', () => {
+  it('accepts a custom idProperty', () => {
     const result = createSchema({
-      idAttribute: 'movieId',
+      idProperty: 'movieId',
     });
 
     expect(result).toEqual({
       ...defaultSchema,
-      idAttribute: 'movieId',
+      idProperty: 'movieId',
     });
     expect(warning).toHaveBeenCalledTimes(0);
   });
@@ -44,9 +44,9 @@ describe('createSchema', () => {
     expect(warning.mock.calls[0][2]).toEqual('error');
   });
 
-  it('warns if an invalid idAttribute is passed; uses the default', () => {
+  it('warns if an invalid idProperty is passed; uses the default', () => {
     const result = createSchema({
-      idAttribute: false,
+      idProperty: false,
     });
     expect(result).toEqual(defaultSchema);
     expect(warning).toHaveBeenCalledTimes(1);

@@ -81,7 +81,7 @@ export default function update({ path, schemas, state, changes }) {
     const naiveResources = resourceChange && resourceChange.resources;
     const naiveLists = (resourceChange && resourceChange.lists) || [];
     const schema = schemas[resourceType] || defaultSchema;
-    const idAttribute = schema.idAttribute;
+    const idProperty = schema.idProperty;
     const concatLists =
       resourceChange && isBoolean(resourceChange.concatLists)
         ? resourceChange.concatLists
@@ -99,7 +99,7 @@ export default function update({ path, schemas, state, changes }) {
     if (isArray(naiveResources)) {
       naiveResources.forEach(resource => {
         const resourceIsObject = isObject(resource);
-        const id = resourceIsObject ? resource[idAttribute] : resource;
+        const id = resourceIsObject ? resource[idProperty] : resource;
 
         // If a resource doesn't have an ID, then it cannot be tracked
         if (!id && id !== 0) {

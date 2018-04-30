@@ -10,7 +10,7 @@ describe('read - computedAttributes', function() {
     this.schemas = {
       authors: {
         ...defaultSchema,
-        idAttribute: 'id',
+        idProperty: 'id',
         computedAttributes: {
           // Regular functions work, but you may want to use selectors
           // for computationally-heavy transforms

@@ -1,11 +1,9 @@
 # Attributes
 
-Attributes are the primary data about a resource. For instance, if you have a Book, then some of its
-primary attributes may be its name and the year it was published.
+Attributes are the primary data about a resource. For instance, if you have a book, then some of its
+primary attributes might be its name and the year it was published.
 
-A resource's attributes are stored on the `attributes` key of the resource.
-
-An example book resource is:
+This is an example resource with some attributes:
 
 ```js
 {
@@ -114,7 +112,7 @@ store.update({
 
 ### Enforcing Types
 
-Often times, the attributes of a resource are always a specific type, such a string, or a number. You can
+Often times, the attributes of a resource are always a specific type, such as a string, or a number. You can
 specify these types witin the [Schema](./schemas.md) of the Resource Type using the
 [Prop Types](https://github.com/facebook/prop-types) library.
 
@@ -131,5 +129,5 @@ export default {
 };
 ```
 
-Remember, schemas are always optional. They are just a useful tool that let you do more with your resources. To learn
-more about defining and using schemas, refer to the [Schemas guide](./schemas.md).
+Remember, schemas are always optional. To learn more about defining and using schemas, refer to
+the [Schemas guide](./schemas.md).

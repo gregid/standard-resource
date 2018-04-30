@@ -5,7 +5,7 @@ import defaultSchema from './default-schema';
 export default function createSchema(schema) {
   const newSchema = {
     idType: schema.idType,
-    idAttribute: schema.idAttribute,
+    idProperty: schema.idProperty,
     attributes: {},
     meta: {},
     computedAttributes: {},
@@ -29,22 +29,22 @@ export default function createSchema(schema) {
     newSchema.idType = defaultSchema.idType;
   }
 
-  const hasIdAttribute = exists(newSchema.idAttribute);
-  const invalidIdAttribute = hasIdAttribute && !isString(newSchema.idAttribute);
+  const hasidProperty = exists(newSchema.idProperty);
+  const invalididProperty = hasidProperty && !isString(newSchema.idProperty);
 
-  if (invalidIdAttribute && process.env.NODE_ENV !== 'production') {
+  if (invalididProperty && process.env.NODE_ENV !== 'production') {
     warning(
-      `A schema with an invalid idAttribute was passed to createResourceStore.` +
-        ` idAttribute must be specified as a string. Falling back to "${
-          defaultSchema.idAttribute
+      `A schema with an invalid idProperty was passed to createResourceStore.` +
+        ` idProperty must be specified as a string. Falling back to "${
+          defaultSchema.idProperty
         }" instead.`,
       'TYPE_MISMATCH_ID_ATTRIBUTE',
       'error'
     );
   }
 
-  if (!hasIdAttribute || invalidIdAttribute) {
-    newSchema.idAttribute = defaultSchema.idAttribute;
+  if (!hasidProperty || invalididProperty) {
+    newSchema.idProperty = defaultSchema.idProperty;
   }
 
   newSchema.computedAttributes = {};

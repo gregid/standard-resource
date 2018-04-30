@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 
 export default function validateResource({ resource, schema }) {
-  const idPropTypes = { [schema.idAttribute]: schema.idType.isRequired };
+  const idPropTypes = { [schema.idProperty]: schema.idType.isRequired };
   PropTypes.checkPropTypes(
     idPropTypes,
     resource,
-    schema.idAttribute,
-    `resource.${schema.idAttribute}`
+    schema.idProperty,
+    `resource.${schema.idProperty}`
   );
 
   PropTypes.checkPropTypes(

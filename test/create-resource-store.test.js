@@ -17,7 +17,7 @@ describe('createResourceStore', () => {
       const store = createResourceStore(null, {
         schemas: {
           books: {
-            idAttribute: 'bookId',
+            idProperty: 'bookId',
           },
         },
       });
@@ -31,7 +31,7 @@ describe('createResourceStore', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
-          idAttribute: 'bookId',
+          idProperty: 'bookId',
         },
       },
     });
@@ -55,7 +55,7 @@ describe('createResourceStore', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
-          idAttribute: 'bookId',
+          idProperty: 'bookId',
         },
       },
     });
@@ -83,7 +83,7 @@ describe('createResourceStore', () => {
       const store = createResourceStore(null, {
         schemas: {
           books: {
-            idAttribute: 'bookId',
+            idProperty: 'bookId',
           },
         },
       });
@@ -101,7 +101,7 @@ describe('createResourceStore', () => {
       const store = createResourceStore(null, {
         schemas: {
           books: {
-            idAttribute: 'bookId',
+            idProperty: 'bookId',
           },
         },
       });
@@ -120,7 +120,7 @@ describe('createResourceStore', () => {
       const store = createResourceStore(null, {
         schemas: {
           books: {
-            idAttribute: 'bookId',
+            idProperty: 'bookId',
           },
         },
       });
