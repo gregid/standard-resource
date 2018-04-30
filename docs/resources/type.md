@@ -11,7 +11,7 @@ two resource types:
 
 ### The State Tree
 
-Resources of the same type are stored within the same section of the state tree.
+Resources of the same type are grouped together in the same section of the state tree.
 
 Here is an example state tree for an application with books and people:
 
@@ -43,7 +43,7 @@ Here is an example state tree for an application with books and people:
 Typically, resources of the same type share a similar structure. You can define a [schema](../glossary.md#schema)
 that allows you to specify this structure for each of your resource types.
 
-By defining a schema, you can use more features of Standard Resource, and they can
+By defining a schema, you can use more features of Standard Resource. Schemas can
 also be helpful in preventing certain kinds of errors.
 
 To learn more about schemas, refer to the [schemas guide](./schemas.md).
@@ -52,3 +52,6 @@ To learn more about schemas, refer to the [schemas guide](./schemas.md).
 
 * We recommend using a plural name for your resource types. For instance, use
   "people" and not "person".
+
+* You do not need to define all of your resource types up front. In fact, you never
+  need to define any resource types, as schemas are completely optional.

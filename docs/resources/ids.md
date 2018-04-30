@@ -1,12 +1,12 @@
 # IDs
 
-Every resource must have a unique identifier, or ID for short. The ID is what distinguishes one
-resource of a particular [resource type](./type.md) from another resource of that same
+Every resource must have a unique identifier, or ID for short. This ID is what distinguishes one
+resource of a particular [resource type](./type.md) from another resource of the same
 type.
 
 ### Uniqueness
 
-IDs must be unique within each resource type. Two resources that are not of the same type
+IDs must be unique within each resource type. Two resources that are not of the same resource type
 may have the same ID, however.
 
 ### Type
@@ -15,15 +15,15 @@ IDs must be either a string or a number.
 
 ### Specifying the property name of the ID
 
-By default, Standard Resource will use the property `id` for the unique identifier. You can
+By default, Standard Resource will use the `id` property as the unique identifier. You can
 change this within the [schema](../glossary.md#schema) of the resource type.
 
 In this example schema, we use the `movieId` property for the ID.
 
 ```js
-{
+export default {
   idProperty: 'movieId',
-}
+};
 ```
 
 To learn more about defining and using schemas, refer to the [schemas guide](./schemas.md).
@@ -37,9 +37,9 @@ that all of your resource IDs are of one type or another, you can specify that i
 In the following schema, we specify that the ID will always be a string.
 
 ```js
-{
+export default {
   idType: 'string',
-}
+};
 ```
 
 To learn more about defining and using schemas, refer to the [schemas guide](./schemas.md).
