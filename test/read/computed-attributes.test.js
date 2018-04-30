@@ -3,7 +3,7 @@ import getResources from '../../src/get-resources';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('getResources', function() {
+describe('getResources - computedAttributes', function() {
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
