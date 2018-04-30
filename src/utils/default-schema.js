@@ -12,7 +12,7 @@ export default {
   idType: defaultIdProp,
 
   // The ID attribute
-  idAttribute: 'id',
+  idProperty: 'id',
 
   // A list of computed attributes for this resource type
   computedAttributes: {},

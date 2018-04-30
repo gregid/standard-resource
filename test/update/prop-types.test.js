@@ -3,7 +3,7 @@ import update from '../../src/update';
 import { warning } from '../../src/utils/warning';
 
 const booksSchema = {
-  idAttribute: 'bookId',
+  idProperty: 'bookId',
   idType: PropTypes.number,
   attributes: {
     firstName: PropTypes.string.isRequired,

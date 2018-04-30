@@ -100,7 +100,7 @@ export default function read({
     const res = !byId
       ? resourceList
       : resourceList.reduce((result, resource) => {
-          result[resource[schema.idAttribute]] = resource;
+          result[resource[schema.idProperty]] = resource;
           return result;
         }, {});
 
@@ -115,7 +115,7 @@ export default function read({
     return !byId
       ? resourceList
       : resourceList.reduce((result, resource) => {
-          result[resource[schema.idAttribute]] = resource;
+          result[resource[schema.idProperty]] = resource;
           return result;
         }, {});
   } else if (isString(filter)) {

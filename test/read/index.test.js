@@ -8,7 +8,7 @@ describe('read', function() {
       books: defaultSchema,
       authors: {
         ...defaultSchema,
-        idAttribute: 'authorId',
+        idProperty: 'authorId',
       },
     };
 
@@ -520,7 +520,7 @@ describe('read', function() {
     });
   });
 
-  describe('schema; idAttribute', () => {
+  describe('schema; idProperty', () => {
     it('byId: false; should return the resources specified', () => {
       const results = read({
         state: this.state,

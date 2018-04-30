@@ -22,7 +22,7 @@ export default function resolveResource({ resource, schema, options = {} }) {
       ...computedAttributes,
       ...resource.attributes,
       resourceType: resource.resourceType,
-      [schema.idAttribute]: resource[schema.idAttribute],
+      [schema.idProperty]: resource[schema.idProperty],
     };
   } else {
     return {
@@ -30,7 +30,7 @@ export default function resolveResource({ resource, schema, options = {} }) {
       computedAttributes,
       attributes: resource.attributes || {},
       resourceType: resource.resourceType,
-      [schema.idAttribute]: resource[schema.idAttribute],
+      [schema.idProperty]: resource[schema.idProperty],
     };
   }
 }

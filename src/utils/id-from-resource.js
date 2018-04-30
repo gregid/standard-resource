@@ -3,13 +3,13 @@ import { warning } from './warning';
 
 export default function idFromResource({ resource, schema }) {
   if (resource && isObject(resource)) {
-    const idAttribute = schema.idAttribute;
+    const idProperty = schema.idProperty;
 
-    const missingAttribute = !exists(resource[idAttribute]);
-    const invalidAttribute =
+    const missingAttribute = !exists(resource[idProperty]);
+    const invalidProperty =
       !missingAttribute &&
-      !isString(resource[idAttribute]) &&
-      !isNumber(resource[idAttribute]);
+      !isString(resource[idProperty]) &&
+      !isNumber(resource[idProperty]);
 
     if (process.env.NODE_ENV !== 'production') {
       if (missingAttribute) {
@@ -18,7 +18,7 @@ export default function idFromResource({ resource, schema }) {
           'ID_FROM_RESOURCE_MISSING_ID_IN_OBJECT',
           'error'
         );
-      } else if (invalidAttribute) {
+      } else if (invalidProperty) {
         warning(
           `An invalid resource was passed in a list in an object. Resources must have an ID that` +
             ` is either a string or a number`,
@@ -28,11 +28,11 @@ export default function idFromResource({ resource, schema }) {
       }
     }
 
-    if (missingAttribute || invalidAttribute) {
+    if (missingAttribute || invalidProperty) {
       return;
     }
 
-    return resource[idAttribute];
+    return resource[idProperty];
   } else {
     if (!isString(resource) && !isNumber(resource)) {
       if (process.env.NODE_ENV !== 'production') {
