@@ -9,8 +9,12 @@ export function isArray(val) {
   return val instanceof Array;
 }
 
+export function isSet(val) {
+  return exists(val) && val !== null;
+}
+
 export function isObject(val) {
-  return exists(val) && val.constructor === Object;
+  return isSet(val) && val.constructor === Object;
 }
 
 export function isString(val) {

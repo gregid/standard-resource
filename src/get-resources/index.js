@@ -38,7 +38,7 @@ export default function getResources({
 
   const resourceSection = state[resourceType];
 
-  if (!resourceSection) {
+  if (!exists(resourceSection)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
         `You called getResources with a resourceType that does not exist: ` +
@@ -121,7 +121,7 @@ export default function getResources({
   } else if (isString(filter)) {
     // This conditional handles the situation where `filter` is an list name
     const list = resourceSection.lists[filter];
-    if (!list) {
+    if (!exists(list)) {
       return defaultResponse;
     }
 

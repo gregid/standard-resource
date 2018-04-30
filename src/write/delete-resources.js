@@ -38,7 +38,7 @@ export default function deleteResources({ path, schemas, state, changes }) {
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      if (resourceChange && !isObject(resourceChange)) {
+      if (exists(resourceChange) && !isObject(resourceChange)) {
         warning(
           `You called deleteResources with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,

@@ -39,7 +39,7 @@ export default function updateResources({ path, schemas, state, changes }) {
     const currentResourceSection = state[resourceType] || { resourceType };
 
     if (process.env.NODE_ENV !== 'production') {
-      if (!isObject(resourceChange)) {
+      if (exists(resourceChange) && !isObject(resourceChange)) {
         warning(
           `You called updateResources with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
@@ -47,7 +47,7 @@ export default function updateResources({ path, schemas, state, changes }) {
           'error'
         );
       } else {
-        if (resourceChange.resources) {
+        if (exists(resourceChange.resources)) {
           const resourcesIsObject = isObject(resourceChange.resources);
           const resourcesIsArray = isArray(resourceChange.resources);
 
@@ -62,7 +62,7 @@ export default function updateResources({ path, schemas, state, changes }) {
           }
         }
 
-        if (resourceChange.lists) {
+        if (exists(resourceChange.lists)) {
           const listIsObject = isObject(resourceChange.lists);
 
           if (!listIsObject) {
