@@ -4,8 +4,8 @@ Applications frequently need to group resources together. Sometimes, you need an
 group, such as a sorted list of resources. Other times, you may need an unordered
 group, such as the list of resources that a user has selected on an interface.
 
-Lists are designed to support these situations. Anytime that you need a grouping of
-resources, you should use lists.
+Lists are designed for these use cases. Anytime that you need a grouping of resources,
+you should use lists.
 
 ### List Names
 
@@ -13,10 +13,13 @@ Lists are identified by their name. A list name is a string. Typically, you'll u
 name that describes what is in the list. For instance, if the user can select books
 in your interface, than you may have a list named `"selectedBooks"`.
 
-### List Structure
+You use the list name to update the contents of the list, and to retrieve it from
+the state tree.
+
+### Structure
 
 A list is stored as an array of IDs in your state tree. For instance, here is what
-the `selectedBooks` list might look like:
+a state tree with a `selectedBooks` list might look like:
 
 ```js
 {
@@ -140,3 +143,11 @@ store.update({
 
 Sometimes, you may need a list to be sorted in a particular way. We recommend sorting the list manually,
 and then using `store.update` to replace the existing list with the new list.
+
+### Tips
+
+* Resources that don't exist at the time that you add them to a list will be created for you. This is
+  useful if you need to create a resource and add it to a list at the same time.
+
+* Your application will be easier to debug if you do your best to keep the list names static. There may
+  be use cases for dynamic list names, but we encourage you to use them sparingly.
