@@ -1,7 +1,7 @@
 # IDs
 
-Every resource must have a unique identifier. This is what distinguishes one resource of
-a particular [resource type](./type.md) from another resource of that same
+Every resource must have a unique identifier, or ID for short. The ID is what distinguishes one
+resource of a particular [resource type](./type.md) from another resource of that same
 type.
 
 ### Uniqueness
