@@ -16,7 +16,7 @@ IDs must be either a string or a number.
 ### Specifying the property name of the ID
 
 By default, Standard Resource will use the property `id` for the unique identifier. You can
-change this by using the [Schemas](./schemas.md).
+change this within the [schema](./schemas.md) of the resource type.
 
 In this example schema, we use the `movieId` property for the ID.
 
@@ -30,7 +30,7 @@ In this example schema, we use the `movieId` property for the ID.
 
 By default, Standard Resource permits your IDs to be either strings or numbers. If you know
 that all of your resource IDs are of one type or another, you can specify that in the
-[Schema](./schemas.md).
+[schema](./schemas.md).
 
 In the following schema, we specify that the ID will always be a string.
 
