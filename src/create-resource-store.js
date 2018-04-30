@@ -1,7 +1,7 @@
 import createSchema from './utils/create-schema';
-import getResources from './get-resources';
-import updateResources from './write/update-resources';
-import deleteResources from './write/delete-resources';
+import read from './read';
+import update from './update';
+import remove from './remove';
 import merge from './utils/merge';
 import { isFunction } from './utils/identification';
 import { warning } from './utils/warning';
@@ -63,7 +63,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     getState,
     subscribe,
     read(resourceType, filter, options) {
-      return getResources({
+      return read({
         schemas,
         state: currentState.resourceTypes || {},
         resourceType,
@@ -72,7 +72,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
       });
     },
     update(path, changes) {
-      const newState = updateResources({
+      const newState = update({
         state: currentState.resourceTypes || {},
         schemas,
         path,
@@ -87,7 +87,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
       onUpdate();
     },
     remove(path, changes) {
-      const newState = deleteResources({
+      const newState = remove({
         state: currentState.resourceTypes || {},
         schemas,
         path,

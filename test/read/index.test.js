@@ -1,8 +1,8 @@
-import getResources from '../../src/get-resources';
+import read from '../../src/read';
 import { warning } from '../../src/utils/warning';
 import defaultSchema from '../../src/utils/default-schema';
 
-describe('getResources', function() {
+describe('read', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -67,7 +67,7 @@ describe('getResources', function() {
   });
 
   it('should warn when an invalid resourceType is passed', () => {
-    const result = getResources({
+    const result = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: true,
@@ -82,7 +82,7 @@ describe('getResources', function() {
   });
 
   it('should warn when a nonexistent resource section is attempted to be filtered', () => {
-    const result = getResources({
+    const result = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'ooglaboogla',
@@ -94,7 +94,7 @@ describe('getResources', function() {
   });
 
   it('should warn when an invalid filter is passed', () => {
-    const result = getResources({
+    const result = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -108,7 +108,7 @@ describe('getResources', function() {
   });
 
   it('should warn when an invalid filter array is passed', () => {
-    const result = getResources({
+    const result = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -128,7 +128,7 @@ describe('getResources', function() {
   });
 
   it('byId: false: it should return all resources by default', () => {
-    const results = getResources({
+    const results = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -169,7 +169,7 @@ describe('getResources', function() {
   });
 
   it('byId: true: it should return all resources by default', () => {
-    const results = getResources({
+    const results = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -214,7 +214,7 @@ describe('getResources', function() {
     it('byId: false; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -240,7 +240,7 @@ describe('getResources', function() {
     it('byId: true; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -267,13 +267,13 @@ describe('getResources', function() {
 
   describe('calling it with a list of IDs', () => {
     it('should return empty results with an empty set of IDs', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
         filter: [],
       });
-      const resultsById = getResources({
+      const resultsById = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -288,7 +288,7 @@ describe('getResources', function() {
     it('byId: false; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -323,7 +323,7 @@ describe('getResources', function() {
     it('byId: true; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -365,7 +365,7 @@ describe('getResources', function() {
         },
       };
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -395,7 +395,7 @@ describe('getResources', function() {
         },
       };
 
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -424,7 +424,7 @@ describe('getResources', function() {
 
   describe('calling it with a string filter', () => {
     it('byId: false; should return an empty array for a nonexistent list', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -436,7 +436,7 @@ describe('getResources', function() {
     });
 
     it('byId: true; should return an empty object for a nonexistent list', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -451,7 +451,7 @@ describe('getResources', function() {
     });
 
     it('byId: false; should return the resources in the list', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -484,7 +484,7 @@ describe('getResources', function() {
     });
 
     it('byId: true; should return the resources in the list', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -522,7 +522,7 @@ describe('getResources', function() {
 
   describe('schema; idAttribute', () => {
     it('byId: false; should return the resources specified', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'authors',
@@ -552,7 +552,7 @@ describe('getResources', function() {
     });
 
     it('byId: false; should return the resources specified with a deep object match', () => {
-      const results = getResources({
+      const results = read({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'authors',
