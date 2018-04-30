@@ -1,6 +1,6 @@
-import resolveResource from './resolve-resource';
-import defaultSchema from '../utils/default-schema';
-import objectMatchesObject from '../utils/is-subset';
+import resolveResource from './utils/resolve-resource';
+import defaultSchema from './utils/default-schema';
+import objectMatchesObject from './utils/is-subset';
 import {
   exists,
   isArray,
@@ -8,11 +8,11 @@ import {
   isObject,
   isFunction,
   isNumber,
-} from '../utils/identification';
-import { warning } from '../utils/warning';
+} from './utils/identification';
+import { warning } from './utils/warning';
 
 // Retrieve resource(s) from the store
-export default function getResources({
+export default function read({
   state,
   resourceType,
   filter,
@@ -26,7 +26,7 @@ export default function getResources({
   if (!isString(resourceType)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
-        `An invalid resourceType was passed to getResources.` +
+        `An invalid resourceType was passed to read.` +
           ` resourceType must be a string.`,
         'GET_RESOURCES_INVALID_RESOURCE_TYPE',
         'error'
@@ -41,7 +41,7 @@ export default function getResources({
   if (!exists(resourceSection)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
-        `You called getResources with a resourceType that does not exist: ` +
+        `You called read with a resourceType that does not exist: ` +
           `${resourceType}. Did you make a typo?`,
         'GET_RESOURCES_NONEXISTENT_TYPE'
       );
@@ -60,7 +60,7 @@ export default function getResources({
 
     if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
       warning(
-        `An invalid filter was passed to getResources. A filter must be a` +
+        `An invalid filter was passed to read. A filter must be a` +
           ` string, array, object, or function.`,
         'INVALID_GET_RESOURCES_FILTER',
         'error'
@@ -71,7 +71,7 @@ export default function getResources({
       filter.forEach(value => {
         if (!isString(value) && !isNumber(value)) {
           warning(
-            `An invalid array filter was passed to getResources. Each item` +
+            `An invalid array filter was passed to read. Each item` +
               ` in the array needs to be either a string or a number.` +
               ` Remember, when a filter is an array, then each item in` +
               ` the array is a resource ID, and IDs must be strings or` +

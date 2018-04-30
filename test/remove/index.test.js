@@ -1,8 +1,8 @@
-import deleteResources from '../../src/write/delete-resources';
+import remove from '../../src/remove';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('deleteResources', function() {
+describe('remove', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -40,7 +40,7 @@ describe('deleteResources', function() {
   });
 
   it('should not change the state when called when no resource types match', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -82,7 +82,7 @@ describe('deleteResources', function() {
   });
 
   it('should not change the state when called when no resource IDs match', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -124,7 +124,7 @@ describe('deleteResources', function() {
   });
 
   it('should not change the state when called when no list names match', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -166,7 +166,7 @@ describe('deleteResources', function() {
   });
 
   it('should delete a single resource (ID form) that matches, leaving the rest of the state unchanged', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -205,7 +205,7 @@ describe('deleteResources', function() {
   });
 
   it('should delete a single resource (object form) that matches, leaving the rest of the state unchanged', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -248,7 +248,7 @@ describe('deleteResources', function() {
   });
 
   it('should delete a list that matches, array format', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -290,7 +290,7 @@ describe('deleteResources', function() {
   });
 
   it('should delete a list that matches, object format, leaving behind non-null lists', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -335,7 +335,7 @@ describe('deleteResources', function() {
   });
 
   it('should remove resources from a list', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -380,7 +380,7 @@ describe('deleteResources', function() {
   });
 
   it('should delete a bulk selection of things', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {

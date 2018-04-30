@@ -1,11 +1,11 @@
-import defaultSchema from '../utils/default-schema';
-import idFromResource from '../utils/id-from-resource';
-import merge from '../utils/merge';
-import { exists, isArray, isObject, isNull } from '../utils/identification';
-import { warning } from '../utils/warning';
-import createChanges from '../utils/create-changes';
+import defaultSchema from './utils/default-schema';
+import idFromResource from './utils/id-from-resource';
+import merge from './utils/merge';
+import { exists, isArray, isObject, isNull } from './utils/identification';
+import { warning } from './utils/warning';
+import createChanges from './utils/create-changes';
 
-// deleteResources({
+// remove({
 //   authors: {
 //     resources: [],
 //     lists: {}
@@ -16,14 +16,14 @@ import createChanges from '../utils/create-changes';
 //   }
 // });
 
-export default function deleteResources({ path, schemas, state, changes }) {
+export default function remove({ path, schemas, state, changes }) {
   const newState = merge(state);
 
   changes = createChanges(path, changes);
 
   if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
-      `You called deleteResources with an invalid changes object. Changes must be an Object.`,
+      `You called remove with an invalid changes object. Changes must be an Object.`,
       'DELETE_RESOURCES_INVALID_CHANGES_OBJECT',
       'error'
     );
@@ -40,7 +40,7 @@ export default function deleteResources({ path, schemas, state, changes }) {
     if (process.env.NODE_ENV !== 'production') {
       if (exists(resourceChange) && !isObject(resourceChange)) {
         warning(
-          `You called deleteResources with an invalid update for the` +
+          `You called remove with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
           'DELETE_RESOURCES_INVALID_TYPE',
           'error'
@@ -52,7 +52,7 @@ export default function deleteResources({ path, schemas, state, changes }) {
             !isArray(resourceChange.resources)
           ) {
             warning(
-              `You called deleteResources with an invalid "resources" value for the` +
+              `You called remove with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
                 ` must be an Object or an array.`,
               'DELETE_RESOURCES_INVALID_RESOURCES',
@@ -67,7 +67,7 @@ export default function deleteResources({ path, schemas, state, changes }) {
             !isObject(resourceChange.lists)
           ) {
             warning(
-              `You called deleteResources with an invalid "lists" value for the` +
+              `You called remove with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when deleting` +
                 ` must be an array or an object.`,
               'DELETE_RESOURCES_INVALID_LISTS',

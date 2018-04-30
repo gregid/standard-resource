@@ -1,8 +1,8 @@
-import deleteResources from '../../src/write/delete-resources';
+import remove from '../../src/remove';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('deleteResources', function() {
+describe('remove', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -40,7 +40,7 @@ describe('deleteResources', function() {
   });
 
   it('warn and not change the state when called with an invalid changes object', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: true,
@@ -83,7 +83,7 @@ describe('deleteResources', function() {
   });
 
   it('warn and not change the state when called with an invalid resource type changes object', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -126,7 +126,7 @@ describe('deleteResources', function() {
   });
 
   it('warn and not change the state when called with an invalid resource.resources object', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -173,7 +173,7 @@ describe('deleteResources', function() {
   });
 
   it('warn and not change the state when called with an invalid resource.lists object', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -218,7 +218,7 @@ describe('deleteResources', function() {
   });
 
   it('should not change the state when called with an empty object', () => {
-    const newState = deleteResources({
+    const newState = remove({
       state: this.state,
       schemas: this.schemas,
     });

@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
-import getResources from '../../src/get-resources';
+import read from '../../src/read';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('getResources - computedAttributes', function() {
+describe('read - computedAttributes', function() {
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -53,7 +53,7 @@ describe('getResources - computedAttributes', function() {
   });
 
   it('byId: false; should return the resources specified, with computed values', () => {
-    const results = getResources({
+    const results = read({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'authors',

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import updateResources from '../../src/write/update-resources';
+import update from '../../src/update';
 import { warning } from '../../src/utils/warning';
 
 const booksSchema = {
@@ -15,7 +15,7 @@ const booksSchema = {
   },
 };
 
-describe('updateResources – PropTypes with a custom schema', function() {
+describe('update – PropTypes with a custom schema', function() {
   beforeEach(() => {
     this.schemas = {
       books: booksSchema,
@@ -50,7 +50,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   });
 
   it('should not warn when an update is valid', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -100,7 +100,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   });
 
   it('should warn when an update sets an invalid type on a prop', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -155,7 +155,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   });
 
   it('should warn when an update does not set a required prop on a resource', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -210,7 +210,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   });
 
   it('should not warn when meta is the right value', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -262,7 +262,7 @@ describe('updateResources – PropTypes with a custom schema', function() {
   });
 
   it('should warn when meta is not the right value (array syntax)', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {

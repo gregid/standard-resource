@@ -1,4 +1,4 @@
-import { isObject } from '../utils/identification';
+import { isObject } from './identification';
 
 export default function resolveResource({ resource, schema, options = {} }) {
   const { flat } = options;

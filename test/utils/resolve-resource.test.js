@@ -1,4 +1,4 @@
-import resolveResource from '../../src/get-resources/resolve-resource';
+import resolveResource from '../../src/utils/resolve-resource';
 import defaultSchema from '../../src/utils/default-schema';
 
 describe('resolveResource', () => {

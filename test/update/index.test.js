@@ -1,8 +1,8 @@
-import updateResources from '../../src/write/update-resources';
+import update from '../../src/update';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('updateResources', function() {
+describe('update', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -44,7 +44,7 @@ describe('updateResources', function() {
   });
 
   it('should not change the state when called with an empty object', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
     });
@@ -86,7 +86,7 @@ describe('updateResources', function() {
   });
 
   it('should replace a list', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -134,7 +134,7 @@ describe('updateResources', function() {
   });
 
   it('should concatenate a list with concatList: true', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -183,7 +183,7 @@ describe('updateResources', function() {
   });
 
   it('should concatenate a list that didnt exist before with concatList: true', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -233,7 +233,7 @@ describe('updateResources', function() {
   });
 
   it('should concatenate a list with concatList: true, preventing duplicates', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -282,7 +282,7 @@ describe('updateResources', function() {
   });
 
   it('should create a new resource, array format with a path', () => {
-    const newState = updateResources({
+    const newState = update({
       path: 'books.resources',
       state: this.state,
       schemas: this.schemas,
@@ -345,7 +345,7 @@ describe('updateResources', function() {
   });
 
   it('should create a new resource, object format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -410,7 +410,7 @@ describe('updateResources', function() {
   });
 
   it('should create a new resource, array format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -476,7 +476,7 @@ describe('updateResources', function() {
   });
 
   it('should create a new resource, array/ID format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -528,7 +528,7 @@ describe('updateResources', function() {
   });
 
   it('should merge a resource with an existing resource, object format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -589,7 +589,7 @@ describe('updateResources', function() {
   });
 
   it('should merge a resource with an existing resource, array format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -650,7 +650,7 @@ describe('updateResources', function() {
   });
 
   it('should replace a resource with an existing resource, object format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -710,7 +710,7 @@ describe('updateResources', function() {
   });
 
   it('should replace a resource with an existing resource, array format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -770,7 +770,7 @@ describe('updateResources', function() {
   });
 
   it('should create a new resource type, object format', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -841,7 +841,7 @@ describe('updateResources', function() {
   });
 
   it('allows you to create a resource by specifying it in a list (ID form)', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -897,7 +897,7 @@ describe('updateResources', function() {
   });
 
   it('allows you to create a resource by specifying it in a list (object form)', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {

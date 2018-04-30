@@ -1,8 +1,8 @@
-import updateResources from '../../src/write/update-resources';
+import update from '../../src/update';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('updateResources', function() {
+describe('update', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -44,7 +44,7 @@ describe('updateResources', function() {
   });
 
   it('warn and not should not change the state when called with an invalid changes object', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: true,
@@ -91,7 +91,7 @@ describe('updateResources', function() {
   });
 
   it('warn and not should not change the state when called with an invalid resource change', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -139,7 +139,7 @@ describe('updateResources', function() {
   });
 
   it('warn and not should not change the state when called with an invalid resource.resources object', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -190,7 +190,7 @@ describe('updateResources', function() {
   });
 
   it('warn and ignore invalid resource.lists ids', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -241,7 +241,7 @@ describe('updateResources', function() {
   });
 
   it('warn and ignore missing resource.lists ids, object form', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -294,7 +294,7 @@ describe('updateResources', function() {
   });
 
   it('warn and ignore invalid resource.lists ids, object form', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -347,7 +347,7 @@ describe('updateResources', function() {
   });
 
   it('warn and not should not change the state when called with an invalid resource.lists object', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
@@ -396,7 +396,7 @@ describe('updateResources', function() {
   });
 
   it('warn and ignore a resource without an ID', () => {
-    const newState = updateResources({
+    const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {

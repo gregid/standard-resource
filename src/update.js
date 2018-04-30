@@ -1,13 +1,13 @@
-import idFromResource from '../utils/id-from-resource';
-import defaultSchema from '../utils/default-schema';
-import validateResource from '../utils/validate-resource';
-import createChanges from '../utils/create-changes';
-import createResource from '../utils/create-resource';
-import { exists, isObject, isArray, isBoolean } from '../utils/identification';
-import merge from '../utils/merge';
-import { warning } from '../utils/warning';
+import idFromResource from './utils/id-from-resource';
+import defaultSchema from './utils/default-schema';
+import validateResource from './utils/validate-resource';
+import createChanges from './utils/create-changes';
+import createResource from './utils/create-resource';
+import { exists, isObject, isArray, isBoolean } from './utils/identification';
+import merge from './utils/merge';
+import { warning } from './utils/warning';
 
-// updateResources({
+// update({
 //   authors: {
 //     resources: [],
 //     lists: {},
@@ -21,14 +21,14 @@ import { warning } from '../utils/warning';
 //   }
 // });
 
-export default function updateResources({ path, schemas, state, changes }) {
+export default function update({ path, schemas, state, changes }) {
   const newState = merge(state);
 
   changes = createChanges(path, changes);
 
   if (changes && !isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
-      `You called updateResources with an invalid changes object. Changes must be an Object.`,
+      `You called update with an invalid changes object. Changes must be an Object.`,
       'UPDATE_RESOURCES_INVALID_CHANGES_OBJECT',
       'error'
     );
@@ -41,7 +41,7 @@ export default function updateResources({ path, schemas, state, changes }) {
     if (process.env.NODE_ENV !== 'production') {
       if (exists(resourceChange) && !isObject(resourceChange)) {
         warning(
-          `You called updateResources with an invalid update for the` +
+          `You called update with an invalid update for the` +
             ` resource of type "${resourceType}". Updates must be an Object.`,
           'UPDATE_RESOURCES_INVALID_TYPE',
           'error'
@@ -53,7 +53,7 @@ export default function updateResources({ path, schemas, state, changes }) {
 
           if (!resourcesIsObject && !resourcesIsArray) {
             warning(
-              `You called updateResources with an invalid "resources" value for the` +
+              `You called update with an invalid "resources" value for the` +
                 ` resource of type "${resourceType}". The "resource" value of an update` +
                 ` must be an Object or an array.`,
               'UPDATE_RESOURCES_INVALID_RESOURCES',
@@ -67,7 +67,7 @@ export default function updateResources({ path, schemas, state, changes }) {
 
           if (!listIsObject) {
             warning(
-              `You called updateResources with an invalid "lists" value for the` +
+              `You called update with an invalid "lists" value for the` +
                 ` resource of type "${resourceType}". The "lists" value when updating` +
                 ` must be an Object of new lists.`,
               'UPDATE_RESOURCES_INVALID_LISTS',
