@@ -113,7 +113,7 @@ store.update({
 ### Enforcing Types
 
 Often times, the attributes of a resource are always a specific type, such as a string, or a number. You can
-specify these types witin the [Schema](./schemas.md) of the Resource Type using the
+specify these types witin the [schema](./schemas.md) of the resource type using the
 [Prop Types](https://github.com/facebook/prop-types) library.
 
 In the following schema, we enforce the type of the name and publish year:
@@ -130,4 +130,4 @@ export default {
 ```
 
 Remember, schemas are always optional. To learn more about defining and using schemas, refer to
-the [Schemas guide](./schemas.md).
+the [schemas guide](./schemas.md).

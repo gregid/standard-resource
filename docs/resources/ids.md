@@ -43,5 +43,4 @@ In the following schema, we specify that the ID will always be a string.
 ### Tips
 
 * We recommend always using strings for IDs. Strings can be used instead of numbers in every
-  situation, and are not restricted by the
-  [maximum safe integer limit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER).
+  situation, and are not restricted by the [maximum safe integer limit](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER).
