@@ -41,7 +41,7 @@ Here is an example state tree for an application with books and people:
 ### Schemas
 
 Typically, resources of the same type share a similar structure. You can define a [schema](../glossary.md#schema)
-that allows you to specify this structure for of each type of resource.
+that allows you to specify this structure for each of your resource types.
 
 By defining a schema, you can use more features of Standard Resource, and they can
 also be helpful in preventing certain kinds of errors.
