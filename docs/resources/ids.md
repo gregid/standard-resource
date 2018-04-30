@@ -22,7 +22,7 @@ In this example schema, we use the `movieId` property for the ID.
 
 ```js
 {
-  idProperty: 'movieId';
+  idProperty: 'movieId',
 }
 ```
 
@@ -38,7 +38,7 @@ In the following schema, we specify that the ID will always be a string.
 
 ```js
 {
-  idType: 'string';
+  idType: 'string',
 }
 ```
 
