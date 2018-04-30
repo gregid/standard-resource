@@ -110,6 +110,15 @@ store.update({
 });
 ```
 
+### Removing an Attribute
+
+You can remove a specific attribute using `store.remove()`. In the following example,
+we remove the `releaseYear` attribute from the book with ID of 24.
+
+```js
+store.remove('books.resources.24.attributes.releaseYear');
+```
+
 ### Enforcing Types
 
 Often times, the attributes of a resource are always a specific type, such as a string, or a number. You can

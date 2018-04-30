@@ -17,7 +17,7 @@ Here is an example state tree for an application with books and people:
 
 ```js
 {
-  resourceType: {
+  resourceTypes: {
     books: {
       resources: {
         // The individual book resources are stored here
