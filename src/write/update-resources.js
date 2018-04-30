@@ -26,11 +26,7 @@ export default function updateResources({ path, schemas, state, changes }) {
 
   changes = createChanges(path, changes);
 
-  if (
-    changes &&
-    changes.constructor !== Object &&
-    process.env.NODE_ENV !== 'production'
-  ) {
+  if (changes && !isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
       `You called updateResources with an invalid changes object. Changes must be an Object.`,
       'UPDATE_RESOURCES_INVALID_CHANGES_OBJECT',

@@ -1,8 +1,8 @@
-import { isString, isNumber, exists } from './identification';
+import { isString, isNumber, isObject, exists } from './identification';
 import { warning } from './warning';
 
 export default function idFromResource({ resource, schema }) {
-  if (resource && resource.constructor === Object) {
+  if (resource && isObject(resource)) {
     const idAttribute = schema.idAttribute;
 
     const missingAttribute = !exists(resource[idAttribute]);
