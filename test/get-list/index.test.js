@@ -24,6 +24,7 @@ describe('getList', function() {
             id: 2,
           },
         ],
+        emptyList: [],
       },
       resources: {
         books: {
@@ -84,6 +85,53 @@ describe('getList', function() {
     expect(warning.mock.calls[0][1]).toEqual('GET_LIST_INVALID_LIST_NAME');
     expect(warning.mock.calls[0][2]).toEqual('error');
     expect(result).toEqual([]);
+  });
+
+  it('should warn when invalid options are passed, but continue to work', () => {
+    const results = getList({
+      state: this.state,
+      schemas: this.schemas,
+      listName: 'newBooks',
+      options: true,
+    });
+
+    expect(results).toEqual([
+      {
+        id: 1,
+        resourceType: 'books',
+        computedAttributes: {},
+        meta: {
+          selected: true,
+        },
+        attributes: {
+          name: 'A',
+        },
+      },
+      {
+        id: 2,
+        resourceType: 'books',
+        computedAttributes: {},
+        meta: {},
+        attributes: {
+          name: 'B',
+        },
+      },
+    ]);
+
+    expect(warning).toHaveBeenCalledTimes(1);
+    expect(warning.mock.calls[0][1]).toEqual('GET_LIST_INVALID_OPTIONS');
+    expect(warning.mock.calls[0][2]).toEqual('error');
+  });
+
+  it('byId: false; should return an empty array for an empty list', () => {
+    const results = getList({
+      state: this.state,
+      schemas: this.schemas,
+      listName: 'emptyList',
+    });
+    expect(warning).toHaveBeenCalledTimes(0);
+
+    expect(results).toEqual([]);
   });
 
   it('byId: false; should return an empty array for a nonexistent list', () => {
