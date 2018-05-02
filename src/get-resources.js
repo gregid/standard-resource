@@ -11,8 +11,7 @@ import {
 } from './utils/identification';
 import { warning } from './utils/warning';
 
-// Retrieve resource(s) from the store
-export default function read({
+export default function getResources({
   state,
   resourceType,
   filter,
@@ -36,9 +35,9 @@ export default function read({
     return defaultResponse;
   }
 
-  const resourceSection = state[resourceType];
+  const resources = state.resources[resourceType];
 
-  if (!exists(resourceSection)) {
+  if (!exists(resources)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
         `You called read with a resourceType that does not exist: ` +
@@ -53,15 +52,14 @@ export default function read({
   const hasFilter = exists(filter);
 
   if (hasFilter && process.env.NODE_ENV !== 'production') {
-    const filterIsString = isString(filter);
     const filterIsArray = isArray(filter);
     const filterIsObject = isObject(filter);
     const filterIsFn = isFunction(filter);
 
-    if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
+    if (!filterIsFn && !filterIsArray && !filterIsObject) {
       warning(
-        `An invalid filter was passed to read. A filter must be a` +
-          ` string, array, object, or function.`,
+        `An invalid filter was passed to read. A filter must be an` +
+          ` array, object, or function.`,
         'INVALID_GET_RESOURCES_FILTER',
         'error'
       );
@@ -85,8 +83,6 @@ export default function read({
   }
 
   const schema = schemas[resourceType] || defaultSchema;
-
-  const resources = resourceSection.resources;
   let idsList;
 
   if (isFunction(filter) || !hasFilter) {
@@ -95,7 +91,7 @@ export default function read({
       .map(resource =>
         resolveResource({ state, resource, schema, options, schemas })
       )
-      .filter(resource => appliedFilter(resource, resourceSection));
+      .filter(resource => appliedFilter(resource, resources));
 
     const res = !byId
       ? resourceList
@@ -118,20 +114,12 @@ export default function read({
           result[resource[schema.idProperty]] = resource;
           return result;
         }, {});
-  } else if (isString(filter)) {
-    // This conditional handles the situation where `filter` is an list name
-    const list = resourceSection.lists[filter];
-    if (!exists(list)) {
-      return defaultResponse;
-    }
-
-    idsList = list;
   } else {
     idsList = filter;
   }
 
   if (!(idsList && idsList.length)) {
-    return !byId ? [] : {};
+    return defaultResponse;
   }
 
   if (!byId) {

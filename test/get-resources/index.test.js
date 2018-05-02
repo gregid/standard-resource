@@ -1,8 +1,8 @@
-import read from '../../src/read';
+import getResources from '../../src/get-resources';
 import { warning } from '../../src/utils/warning';
 import defaultSchema from '../../src/utils/default-schema';
 
-describe('read', function() {
+describe('getResources', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -13,11 +13,8 @@ describe('read', function() {
     };
 
     this.state = {
-      books: {
-        lists: {
-          newBooks: [1, 2],
-        },
-        resources: {
+      resources: {
+        books: {
           1: {
             id: 1,
             resourceType: 'books',
@@ -43,9 +40,7 @@ describe('read', function() {
             },
           },
         },
-      },
-      authors: {
-        resources: {
+        authors: {
           a: {
             authorId: 'a',
             resourceType: 'authors',
@@ -67,7 +62,7 @@ describe('read', function() {
   });
 
   it('should warn when an invalid resourceType is passed', () => {
-    const result = read({
+    const result = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: true,
@@ -81,8 +76,8 @@ describe('read', function() {
     expect(result).toEqual([]);
   });
 
-  it('should warn when a nonexistent resource section is attempted to be filtered', () => {
-    const result = read({
+  it('should warn when a nonexistent resource type is attempted to be filtered', () => {
+    const result = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'ooglaboogla',
@@ -94,7 +89,7 @@ describe('read', function() {
   });
 
   it('should warn when an invalid filter is passed', () => {
-    const result = read({
+    const result = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -108,7 +103,7 @@ describe('read', function() {
   });
 
   it('should warn when an invalid filter array is passed', () => {
-    const result = read({
+    const result = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -128,7 +123,7 @@ describe('read', function() {
   });
 
   it('byId: false: it should return all resources by default', () => {
-    const results = read({
+    const results = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -169,7 +164,7 @@ describe('read', function() {
   });
 
   it('byId: true: it should return all resources by default', () => {
-    const results = read({
+    const results = getResources({
       state: this.state,
       schemas: this.schemas,
       resourceType: 'books',
@@ -214,7 +209,7 @@ describe('read', function() {
     it('byId: false; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -240,7 +235,7 @@ describe('read', function() {
     it('byId: true; should return the right resources', () => {
       const filter = resource => resource.meta.selected;
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -267,13 +262,13 @@ describe('read', function() {
 
   describe('calling it with a list of IDs', () => {
     it('should return empty results with an empty set of IDs', () => {
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
         filter: [],
       });
-      const resultsById = read({
+      const resultsById = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -288,7 +283,7 @@ describe('read', function() {
     it('byId: false; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -323,7 +318,7 @@ describe('read', function() {
     it('byId: true; returns the right resources', () => {
       const filter = [50, 1];
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -365,7 +360,7 @@ describe('read', function() {
         },
       };
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -395,7 +390,7 @@ describe('read', function() {
         },
       };
 
-      const results = read({
+      const results = getResources({
         state: this.state,
         schemas: this.schemas,
         resourceType: 'books',
@@ -419,174 +414,6 @@ describe('read', function() {
           },
         },
       });
-    });
-  });
-
-  describe('calling it with a string filter', () => {
-    it('byId: false; should return an empty array for a nonexistent list', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'books',
-        filter: 'listThatDoesntExist',
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual([]);
-    });
-
-    it('byId: true; should return an empty object for a nonexistent list', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'books',
-        filter: 'listThatDoesntExist',
-        options: {
-          byId: true,
-        },
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual({});
-    });
-
-    it('byId: false; should return the resources in the list', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'books',
-        filter: 'newBooks',
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual([
-        {
-          id: 1,
-          resourceType: 'books',
-          computedAttributes: {},
-          meta: {
-            selected: true,
-          },
-          attributes: {
-            name: 'A',
-          },
-        },
-        {
-          id: 2,
-          resourceType: 'books',
-          computedAttributes: {},
-          meta: {},
-          attributes: {
-            name: 'B',
-          },
-        },
-      ]);
-    });
-
-    it('byId: true; should return the resources in the list', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'books',
-        filter: 'newBooks',
-        options: {
-          byId: true,
-        },
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual({
-        1: {
-          id: 1,
-          resourceType: 'books',
-          computedAttributes: {},
-          meta: {
-            selected: true,
-          },
-          attributes: {
-            name: 'A',
-          },
-        },
-        2: {
-          id: 2,
-          resourceType: 'books',
-          computedAttributes: {},
-          meta: {},
-          attributes: {
-            name: 'B',
-          },
-        },
-      });
-    });
-  });
-
-  describe('schema; idProperty', () => {
-    it('byId: false; should return the resources specified', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'authors',
-        filter: ['a'],
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual([
-        {
-          authorId: 'a',
-          resourceType: 'authors',
-          computedAttributes: {},
-          meta: {},
-          attributes: {
-            name: 'J.K. Rowling',
-            contracts: {
-              en: {
-                purpose: 'book',
-              },
-              es: {
-                purpose: 'talk',
-              },
-            },
-          },
-        },
-      ]);
-    });
-
-    it('byId: false; should return the resources specified with a deep object match', () => {
-      const results = read({
-        state: this.state,
-        schemas: this.schemas,
-        resourceType: 'authors',
-        filter: {
-          attributes: {
-            contracts: {
-              en: {
-                purpose: 'book',
-              },
-            },
-          },
-        },
-      });
-      expect(warning).toHaveBeenCalledTimes(0);
-
-      expect(results).toEqual([
-        {
-          authorId: 'a',
-          resourceType: 'authors',
-          computedAttributes: {},
-          meta: {},
-          attributes: {
-            name: 'J.K. Rowling',
-            contracts: {
-              en: {
-                purpose: 'book',
-              },
-              es: {
-                purpose: 'talk',
-              },
-            },
-          },
-        },
-      ]);
     });
   });
 });
