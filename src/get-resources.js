@@ -35,7 +35,7 @@ export default function getResources({
     return defaultResponse;
   }
 
-  const resources = state[resourceType];
+  const resources = state.resources[resourceType];
 
   if (!exists(resources)) {
     if (process.env.NODE_ENV !== 'production') {
@@ -52,15 +52,14 @@ export default function getResources({
   const hasFilter = exists(filter);
 
   if (hasFilter && process.env.NODE_ENV !== 'production') {
-    const filterIsString = isString(filter);
     const filterIsArray = isArray(filter);
     const filterIsObject = isObject(filter);
     const filterIsFn = isFunction(filter);
 
-    if (!filterIsFn && !filterIsArray && !filterIsObject && !filterIsString) {
+    if (!filterIsFn && !filterIsArray && !filterIsObject) {
       warning(
-        `An invalid filter was passed to read. A filter must be a` +
-          ` string, array, object, or function.`,
+        `An invalid filter was passed to read. A filter must be an` +
+          ` array, object, or function.`,
         'INVALID_GET_RESOURCES_FILTER',
         'error'
       );
@@ -125,27 +124,21 @@ export default function getResources({
 
   if (!byId) {
     return idsList
-      .map(resourcePointer => {
-        const resources = state[resourcePointer.resourceType] || {};
-        const schema = schemas[resourcePointer.resourceType] || defaultSchema;
-
-        return resolveResource({
+      .map(id =>
+        resolveResource({
           state,
-          resource: resources[resourcePointer.id],
+          resource: resources[id],
           options,
           schema,
           schemas,
-        });
-      })
+        })
+      )
       .filter(Boolean);
   } else {
-    return idsList.reduce((result, resourcePointer) => {
-      const resources = state[resourcePointer.resourceType] || {};
-      const schema = schemas[resourcePointer.resourceType] || defaultSchema;
-
-      result[resourcePointer.id] = resolveResource({
+    return idsList.reduce((result, id) => {
+      result[id] = resolveResource({
         state,
-        resource: resources[resourcePointer.id],
+        resource: resources[id],
         schema,
         schemas,
         options,

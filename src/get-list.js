@@ -46,7 +46,7 @@ export default function getList({ listName, options = {}, state, schemas }) {
   if (!byId) {
     return list
       .map(resourcePointer => {
-        const resources = state[resourcePointer.resourceType] || {};
+        const resources = state.resources[resourcePointer.resourceType] || {};
         const schema = schemas[resourcePointer.resourceType] || defaultSchema;
 
         return resolveResource({
@@ -60,7 +60,7 @@ export default function getList({ listName, options = {}, state, schemas }) {
       .filter(Boolean);
   } else {
     return list.reduce((result, resourcePointer) => {
-      const resources = state[resourcePointer.resourceType] || {};
+      const resources = state.resources[resourcePointer.resourceType] || {};
       const schema = schemas[resourcePointer.resourceType] || defaultSchema;
 
       result[resourcePointer.id] = resolveResource({
