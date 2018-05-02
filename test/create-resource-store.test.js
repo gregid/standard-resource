@@ -28,7 +28,7 @@ describe('createResourceStore', () => {
     });
   });
 
-  it('allows you to create and then retrieve a resource', () => {
+  it.skip('allows you to create and then retrieve a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -52,7 +52,7 @@ describe('createResourceStore', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('allows you to create and then delete a resource', () => {
+  it.skip('allows you to create and then delete a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
