@@ -1,4 +1,6 @@
 import createSchema from './utils/create-schema';
+import getList from './get-list';
+import getResources from './get-resources';
 import read from './read';
 import update from './update';
 import remove from './remove';
@@ -69,6 +71,23 @@ export default function createResourceStore(initialState = {}, options = {}) {
         resourceType,
         filter,
         options,
+      });
+    },
+    getList(listName, options) {
+      return getList({
+        listName,
+        options,
+        state: currentState,
+        schemas,
+      });
+    },
+    getResources(resourceType, filter, options) {
+      return getResources({
+        resourceType,
+        filter,
+        options,
+        state: currentState,
+        schemas,
       });
     },
     update(path, changes) {
