@@ -6,13 +6,10 @@ import { warning } from './utils/warning';
 import createChanges from './utils/create-changes';
 
 // remove({
-//   authors: {
-//     resources: [],
-//     lists: {}
-//   },
-//   books: {
-//     resources: [],
-//     lists: {}
+//   lists: {} / [],
+//   resources: {
+//     authors: {} / [],
+//     books: {} / []
 //   }
 // });
 

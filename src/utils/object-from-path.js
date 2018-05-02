@@ -3,7 +3,7 @@
 // updates to.
 export default function objectFromPath(path, changes) {
   if (!path) {
-    return {};
+    return changes || {};
   }
 
   var pathParts = path.split('.');

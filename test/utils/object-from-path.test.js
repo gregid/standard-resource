@@ -34,4 +34,14 @@ describe('objectFromPath', () => {
       },
     });
   });
+
+  it('handles passing an object as the change with no path', () => {
+    expect(
+      objectFromPath(null, {
+        sandwiches: 'yum',
+      })
+    ).toEqual({
+      sandwiches: 'yum',
+    });
+  });
 });
