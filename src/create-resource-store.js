@@ -1,7 +1,6 @@
 import createSchema from './utils/create-schema';
 import getList from './get-list';
 import getResources from './get-resources';
-import read from './read';
 import update from './update';
 import remove from './remove';
 import merge from './utils/merge';
@@ -64,15 +63,6 @@ export default function createResourceStore(initialState = {}, options = {}) {
   return {
     getState,
     subscribe,
-    read(resourceType, filter, options) {
-      return read({
-        schemas,
-        state: currentState.resourceTypes || {},
-        resourceType,
-        filter,
-        options,
-      });
-    },
     getList(listName, options) {
       return getList({
         listName,

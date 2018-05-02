@@ -6,7 +6,8 @@ describe('createResourceStore', () => {
     const store = createResourceStore();
 
     expect(typeof store.getState).toEqual('function');
-    expect(typeof store.read).toEqual('function');
+    expect(typeof store.getList).toEqual('function');
+    expect(typeof store.getResources).toEqual('function');
     expect(typeof store.update).toEqual('function');
     expect(typeof store.remove).toEqual('function');
     expect(typeof store.subscribe).toEqual('function');
