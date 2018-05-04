@@ -1,4 +1,4 @@
-import remove from '../../src/new-remove';
+import remove from '../../src/remove';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
