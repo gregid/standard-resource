@@ -51,7 +51,7 @@ export default function getList({ listName, options = {}, state, schemas }) {
 
         return resolveResource({
           state,
-          resource: resources[resourcePointer.id],
+          resource: resources[resourcePointer[schema.idProperty]],
           options,
           schema,
           schemas,
@@ -63,9 +63,9 @@ export default function getList({ listName, options = {}, state, schemas }) {
       const resources = state.resources[resourcePointer.resourceType] || {};
       const schema = schemas[resourcePointer.resourceType] || defaultSchema;
 
-      result[resourcePointer.id] = resolveResource({
+      result[resourcePointer[schema.idProperty]] = resolveResource({
         state,
-        resource: resources[resourcePointer.id],
+        resource: resources[resourcePointer[schema.idProperty]],
         schema,
         schemas,
         options,

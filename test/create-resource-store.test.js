@@ -55,6 +55,48 @@ describe('createResourceStore', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
+  it('allows you to create and then retrieve a list', () => {
+    const store = createResourceStore(null);
+
+    store.update('lists.favoriteBooks', [{ id: 5, resourceType: 'books' }]);
+
+    const resources = store.getList('favoriteBooks');
+    expect(resources).toEqual([
+      {
+        id: 5,
+        resourceType: 'books',
+        attributes: {},
+        meta: {},
+        computedAttributes: {},
+      },
+    ]);
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
+  it('allows you to create and then retrieve a list when using a custom idProperty in a schema', () => {
+    const store = createResourceStore(null, {
+      schemas: {
+        books: {
+          idProperty: 'bookId',
+        },
+      },
+    });
+
+    store.update('lists.favoriteBooks', [{ bookId: 5, resourceType: 'books' }]);
+
+    const resources = store.getList('favoriteBooks');
+    expect(resources).toEqual([
+      {
+        bookId: 5,
+        resourceType: 'books',
+        attributes: {},
+        meta: {},
+        computedAttributes: {},
+      },
+    ]);
+    expect(warning).toHaveBeenCalledTimes(0);
+  });
+
   it('allows you to create and then delete a resource', () => {
     const store = createResourceStore(null, {
       schemas: {

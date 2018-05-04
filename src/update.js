@@ -51,7 +51,7 @@ export default function update({ path, schemas, state, changes, options }) {
         const id = resourceIsObject ? resource[idProperty] : resource;
 
         // If a resource doesn't have an ID, then it cannot be tracked
-        if (!id && id !== 0) {
+        if (!exists(id)) {
           if (process.env.NODE_ENV !== 'production') {
             warning(
               `You attempted to update or add a resource without an ID attribute. ` +
@@ -125,6 +125,7 @@ export default function update({ path, schemas, state, changes, options }) {
 
       const resourceType = resource.resourceType;
       const schema = schemas[resourceType] || defaultSchema;
+
       const id = idFromResource({ resource: resource, schema });
       const hasId = exists(id);
 
