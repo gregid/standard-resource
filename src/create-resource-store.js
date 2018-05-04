@@ -3,7 +3,6 @@ import getList from './get-list';
 import getResources from './get-resources';
 import update from './update';
 import remove from './remove';
-import merge from './utils/merge';
 import { isFunction } from './utils/identification';
 import { warning } from './utils/warning';
 
@@ -85,7 +84,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
       });
     },
     update(path, changes) {
-      const newState = update({
+      currentState = update({
         state: currentState,
         schemas,
         path,
@@ -93,22 +92,14 @@ export default function createResourceStore(initialState = {}, options = {}) {
         options,
       });
 
-      currentState = merge(currentState, {
-        resourceTypes: merge(currentState, newState),
-      });
-
       onUpdate();
     },
     remove(path, changes) {
-      const newState = remove({
+      currentState = remove({
         state: currentState,
         schemas,
         path,
         changes,
-      });
-
-      currentState = merge(currentState, {
-        resourceTypes: merge(currentState, newState),
       });
 
       onUpdate();

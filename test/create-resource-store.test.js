@@ -31,7 +31,7 @@ describe('createResourceStore', () => {
     });
   });
 
-  it.skip('allows you to create and then retrieve a resource', () => {
+  it('allows you to create and then retrieve a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -40,9 +40,9 @@ describe('createResourceStore', () => {
       },
     });
 
-    store.update('books.resources', [{ bookId: 5 }]);
+    store.update('resources.books', [{ bookId: 5 }]);
 
-    const resources = store.read('books', [5]);
+    const resources = store.getResources('books', [5]);
     expect(resources).toEqual([
       {
         bookId: 5,
@@ -55,7 +55,7 @@ describe('createResourceStore', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it.skip('allows you to create and then delete a resource', () => {
+  it('allows you to create and then delete a resource', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -64,9 +64,9 @@ describe('createResourceStore', () => {
       },
     });
 
-    store.update('books.resources', [{ bookId: 5 }]);
+    store.update('resources.books', [{ bookId: 5 }]);
 
-    expect(store.read('books', [5])).toEqual([
+    expect(store.getResources('books', [5])).toEqual([
       {
         bookId: 5,
         resourceType: 'books',
@@ -76,13 +76,13 @@ describe('createResourceStore', () => {
       },
     ]);
 
-    store.remove('books.resources', [{ bookId: 5 }]);
+    store.remove('resources.books', [{ bookId: 5 }]);
 
-    expect(store.read('books', [5])).toEqual([]);
+    expect(store.getResources('books', [5])).toEqual([]);
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  describe.skip('subscribing', () => {
+  describe('subscribing', () => {
     it('warns if an invalid callback is supplied', () => {
       const store = createResourceStore(null, {
         schemas: {
@@ -113,7 +113,7 @@ describe('createResourceStore', () => {
       store.subscribe(cb);
       expect(cb).toHaveBeenCalledTimes(0);
 
-      store.update('books.resources', [{ bookId: 5 }]);
+      store.update('resources.books', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
       expect(warning).toHaveBeenCalledTimes(0);
     });
@@ -132,13 +132,13 @@ describe('createResourceStore', () => {
       const unsubscribe = store.subscribe(cb);
       expect(cb).toHaveBeenCalledTimes(0);
 
-      store.update('books.resources', [{ bookId: 5 }]);
+      store.update('resources.books', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
 
       unsubscribe();
       unsubscribe();
 
-      store.update('books.resources', [{ bookId: 5 }]);
+      store.update('resources.books', [{ bookId: 5 }]);
       expect(cb).toHaveBeenCalledTimes(1);
       expect(warning).toHaveBeenCalledTimes(0);
     });
