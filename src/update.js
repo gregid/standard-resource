@@ -1,30 +1,25 @@
 import idFromResource from './utils/id-from-resource';
 import defaultSchema from './utils/default-schema';
 import validateResource from './utils/validate-resource';
-import createChanges from './utils/create-changes';
+import objectFromPath from './utils/object-from-path';
 import createResource from './utils/create-resource';
 import { exists, isObject, isArray, isBoolean } from './utils/identification';
 import merge from './utils/merge';
 import { warning } from './utils/warning';
 
 // update({
-//   authors: {
-//     resources: [],
-//     lists: {},
-//     mergeResources: true,
-//     concatLists: false
-//   },
-//   books: {
-//     resources: [],
-//     lists: {},
-//     mergeResources: false
+//   lists: {},
+//   resources: {
+//     authors: {},
+//     books: {}
 //   }
 // });
 
-export default function update({ path, schemas, state, changes }) {
-  const newState = merge(state);
+export default function update({ path, schemas, state, changes, options }) {
+  options = options || {};
+  const { concatLists } = options;
 
-  changes = createChanges(path, changes);
+  changes = objectFromPath(path, changes);
 
   if (changes && !isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
@@ -34,70 +29,31 @@ export default function update({ path, schemas, state, changes }) {
     );
   }
 
-  for (let resourceType in changes) {
-    const resourceChange = changes[resourceType];
-    const currentResourceSection = state[resourceType] || { resourceType };
+  const resourcesChanges = changes.resources;
+  const listsChanges = changes.lists;
+  const newResources = merge(state.resources);
 
-    if (process.env.NODE_ENV !== 'production') {
-      if (exists(resourceChange) && !isObject(resourceChange)) {
-        warning(
-          `You called update with an invalid update for the` +
-            ` resource of type "${resourceType}". Updates must be an Object.`,
-          'UPDATE_RESOURCES_INVALID_TYPE',
-          'error'
-        );
-      } else {
-        if (exists(resourceChange.resources)) {
-          const resourcesIsObject = isObject(resourceChange.resources);
-          const resourcesIsArray = isArray(resourceChange.resources);
+  let mergeOption;
+  if (isBoolean(options.merge)) {
+    mergeOption = options.merge;
+  } else {
+    mergeOption = true;
+  }
 
-          if (!resourcesIsObject && !resourcesIsArray) {
-            warning(
-              `You called update with an invalid "resources" value for the` +
-                ` resource of type "${resourceType}". The "resource" value of an update` +
-                ` must be an Object or an array.`,
-              'UPDATE_RESOURCES_INVALID_RESOURCES',
-              'error'
-            );
-          }
-        }
+  for (let resourceType in resourcesChanges) {
+    const resourceChange = resourcesChanges[resourceType];
 
-        if (exists(resourceChange.lists)) {
-          const listIsObject = isObject(resourceChange.lists);
-
-          if (!listIsObject) {
-            warning(
-              `You called update with an invalid "lists" value for the` +
-                ` resource of type "${resourceType}". The "lists" value when updating` +
-                ` must be an Object of new lists.`,
-              'UPDATE_RESOURCES_INVALID_LISTS',
-              'error'
-            );
-          }
-        }
-      }
+    if (!newResources[resourceType]) {
+      newResources[resourceType] = {};
     }
 
-    const naiveResources = resourceChange && resourceChange.resources;
-    const naiveLists = (resourceChange && resourceChange.lists) || [];
+    const currentResourceSection = newResources[resourceType];
+
     const schema = schemas[resourceType] || defaultSchema;
     const idProperty = schema.idProperty;
-    const concatLists =
-      resourceChange && isBoolean(resourceChange.concatLists)
-        ? resourceChange.concatLists
-        : false;
 
-    let mergeResources;
-    if (isBoolean(resourceChange.mergeResources)) {
-      mergeResources = resourceChange.mergeResources;
-    } else {
-      mergeResources = true;
-    }
-
-    let newResources = merge(currentResourceSection.resources);
-
-    if (isArray(naiveResources)) {
-      naiveResources.forEach(resource => {
+    if (isArray(resourceChange)) {
+      resourceChange.forEach(resource => {
         const resourceIsObject = isObject(resource);
         const id = resourceIsObject ? resource[idProperty] : resource;
 
@@ -117,98 +73,119 @@ export default function update({ path, schemas, state, changes }) {
 
         const resourceToInsert = createResource({
           input: resource,
-          existing: newResources[id],
+          existing: currentResourceSection[id],
           resourceType,
           schema,
-          mergeResource: mergeResources,
+          mergeResource: mergeOption,
         });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });
         }
 
-        newResources[id] = resourceToInsert;
+        currentResourceSection[id] = resourceToInsert;
       });
     } else {
-      for (let id in naiveResources) {
-        const resource = naiveResources[id];
+      for (let id in resourceChange) {
+        const resource = resourceChange[id];
 
         const resourceAlreadyExists = Boolean(
-          currentResourceSection.resources &&
-            currentResourceSection.resources[id]
+          currentResourceSection && currentResourceSection[id]
         );
-
         // If there is no existing resource, we just add it to the resources object
         if (!resourceAlreadyExists) {
-          newResources[id] = resource;
+          currentResourceSection[id] = merge(resource, {
+            resourceType,
+          });
           continue;
         }
 
         const resourceToInsert = createResource({
           input: resource,
-          existing: newResources[id],
+          existing: currentResourceSection[id],
           resourceType,
           schema,
-          mergeResource: mergeResources,
+          mergeResource: mergeOption,
         });
 
         if (process.env.NODE_ENV !== 'production') {
           validateResource({ resource: resourceToInsert, schema });
         }
 
-        newResources[id] = resourceToInsert;
+        currentResourceSection[id] = resourceToInsert;
       }
     }
-
-    const newLists = {
-      ...currentResourceSection.lists,
-    };
-
-    for (let resourceList in naiveLists) {
-      const resourceIds = [];
-
-      naiveLists[resourceList].forEach(resource => {
-        const id = idFromResource({ resource, schema });
-        const hasId = exists(id);
-
-        if (hasId) {
-          resourceIds.push(id);
-
-          // This allows you to add a resource by specifying it in
-          // a list.
-          if (!newResources[id]) {
-            newResources[id] = createResource({
-              input: resource,
-              resourceType,
-              schema,
-            });
-          }
-        }
-      });
-
-      if (concatLists) {
-        const currentList = newLists[resourceList] || [];
-        if (currentList.length === 0) {
-          newLists[resourceList] = resourceIds;
-        } else {
-          // Only add IDs that don't already exist in the list
-          resourceIds.forEach(id => {
-            if (!newLists[resourceList].includes(id)) {
-              newLists[resourceList].push(id);
-            }
-          });
-        }
-      } else {
-        newLists[resourceList] = resourceIds;
-      }
-    }
-
-    newState[resourceType] = {
-      ...currentResourceSection,
-      resources: newResources,
-      lists: newLists,
-    };
   }
 
-  return newState;
+  const newLists = merge(state.lists);
+
+  for (let resourceList in listsChanges) {
+    const resourcePointers = [];
+
+    listsChanges[resourceList].forEach(resource => {
+      if (!exists(resource)) {
+        return;
+      }
+
+      const resourceType = resource.resourceType;
+      const schema = schemas[resourceType] || defaultSchema;
+      const id = idFromResource({ resource: resource, schema });
+      const hasId = exists(id);
+
+      if (hasId) {
+        resourcePointers.push({
+          [schema.idProperty]: id,
+          resourceType,
+        });
+
+        if (!newResources[resourceType]) {
+          newResources[resourceType] = {};
+        }
+
+        const resourceSection = newResources[resourceType];
+
+        // This allows you to add a resource by specifying it in
+        // a list.
+        if (!resourceSection[id]) {
+          resourceSection[id] = createResource({
+            input: resource,
+            resourceType,
+            schema,
+          });
+        }
+      }
+    });
+
+    if (concatLists) {
+      const currentList = newLists[resourceList] || [];
+      if (currentList.length === 0) {
+        // These need to be deduped!
+        newLists[resourceList] = resourcePointers;
+      } else {
+        // Only add IDs that don't already exist in the list
+        resourcePointers.forEach(resourcePointer => {
+          const schema = schemas[resourcePointer.resourceType] || defaultSchema;
+          const idProperty = schema.idProperty;
+
+          const pointerAlreadyInList = newLists[resourceList].find(pointer => {
+            return (
+              pointer.resourceType === resourcePointer.resourceType &&
+              pointer[idProperty] === resourcePointer[idProperty]
+            );
+          });
+
+          if (!pointerAlreadyInList) {
+            newLists[resourceList].push(resourcePointer);
+          }
+        });
+      }
+    } else {
+      newLists[resourceList] = resourcePointers;
+    }
+  }
+
+  return merge(state, {
+    resources: newResources,
+    lists: newLists,
+  });
 }

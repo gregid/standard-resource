@@ -17,7 +17,11 @@ export default function createResourceStore(initialState = {}, options = {}) {
     schemas[resourceType] = createSchema(schema);
   }
 
-  let currentState = initialState || {};
+  // TEST: make sure that invalid initial states are warn'd
+  let currentState = {
+    resources: initialState ? initialState.resources : {},
+    lists: initialState ? initialState.lists : {},
+  };
 
   let listeners = [];
 
@@ -82,7 +86,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
     },
     update(path, changes) {
       const newState = update({
-        state: currentState.resourceTypes || {},
+        state: currentState,
         schemas,
         path,
         changes,
@@ -90,14 +94,14 @@ export default function createResourceStore(initialState = {}, options = {}) {
       });
 
       currentState = merge(currentState, {
-        resourceTypes: merge(currentState.resourceTypes, newState),
+        resourceTypes: merge(currentState, newState),
       });
 
       onUpdate();
     },
     remove(path, changes) {
       const newState = remove({
-        state: currentState.resourceTypes || {},
+        state: currentState,
         schemas,
         path,
         changes,
@@ -105,7 +109,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
       });
 
       currentState = merge(currentState, {
-        resourceTypes: merge(currentState.resourceTypes, newState),
+        resourceTypes: merge(currentState, newState),
       });
 
       onUpdate();
