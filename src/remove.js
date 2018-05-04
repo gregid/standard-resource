@@ -2,7 +2,6 @@ import defaultSchema from './utils/default-schema';
 import idFromResource from './utils/id-from-resource';
 import merge from './utils/merge';
 import { isArray, isObject, isNull } from './utils/identification';
-import { warning } from './utils/warning';
 import objectFromPath from './utils/object-from-path';
 
 // remove({
@@ -15,14 +14,6 @@ import objectFromPath from './utils/object-from-path';
 
 export default function remove({ path, schemas, state, changes }) {
   changes = objectFromPath(path, changes);
-
-  if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
-    warning(
-      `You called remove with an invalid changes object. Changes must be an Object.`,
-      'DELETE_RESOURCES_INVALID_CHANGES_OBJECT',
-      'error'
-    );
-  }
 
   const resourcesChanges = changes.resources;
   const listsChanges = changes.lists;
