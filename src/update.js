@@ -22,14 +22,6 @@ export default function update({ path, schemas, state, changes, options }) {
 
   changes = objectFromPath(path, changes);
 
-  if (changes && !isObject(changes) && process.env.NODE_ENV !== 'production') {
-    warning(
-      `You called update with an invalid changes object. Changes must be an Object.`,
-      'UPDATE_RESOURCES_INVALID_CHANGES_OBJECT',
-      'error'
-    );
-  }
-
   const resourcesChanges = changes.resources;
   const listsChanges = changes.lists;
   const newResources = merge(state.resources);
