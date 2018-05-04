@@ -105,7 +105,6 @@ export default function createResourceStore(initialState = {}, options = {}) {
         schemas,
         path,
         changes,
-        options,
       });
 
       currentState = merge(currentState, {
