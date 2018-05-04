@@ -50,7 +50,7 @@ store.update('lists.selectedBooks', [{ id: 2, resourceType: 'books' }]);
 Use `store.getList()` to access a list from the store:
 
 ```js
-store.getList('lists.selectedBooks');
+store.getList('selectedBooks');
 ```
 
 When you retrieve a list, you will be given the full resources back, and not just their IDs.
