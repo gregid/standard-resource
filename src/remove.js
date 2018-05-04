@@ -3,7 +3,7 @@ import idFromResource from './utils/id-from-resource';
 import merge from './utils/merge';
 import { isArray, isObject, isNull } from './utils/identification';
 import { warning } from './utils/warning';
-import createChanges from './utils/create-changes';
+import objectFromPath from './utils/object-from-path';
 
 // remove({
 //   lists: {} / [],
@@ -14,7 +14,7 @@ import createChanges from './utils/create-changes';
 // });
 
 export default function remove({ path, schemas, state, changes }) {
-  changes = createChanges(path, changes);
+  changes = objectFromPath(path, changes);
 
   if (!isObject(changes) && process.env.NODE_ENV !== 'production') {
     warning(
