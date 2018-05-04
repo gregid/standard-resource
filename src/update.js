@@ -3,6 +3,7 @@ import defaultSchema from './utils/default-schema';
 import validateResource from './utils/validate-resource';
 import objectFromPath from './utils/object-from-path';
 import createResource from './utils/create-resource';
+import getGlobalId from './utils/get-global-id';
 import { exists, isObject, isArray, isBoolean } from './utils/identification';
 import merge from './utils/merge';
 import { warning } from './utils/warning';
@@ -119,10 +120,13 @@ export default function update({ path, schemas, state, changes, options }) {
 
   const newLists = merge(state.lists);
 
-  for (let resourceList in listsChanges) {
+  for (let listName in listsChanges) {
+    const pointersInList = {};
     const resourcePointers = [];
 
-    listsChanges[resourceList].forEach(resource => {
+    const listChanges = listsChanges[listName];
+
+    listChanges.forEach(resource => {
       if (!exists(resource)) {
         return;
       }
@@ -133,41 +137,50 @@ export default function update({ path, schemas, state, changes, options }) {
       const hasId = exists(id);
 
       if (hasId) {
-        resourcePointers.push({
-          [schema.idProperty]: id,
+        const globalIdentifier = getGlobalId({
+          id,
           resourceType,
         });
 
-        if (!newResources[resourceType]) {
-          newResources[resourceType] = {};
-        }
-
-        const resourceSection = newResources[resourceType];
-
-        // This allows you to add a resource by specifying it in
-        // a list.
-        if (!resourceSection[id]) {
-          resourceSection[id] = createResource({
-            input: resource,
+        if (!pointersInList[globalIdentifier]) {
+          resourcePointers.push({
+            [schema.idProperty]: id,
             resourceType,
-            schema,
           });
+
+          if (!newResources[resourceType]) {
+            newResources[resourceType] = {};
+          }
+
+          const resourceSection = newResources[resourceType];
+
+          // This allows you to add a resource by specifying it in
+          // a list.
+          if (!resourceSection[id]) {
+            resourceSection[id] = createResource({
+              input: resource,
+              resourceType,
+              schema,
+            });
+          }
+
+          pointersInList[globalIdentifier] = true;
         }
       }
     });
 
     if (concatLists) {
-      const currentList = newLists[resourceList] || [];
+      const currentList = newLists[listName] || [];
       if (currentList.length === 0) {
         // These need to be deduped!
-        newLists[resourceList] = resourcePointers;
+        newLists[listName] = resourcePointers;
       } else {
         // Only add IDs that don't already exist in the list
         resourcePointers.forEach(resourcePointer => {
           const schema = schemas[resourcePointer.resourceType] || defaultSchema;
           const idProperty = schema.idProperty;
 
-          const pointerAlreadyInList = newLists[resourceList].find(pointer => {
+          const pointerAlreadyInList = newLists[listName].find(pointer => {
             return (
               pointer.resourceType === resourcePointer.resourceType &&
               pointer[idProperty] === resourcePointer[idProperty]
@@ -175,12 +188,12 @@ export default function update({ path, schemas, state, changes, options }) {
           });
 
           if (!pointerAlreadyInList) {
-            newLists[resourceList].push(resourcePointer);
+            newLists[listName].push(resourcePointer);
           }
         });
       }
     } else {
-      newLists[resourceList] = resourcePointers;
+      newLists[listName] = resourcePointers;
     }
   }
 
