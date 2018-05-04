@@ -30,23 +30,16 @@ This is the state tree for an application with books and people:
 
 ```js
 {
-  resourceTypes: {
+  resources: {
     books: {
-      resources: {
-        // The individual book resources are stored here
-      },
-      lists: {
-        // Lists of books resources are stored here
-      }
+      // The individual book resources are stored here
     },
     people: {
-      resources: {
-        // The individual people resources are stored here
-      },
-      lists: {
-        // Lists of people resources are stored here
-      }
+      // The individual people resources are stored here
     }
+  },
+  lists: {
+    // Lists are stored here
   }
 }
 ```

@@ -23,15 +23,15 @@ a state tree with a `selectedBooks` list might look like:
 
 ```js
 {
-  resourceTypes: {
-    books: {
-      resources: {
-        // resource data is in here
-      },
-      lists: {
-        selectedBooks: [50, 22, 3]
-      }
-    }
+  lists: {
+    selectedBooks: [
+      {id: 50, resourceType: 'books'},
+      {id: 22, resourceType: 'books'},
+      {id: 3, resourceType: 'books'}
+    ],
+  },
+  resources: {
+    // Resources are stored here, by their type
   }
 }
 ```
@@ -42,18 +42,18 @@ You can create lists using the `store.update()` method. In this example, we crea
 list named `"selectedBooks"` that contains a book with an ID of 2.
 
 ```js
-store.update('books.lists.selectedBooks', [2]);
+store.update('lists.selectedBooks', [{ id: 2, resourceType: 'books' }]);
 ```
 
 ### Retrieving a List
 
-Use `store.read()` to access a list from the store:
+Use `store.getList()` to access a list from the store:
 
 ```js
-store.read('books.lists.selectedBooks');
+store.getList('lists.selectedBooks');
 ```
 
-When you read a list, you will be given the full resources back, and not just their IDs.
+When you retrieve a list, you will be given the full resources back, and not just their IDs.
 
 For instance, the above call may return:
 
@@ -78,7 +78,10 @@ to create a list. In this example, we replace our `selectedBooks` list with a di
 set of IDs:
 
 ```js
-store.update('books.lists.selectedBooks', [50, 24]);
+store.update('lists.selectedBooks', [
+  { id: 50, resourceType: 'books' },
+  { id: 24, resourceType: 'books' },
+]);
 ```
 
 ### Appending to a List
@@ -88,7 +91,7 @@ you use `store.update()` for this purpose. One of the options to `store.update()
 `concatLists`. Pass it as `true`, and the IDs will be added to the list.
 
 ```js
-store.update('books.lists.selectedBooks', [2], {
+store.update('lists.selectedBooks', [{ id: 2, resourceType: 'books' }], {
   concatLists: true,
 });
 ```
@@ -107,7 +110,10 @@ To remove resources from a list, you can use `store.delete()`. The arguments are
 adding a resource to the list.
 
 ```js
-store.remove('books.lists.selectedBooks', [50, 24]);
+store.remove('lists.selectedBooks', [
+  { id: 50, resourceType: 'books' },
+  { id: 24, resourceType: 'books' },
+]);
 ```
 
 ### Deleting an Entire List
@@ -116,7 +122,7 @@ You may also use `store.remove()` to delete an entire list. To do that, specify 
 of an array in your call to `remove`:
 
 ```js
-store.remove('books.lists.selectedBooks', null);
+store.remove('lists.selectedBooks', null);
 ```
 
 ### Updating Multiple Lists
@@ -127,13 +133,13 @@ time using these methods. In this example, we perform a bulk operation of lists:
 
 ```js
 store.update({
-  books: {
-    lists: {
-      selectedBooks: [2],
-      favoriteBooks: [2, 10, 55],
-    },
-  },
-  authors: {
+  lists: {
+    selectedBooks: [{ id: 2, resourceType: 'books' }],
+    favoriteBooks: [
+      { id: 2, resourceType: 'books' },
+      { id: 10, resourceType: 'books' },
+      { id: 55, resourceType: 'books' },
+    ],
     selectedAuthors: null,
   },
 });
