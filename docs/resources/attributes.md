@@ -26,7 +26,7 @@ Use `store.update()` to create or update a resource with attributes.
 // This code will create this resource if it does not already exist.
 // If it does exist, then these attributes will be shallowly merged with
 // the existing attributes of the resource.
-store.update('books.resources', [
+store.update('resources.books', [
   {
     id: 24,
     attributes: {
@@ -45,7 +45,7 @@ existing attributes, you can pass a third argument to `update`: an Object with
 ```js
 // In this example, we are completely replacing the attributes of this book
 store.update(
-  'books.resources',
+  'resources.books',
   [
     {
       id: 24,
@@ -71,7 +71,7 @@ book with an ID of 24.
 
 ```js
 store.update(
-  'books.resources.24.attributes.displayNames.en.value',
+  'resources.books.24.attributes.displayNames.en.value',
   'The Lord of the Rings'
 );
 ```
@@ -116,7 +116,7 @@ You can remove a specific attribute using `store.remove()`. In the following exa
 we remove the `releaseYear` attribute from the book with ID of 24.
 
 ```js
-store.remove('books.resources.24.attributes.releaseYear');
+store.remove('resources.books.24.attributes.releaseYear');
 ```
 
 ### Enforcing Types
