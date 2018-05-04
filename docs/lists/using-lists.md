@@ -1,4 +1,4 @@
-# Lists
+# Using Lists
 
 Applications frequently need to group resources together. Sometimes, you need an ordered
 group, such as a sorted list of resources. Other times, you may need an unordered
