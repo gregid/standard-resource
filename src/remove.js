@@ -3,6 +3,7 @@ import idFromResource from './utils/id-from-resource';
 import merge from './utils/merge';
 import { isArray, isObject, isNull } from './utils/identification';
 import objectFromPath from './utils/object-from-path';
+import { warning } from './utils/warning';
 
 // remove({
 //   lists: {} / [],
@@ -19,6 +20,29 @@ export default function remove({ path, schemas, state, changes }) {
   const listsChanges = changes.lists;
   const newResources = merge(state.resources);
 
+  if (process.env.NODE_ENV !== 'production') {
+    if (isNull(listsChanges)) {
+      warning(
+        `You passed 'null' as the value to lists when calling` +
+          ` store.remove(). This is not a valid input. It is not possible to` +
+          ` remove every list. No lists have been changed as a result of this action.`,
+        'REMOVE_LISTS_IS_NULL',
+        'error'
+      );
+    }
+
+    if (isNull(resourcesChanges)) {
+      warning(
+        `You passed 'null' as the value to resources when calling` +
+          ` store.remove(). This is not a valid input. It is not possible to` +
+          ` remove every resource of every type. The resources have not been` +
+          ` changed as a result of this action.`,
+        'REMOVE_RESOURCES_IS_NULL',
+        'error'
+      );
+    }
+  }
+
   const resourcesDeletedByType = {};
 
   for (let resourceType in resourcesChanges) {
@@ -28,10 +52,14 @@ export default function remove({ path, schemas, state, changes }) {
       continue;
     }
 
+    let newResourceSection;
+
     resourcesDeletedByType[resourceType] = {};
 
     const resourceChange = resourcesChanges[resourceType];
     const schema = schemas[resourceType] || defaultSchema;
+
+    const deletingEntireSection = isNull(resourceChange);
 
     let idList = [];
 
@@ -43,12 +71,17 @@ export default function remove({ path, schemas, state, changes }) {
 
         return id;
       });
+    } else if (deletingEntireSection) {
+      newResourceSection = {};
+      // This represents that every resource of this type has been deleted
+      resourcesDeletedByType[resourceType] = true;
     }
 
     const hasIds = idList && idList.length;
-    const newResourceSection = merge(currentResourceSection);
 
     if (hasIds) {
+      newResourceSection = merge(currentResourceSection);
+
       idList.map(id => {
         delete newResourceSection[id];
       });
@@ -94,6 +127,9 @@ export default function remove({ path, schemas, state, changes }) {
         const deletedType =
           resourcesDeletedByType[resourcePointer.resourceType] || {};
         const removedFromStore =
+          // This represents that this entire resource section was deleted
+          deletedType === true ||
+          // This represents that just this one resource within the type was deleted
           deletedType[resourcePointer[schema.idProperty]];
 
         const removeFromThisList =

@@ -3,7 +3,7 @@ import getList from './get-list';
 import getResources from './get-resources';
 import update from './update';
 import remove from './remove';
-import { isFunction } from './utils/identification';
+import { exists, isFunction } from './utils/identification';
 import { warning } from './utils/warning';
 
 export default function createResourceStore(initialState = {}, options = {}) {
@@ -95,6 +95,18 @@ export default function createResourceStore(initialState = {}, options = {}) {
       onUpdate();
     },
     remove(path, changes) {
+      // A `null` leaf within `changes` maps to removing the thing.
+      //
+      // remove('lists.favorites')   <== this will delete the list (in other words, it is defaulting `changes` to null)
+      // remove('lists.favorites', undefined) <== this will not delete the list
+      //
+      // This system is powered by looking at the arguments length
+      const defaultToNull = arguments.length === 1;
+
+      if (defaultToNull && !exists(changes)) {
+        changes = null;
+      }
+
       currentState = remove({
         state: currentState,
         schemas,
