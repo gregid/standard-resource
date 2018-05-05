@@ -28,6 +28,19 @@ const deepUpdate = {
   },
 };
 
+const deepUpdateWithObject = {
+  displayNames: {
+    nl: {
+      status: {
+        active: {
+          value: true,
+          startDate: '2018-10-02',
+        },
+      },
+    },
+  },
+};
+
 describe('merge', () => {
   it('should merge nothing', () => {
     expect(merge(undefined, undefined, true)).toEqual({});
@@ -97,5 +110,54 @@ describe('merge', () => {
     });
     expect(result).not.toBe(big);
     expect(result).not.toBe(deepUpdate);
+  });
+
+  it('should merge a deep update into a big object, replacing a primitive with an object', () => {
+    const result = merge(big, deepUpdateWithObject, true);
+    expect(result).toEqual({
+      displayNames: {
+        en: {
+          value: 'please',
+          status: {
+            active: true,
+          },
+        },
+        nl: {
+          value: 'alstublieft',
+          status: {
+            active: {
+              value: true,
+              startDate: '2018-10-02',
+            },
+          },
+        },
+      },
+      internalName: 'please',
+    });
+    expect(result).not.toBe(big);
+    expect(result).not.toBe(deepUpdateWithObject);
+  });
+
+  it('should merge a deep update into a big object, replacing an object with a primitive', () => {
+    const result = merge(deepUpdateWithObject, big, true);
+    expect(result).toEqual({
+      displayNames: {
+        en: {
+          value: 'please',
+          status: {
+            active: true,
+          },
+        },
+        nl: {
+          value: 'alstublieft',
+          status: {
+            active: false,
+          },
+        },
+      },
+      internalName: 'please',
+    });
+    expect(result).not.toBe(big);
+    expect(result).not.toBe(deepUpdateWithObject);
   });
 });
