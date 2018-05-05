@@ -32,7 +32,7 @@ export default function createResource({
   return {
     [schema.idProperty]: idValue,
     resourceType,
-    attributes: merge(existingObj.attributes, inputObject.attributes),
-    meta: merge(existingObj.meta, inputObject.meta),
+    attributes: merge(existingObj.attributes, inputObject.attributes, true),
+    meta: merge(existingObj.meta, inputObject.meta, true),
   };
 }
