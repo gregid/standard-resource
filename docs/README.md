@@ -14,7 +14,7 @@
   * [Updating](resources/updating-resources.md)
   * [Deleting](resources/deleting-resources.md)
   * [Using Computed Attributes](resources/using-computed-attributes.md)
-  * [Schemas](schemas.md)
+  * [Schemas](resources/schemas.md)
 * [Groups](groups/README.md)
   * [Creating](groups/creating-groups.md)
   * [Retrieving](groups/retrieving-groups.md)
