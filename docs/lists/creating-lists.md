@@ -1,6 +1,6 @@
 # Creating Lists
 
-You can use `store.update()` to create a list. You will need two things to create
+Use `store.update()` to create a list. You need two things to create
 a list: a name and the resources that you would like to add to the list.
 
 ### List Names
@@ -20,9 +20,9 @@ Here are some examples of list names:
 
 ### Creating Lists
 
-Once you have decided on a list name, you are ready to make a list. Typically, it is
-convenient to use `store.getResources()` when you are creating a list, as the following
-example demonstrates:
+Once you have decided on a list name, you can make a list. Typically, it is convenient to
+use `store.getResources()` when you are creating a list, as the following example
+demonstrates:
 
 ```js
 const booksToAdd = getResources('books', [2]);

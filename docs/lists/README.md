@@ -1,11 +1,11 @@
 # Lists
 
-Applications frequently need to group resources together. Sometimes, you need an ordered
-group, such as a sorted list of resources. Other times, you may need an unordered
-group, such as the list of resources that a user has selected on an interface.
+A list is a group of resources. Lists can be used for both ordered and
+unordered groups of resources.
 
-Lists are designed for these use cases. Anytime that you need a grouping of resources,
-you should use lists.
+A common use case for lists is when a user is able to select items
+on a page to perform a bulk action. The items that they have selected
+can be represented as a list.
 
 * [Creating Lists](creating-lists.md)
 * [Retrieving Lists](retrieving-lists.md)

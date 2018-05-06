@@ -1,6 +1,6 @@
 # Updating Lists
 
-You can use `store.update()` and `store.remove() to update a lists. The following operations are possible:
+Use `store.update()` and `store.remove()` to update lists. The following operations are possible:
 
 Using `update()`:
 
@@ -11,6 +11,9 @@ Using `remove()`:
 
 * removing resource(s) from a list
 
+> Heads up: you can also delete an entire list using both `update()` and `remove()`. This
+> is covered in the next guide, [Deleting Lists](deleting-lists.md).
+
 ### Replacing a List
 
 Replacing the contents of a list is straightforward: it looks the exact same as the call
@@ -18,10 +21,9 @@ to create a list. In this example, we replace our `selectedBooks` list with a di
 set of IDs:
 
 ```js
-store.update('lists.selectedBooks', [
-  { id: 50, resourceType: 'books' },
-  { id: 24, resourceType: 'books' },
-]);
+const newSelectedBooks = store.getResources('books', [50, 24]);
+
+store.update('lists.selectedBooks', newSelectedBooks);
 ```
 
 ### Appending to a List
@@ -52,7 +54,8 @@ store.remove('lists.selectedBooks', [
 
 The previous examples used the `path` argument to `store.update()` to
 update a single list. But you can update as many lists across as many resources at a single
-time using these methods. In this example, we perform a bulk operation of lists:
+time using these methods. In this example, we perform a bulk operation to replace
+several lists at the same time:
 
 ```js
 store.update({
@@ -63,6 +66,7 @@ store.update({
       { id: 10, resourceType: 'books' },
       { id: 55, resourceType: 'books' },
     ],
+    favoriteMovies: [],
   },
 });
 ```
