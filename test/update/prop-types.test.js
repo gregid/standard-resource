@@ -43,7 +43,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -122,7 +122,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -206,7 +206,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -292,7 +292,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -377,7 +377,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -459,7 +459,7 @@ describe('update – PropTypes with a custom schema', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

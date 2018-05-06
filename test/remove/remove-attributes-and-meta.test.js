@@ -40,7 +40,7 @@ describe('remove - resource attributes and meta', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -111,7 +111,7 @@ describe('remove - resource attributes and meta', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -183,7 +183,7 @@ describe('remove - resource attributes and meta', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

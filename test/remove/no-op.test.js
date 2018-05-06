@@ -31,7 +31,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -99,7 +99,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -168,7 +168,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -204,12 +204,12 @@ describe('remove - no state changes', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should not change the state when called when no list names match', () => {
+  it('should not change the state when called when no group names match', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           bladasdasdsd: ['blah'],
         },
       },
@@ -237,7 +237,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

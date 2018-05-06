@@ -2,7 +2,7 @@ import update from '../../src/update';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('update - concat lists', function() {
+describe('update - concat groups', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -31,7 +31,7 @@ describe('update - concat lists', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -66,15 +66,15 @@ describe('update - concat lists', function() {
     };
   });
 
-  it('should concat a list with concatLists: true', () => {
+  it('should concat a group with concatGroups: true', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       options: {
-        concatLists: true,
+        concatGroups: true,
       },
       changes: {
-        lists: {
+        groups: {
           favoriteBooks: [
             {
               id: 10,
@@ -107,7 +107,7 @@ describe('update - concat lists', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -144,16 +144,16 @@ describe('update - concat lists', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should concatenate a list that didnt exist before with concatList: true', () => {
+  it('should concatenate a group that didnt exist before with concatGroup: true', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       options: {
-        concatLists: true,
+        concatGroups: true,
       },
       changes: {
-        lists: {
-          newList: [
+        groups: {
+          newGroup: [
             {
               id: 10,
               resourceType: 'books',
@@ -185,8 +185,8 @@ describe('update - concat lists', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
-        newList: [{ id: 10, resourceType: 'books' }],
+      groups: {
+        newGroup: [{ id: 10, resourceType: 'books' }],
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -222,15 +222,15 @@ describe('update - concat lists', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should concatenate a list with concatList: true, preventing duplicates', () => {
+  it('should concatenate a group with concatGroup: true, preventing duplicates', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       options: {
-        concatLists: true,
+        concatGroups: true,
       },
       changes: {
-        lists: {
+        groups: {
           favoriteBooks: [
             {
               id: 10,
@@ -283,7 +283,7 @@ describe('update - concat lists', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

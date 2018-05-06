@@ -31,7 +31,7 @@ describe('update - creating a new resource for an existing resource type', funct
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -116,7 +116,7 @@ describe('update - creating a new resource for an existing resource type', funct
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -205,7 +205,7 @@ describe('update - creating a new resource for an existing resource type', funct
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -294,7 +294,7 @@ describe('update - creating a new resource for an existing resource type', funct
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -369,7 +369,7 @@ describe('update - creating a new resource for an existing resource type', funct
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

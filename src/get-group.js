@@ -3,16 +3,16 @@ import defaultSchema from './utils/default-schema';
 import { exists, isString, isObject } from './utils/identification';
 import { warning } from './utils/warning';
 
-export default function getList({ listName, options = {}, state, schemas }) {
+export default function getGroup({ groupName, options = {}, state, schemas }) {
   const { byId = false } = options;
 
   const defaultResponse = byId ? {} : [];
 
-  if (!isString(listName)) {
+  if (!isString(groupName)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
-        `An invalid listName was passed to getList.` +
-          ` listName must be a string.`,
+        `An invalid groupName was passed to getGroup.` +
+          ` groupName must be a string.`,
         'GET_LIST_INVALID_LIST_NAME',
         'error'
       );
@@ -24,7 +24,7 @@ export default function getList({ listName, options = {}, state, schemas }) {
   if (!isObject(options)) {
     if (process.env.NODE_ENV !== 'production') {
       warning(
-        `Invalid options were passed to getList.` +
+        `Invalid options were passed to getGroup.` +
           ` options must be an object. The value that you` +
           ` passed will be ignored.`,
         'GET_LIST_INVALID_OPTIONS',
@@ -33,18 +33,18 @@ export default function getList({ listName, options = {}, state, schemas }) {
     }
   }
 
-  const list = state.lists[listName];
+  const group = state.groups[groupName];
 
-  if (!exists(list)) {
+  if (!exists(group)) {
     return defaultResponse;
   }
 
-  if (list.length === 0) {
+  if (group.length === 0) {
     return defaultResponse;
   }
 
   if (!byId) {
-    return list
+    return group
       .map(resourcePointer => {
         const resources = state.resources[resourcePointer.resourceType] || {};
         const schema = schemas[resourcePointer.resourceType] || defaultSchema;
@@ -59,7 +59,7 @@ export default function getList({ listName, options = {}, state, schemas }) {
       })
       .filter(Boolean);
   } else {
-    return list.reduce((result, resourcePointer) => {
+    return group.reduce((result, resourcePointer) => {
       const resources = state.resources[resourcePointer.resourceType] || {};
       const schema = schemas[resourcePointer.resourceType] || defaultSchema;
 

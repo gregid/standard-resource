@@ -31,7 +31,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -66,12 +66,12 @@ describe('remove - no state changes', function() {
     };
   });
 
-  it('should warn and not change the state when trying to remove every list', () => {
+  it('should warn and not change the state when trying to remove every group', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: null,
+        groups: null,
       },
     });
 
@@ -97,7 +97,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -166,7 +166,7 @@ describe('remove - no state changes', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

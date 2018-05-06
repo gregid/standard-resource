@@ -6,7 +6,7 @@ import objectFromPath from './utils/object-from-path';
 import { warning } from './utils/warning';
 
 // remove({
-//   lists: {} / [],
+//   groups: {} / [],
 //   resources: {
 //     authors: {} / [],
 //     books: {} / []
@@ -17,15 +17,15 @@ export default function remove({ path, schemas, state, changes }) {
   changes = objectFromPath(path, changes);
 
   const resourcesChanges = changes.resources;
-  const listsChanges = changes.lists;
+  const groupsChanges = changes.groups;
   const newResources = merge(state.resources);
 
   if (process.env.NODE_ENV !== 'production') {
-    if (isNull(listsChanges)) {
+    if (isNull(groupsChanges)) {
       warning(
-        `You passed 'null' as the value to lists when calling` +
+        `You passed 'null' as the value to groups when calling` +
           ` store.remove(). This is not a valid input. It is not possible to` +
-          ` remove every list. No lists have been changed as a result of this action.`,
+          ` remove every group. No groups have been changed as a result of this action.`,
         'REMOVE_LISTS_IS_NULL',
         'error'
       );
@@ -62,10 +62,10 @@ export default function remove({ path, schemas, state, changes }) {
     // This handles: remove('resources.books')
     const deletingEntireSection = isNull(resourceChange);
 
-    let idList = [];
+    let idGroup = [];
 
     if (isArray(resourceChange)) {
-      idList = resourceChange.map(resource => {
+      idGroup = resourceChange.map(resource => {
         const id = idFromResource({ schema, resource });
 
         resourcesDeletedByType[resourceType][id] = true;
@@ -80,7 +80,7 @@ export default function remove({ path, schemas, state, changes }) {
         // This handles: `remove('resources.books.24')`
         if (isNull(targetResource)) {
           resourcesDeletedByType[resourceType][resourceId] = true;
-          idList.push(resourceId);
+          idGroup.push(resourceId);
         }
 
         // This allows you to remove all or some of a resource's attributes
@@ -151,12 +151,12 @@ export default function remove({ path, schemas, state, changes }) {
       resourcesDeletedByType[resourceType] = true;
     }
 
-    const hasIds = idList && idList.length;
+    const hasIds = idGroup && idGroup.length;
 
     if (hasIds) {
       newResourceSection = newResourceSection || merge(currentResourceSection);
 
-      idList.map(id => {
+      idGroup.map(id => {
         delete newResourceSection[id];
       });
     }
@@ -164,39 +164,41 @@ export default function remove({ path, schemas, state, changes }) {
     newResources[resourceType] = newResourceSection;
   }
 
-  const listIsArray = isArray(listsChanges);
-  const listIsObject = isObject(listsChanges);
+  const groupIsArray = isArray(groupsChanges);
+  const groupIsObject = isObject(groupsChanges);
 
-  let listsToUse;
-  if (listIsArray || listIsObject) {
-    listsToUse = listsChanges;
+  let groupsToUse;
+  if (groupIsArray || groupIsObject) {
+    groupsToUse = groupsChanges;
   } else {
-    listsToUse = [];
+    groupsToUse = [];
   }
 
-  let listsToDelete = [];
-  if (listIsArray) {
-    listsToDelete = listsToUse;
-  } else if (listIsObject) {
-    for (let listName in listsToUse) {
-      if (isNull(listsToUse[listName])) {
-        listsToDelete.push(listName);
+  let groupsToDelete = [];
+  if (groupIsArray) {
+    groupsToDelete = groupsToUse;
+  } else if (groupIsObject) {
+    for (let groupName in groupsToUse) {
+      if (isNull(groupsToUse[groupName])) {
+        groupsToDelete.push(groupName);
       }
     }
-    listsToDelete;
+    groupsToDelete;
   }
 
-  const newLists = {};
+  const newGroups = {};
 
-  // We iterate every existing list
-  for (let resourceList in state.lists) {
-    // We only consider the lists that aren't slated to be deleted
-    if (!listsToDelete.includes(resourceList)) {
-      const existingList = state.lists[resourceList];
-      const thisListFromChange = listIsObject ? listsToUse[resourceList] : [];
-      const thisListIsArray = isArray(thisListFromChange);
+  // We iterate every existing group
+  for (let resourceGroup in state.groups) {
+    // We only consider the groups that aren't slated to be deleted
+    if (!groupsToDelete.includes(resourceGroup)) {
+      const existingGroup = state.groups[resourceGroup];
+      const thisGroupFromChange = groupIsObject
+        ? groupsToUse[resourceGroup]
+        : [];
+      const thisGroupIsArray = isArray(thisGroupFromChange);
 
-      newLists[resourceList] = existingList.filter(resourcePointer => {
+      newGroups[resourceGroup] = existingGroup.filter(resourcePointer => {
         const schema = schemas[resourcePointer.resourceType] || defaultSchema;
         const deletedType =
           resourcesDeletedByType[resourcePointer.resourceType] || {};
@@ -206,9 +208,9 @@ export default function remove({ path, schemas, state, changes }) {
           // This represents that just this one resource within the type was deleted
           deletedType[resourcePointer[schema.idProperty]];
 
-        const removeFromThisList =
-          thisListIsArray &&
-          thisListFromChange.find(resource => {
+        const removeFromThisGroup =
+          thisGroupIsArray &&
+          thisGroupFromChange.find(resource => {
             return (
               resource[schema.idProperty] ===
                 resourcePointer[schema.idProperty] &&
@@ -216,13 +218,13 @@ export default function remove({ path, schemas, state, changes }) {
             );
           });
 
-        return !removedFromStore && !removeFromThisList;
+        return !removedFromStore && !removeFromThisGroup;
       });
     }
   }
 
   return merge(state, {
     resources: newResources,
-    lists: newLists,
+    groups: newGroups,
   });
 }

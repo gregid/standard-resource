@@ -260,7 +260,7 @@ describe('getResources', function() {
     });
   });
 
-  describe('calling it with a list of IDs', () => {
+  describe('calling it with a group of IDs', () => {
     it('should return empty results with an empty set of IDs', () => {
       const results = getResources({
         state: this.state,

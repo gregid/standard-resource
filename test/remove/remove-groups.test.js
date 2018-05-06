@@ -31,7 +31,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -66,12 +66,12 @@ describe('remove - resources', function() {
     };
   });
 
-  it('should delete a list that matches, array format', () => {
+  it('should delete a group that matches, array format', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: ['newBooks'],
+        groups: ['newBooks'],
       },
     });
 
@@ -97,7 +97,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -120,11 +120,11 @@ describe('remove - resources', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should delete a list that matches, path syntax', () => {
+  it('should delete a group that matches, path syntax', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
-      path: 'lists.newBooks',
+      path: 'groups.newBooks',
       changes: null,
     });
 
@@ -150,7 +150,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -173,12 +173,12 @@ describe('remove - resources', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should delete a list that matches, object format, leaving behind non-null lists', () => {
+  it('should delete a group that matches, object format, leaving behind non-null groups', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           newBooks: null,
           favoriteBooks: [],
         },
@@ -207,7 +207,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -230,12 +230,12 @@ describe('remove - resources', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should remove resources from a list', () => {
+  it('should remove resources from a group', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           favoriteBooks: [
             {
               resourceType: 'books',
@@ -268,7 +268,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

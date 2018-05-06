@@ -9,7 +9,7 @@ import merge from './utils/merge';
 import { warning } from './utils/warning';
 
 // update({
-//   lists: {},
+//   groups: {},
 //   resources: {
 //     authors: {},
 //     books: {}
@@ -18,12 +18,12 @@ import { warning } from './utils/warning';
 
 export default function update({ path, schemas, state, changes, options }) {
   options = options || {};
-  const { concatLists } = options;
+  const { concatGroups } = options;
 
   changes = objectFromPath(path, changes);
 
   const resourcesChanges = changes.resources;
-  const listsChanges = changes.lists;
+  const groupsChanges = changes.groups;
   const newResources = merge(state.resources);
 
   let mergeOption;
@@ -110,15 +110,15 @@ export default function update({ path, schemas, state, changes, options }) {
     }
   }
 
-  const newLists = merge(state.lists);
+  const newGroups = merge(state.groups);
 
-  for (let listName in listsChanges) {
-    const pointersInList = {};
+  for (let groupName in groupsChanges) {
+    const pointersInGroup = {};
     const resourcePointers = [];
 
-    const listChanges = listsChanges[listName];
+    const groupChanges = groupsChanges[groupName];
 
-    listChanges.forEach(resource => {
+    groupChanges.forEach(resource => {
       if (!exists(resource)) {
         return;
       }
@@ -135,7 +135,7 @@ export default function update({ path, schemas, state, changes, options }) {
           resourceType,
         });
 
-        if (!pointersInList[globalIdentifier]) {
+        if (!pointersInGroup[globalIdentifier]) {
           resourcePointers.push({
             [schema.idProperty]: id,
             resourceType,
@@ -148,7 +148,7 @@ export default function update({ path, schemas, state, changes, options }) {
           const resourceSection = newResources[resourceType];
 
           // This allows you to add a resource by specifying it in
-          // a list.
+          // a group.
           if (!resourceSection[id]) {
             resourceSection[id] = createResource({
               input: resource,
@@ -157,41 +157,41 @@ export default function update({ path, schemas, state, changes, options }) {
             });
           }
 
-          pointersInList[globalIdentifier] = true;
+          pointersInGroup[globalIdentifier] = true;
         }
       }
     });
 
-    if (concatLists) {
-      const currentList = newLists[listName] || [];
-      if (currentList.length === 0) {
+    if (concatGroups) {
+      const currentGroup = newGroups[groupName] || [];
+      if (currentGroup.length === 0) {
         // These need to be deduped!
-        newLists[listName] = resourcePointers;
+        newGroups[groupName] = resourcePointers;
       } else {
-        // Only add IDs that don't already exist in the list
+        // Only add IDs that don't already exist in the group
         resourcePointers.forEach(resourcePointer => {
           const schema = schemas[resourcePointer.resourceType] || defaultSchema;
           const idProperty = schema.idProperty;
 
-          const pointerAlreadyInList = newLists[listName].find(pointer => {
+          const pointerAlreadyInGroup = newGroups[groupName].find(pointer => {
             return (
               pointer.resourceType === resourcePointer.resourceType &&
               pointer[idProperty] === resourcePointer[idProperty]
             );
           });
 
-          if (!pointerAlreadyInList) {
-            newLists[listName].push(resourcePointer);
+          if (!pointerAlreadyInGroup) {
+            newGroups[groupName].push(resourcePointer);
           }
         });
       }
     } else {
-      newLists[listName] = resourcePointers;
+      newGroups[groupName] = resourcePointers;
     }
   }
 
   return merge(state, {
     resources: newResources,
-    lists: newLists,
+    groups: newGroups,
   });
 }

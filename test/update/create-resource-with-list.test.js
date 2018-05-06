@@ -2,7 +2,7 @@ import update from '../../src/update';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('update - replace list', function() {
+describe('update - replace group', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -31,7 +31,7 @@ describe('update - replace list', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -66,12 +66,12 @@ describe('update - replace list', function() {
     };
   });
 
-  it('allows you to create a resource by specifying it in a list (object form)', () => {
+  it('allows you to create a resource by specifying it in a group (object form)', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           favoriteAuthors: [
             {
               id: 2,
@@ -122,7 +122,7 @@ describe('update - replace list', function() {
           },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',

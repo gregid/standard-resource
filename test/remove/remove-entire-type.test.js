@@ -31,7 +31,7 @@ describe('remove - entire resource type', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteThings: [
           {
             resourceType: 'books',
@@ -86,7 +86,7 @@ describe('remove - entire resource type', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteThings: [
           {
             resourceType: 'authors',

@@ -14,13 +14,13 @@ export default function idFromResource({ resource, schema }) {
     if (process.env.NODE_ENV !== 'production') {
       if (missingAttribute) {
         warning(
-          `An invalid resource object was passed in a list. It is missing an ID`,
+          `An invalid resource object was passed in a group. It is missing an ID`,
           'ID_FROM_RESOURCE_MISSING_ID_IN_OBJECT',
           'error'
         );
       } else if (invalidProperty) {
         warning(
-          `An invalid resource was passed in a list in an object. Resources must have an ID that` +
+          `An invalid resource was passed in a group in an object. Resources must have an ID that` +
             ` is either a string or a number`,
           'ID_FROM_RESOURCE_INVALID_ID_OBJECT',
           'error'
@@ -37,7 +37,7 @@ export default function idFromResource({ resource, schema }) {
     if (!isString(resource) && !isNumber(resource)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
-          `An invalid resource ID was passed in a list. IDs must be strings or numbers.`,
+          `An invalid resource ID was passed in a group. IDs must be strings or numbers.`,
           'ID_FROM_RESOURCE_INVALID_ID',
           'error'
         );

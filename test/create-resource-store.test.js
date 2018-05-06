@@ -6,7 +6,7 @@ describe('createResourceStore', () => {
     const store = createResourceStore();
 
     expect(typeof store.getState).toEqual('function');
-    expect(typeof store.getList).toEqual('function');
+    expect(typeof store.getGroup).toEqual('function');
     expect(typeof store.getResources).toEqual('function');
     expect(typeof store.update).toEqual('function');
     expect(typeof store.remove).toEqual('function');
@@ -24,7 +24,7 @@ describe('createResourceStore', () => {
       });
       const state = store.getState();
       expect(state).toEqual({
-        lists: {},
+        groups: {},
         resources: {},
       });
       expect(warning).toHaveBeenCalledTimes(0);
@@ -55,12 +55,12 @@ describe('createResourceStore', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('allows you to create and then retrieve a list', () => {
+  it('allows you to create and then retrieve a group', () => {
     const store = createResourceStore(null);
 
-    store.update('lists.favoriteBooks', [{ id: 5, resourceType: 'books' }]);
+    store.update('groups.favoriteBooks', [{ id: 5, resourceType: 'books' }]);
 
-    const resources = store.getList('favoriteBooks');
+    const resources = store.getGroup('favoriteBooks');
     expect(resources).toEqual([
       {
         id: 5,
@@ -73,7 +73,7 @@ describe('createResourceStore', () => {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('allows you to create and then retrieve a list when using a custom idProperty in a schema', () => {
+  it('allows you to create and then retrieve a group when using a custom idProperty in a schema', () => {
     const store = createResourceStore(null, {
       schemas: {
         books: {
@@ -82,9 +82,11 @@ describe('createResourceStore', () => {
       },
     });
 
-    store.update('lists.favoriteBooks', [{ bookId: 5, resourceType: 'books' }]);
+    store.update('groups.favoriteBooks', [
+      { bookId: 5, resourceType: 'books' },
+    ]);
 
-    const resources = store.getList('favoriteBooks');
+    const resources = store.getGroup('favoriteBooks');
     expect(resources).toEqual([
       {
         bookId: 5,

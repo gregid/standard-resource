@@ -14,7 +14,7 @@ export default {
   // The ID attribute
   idProperty: 'id',
 
-  // A list of computed attributes for this resource type
+  // A group of computed attributes for this resource type
   computedAttributes: {},
 
   // Enforce prop types for attributes or meta

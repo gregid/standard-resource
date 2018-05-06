@@ -83,47 +83,47 @@ export default function getResources({
   }
 
   const schema = schemas[resourceType] || defaultSchema;
-  let idsList;
+  let idsGroup;
 
   if (isFunction(filter) || !hasFilter) {
     const appliedFilter = filter ? filter : () => true;
-    const resourceList = Object.values(resources)
+    const resourceGroup = Object.values(resources)
       .map(resource =>
         resolveResource({ state, resource, schema, options, schemas })
       )
       .filter(resource => appliedFilter(resource, resources));
 
     const res = !byId
-      ? resourceList
-      : resourceList.reduce((result, resource) => {
+      ? resourceGroup
+      : resourceGroup.reduce((result, resource) => {
           result[resource[schema.idProperty]] = resource;
           return result;
         }, {});
 
     return res;
   } else if (isObject(filter) && !isArray(filter)) {
-    const resourceList = Object.values(resources)
+    const resourceGroup = Object.values(resources)
       .map(resource =>
         resolveResource({ state, resource, schema, options, schemas })
       )
       .filter(resource => objectMatchesObject(resource, filter));
 
     return !byId
-      ? resourceList
-      : resourceList.reduce((result, resource) => {
+      ? resourceGroup
+      : resourceGroup.reduce((result, resource) => {
           result[resource[schema.idProperty]] = resource;
           return result;
         }, {});
   } else {
-    idsList = filter;
+    idsGroup = filter;
   }
 
-  if (!(idsList && idsList.length)) {
+  if (!(idsGroup && idsGroup.length)) {
     return defaultResponse;
   }
 
   if (!byId) {
-    return idsList
+    return idsGroup
       .map(id =>
         resolveResource({
           state,
@@ -135,7 +135,7 @@ export default function getResources({
       )
       .filter(Boolean);
   } else {
-    return idsList.reduce((result, id) => {
+    return idsGroup.reduce((result, id) => {
       result[id] = resolveResource({
         state,
         resource: resources[id],

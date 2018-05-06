@@ -31,7 +31,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -75,7 +75,7 @@ describe('remove - resources', function() {
           books: [{ id: 2 }, 5],
           authors: ['a'],
         },
-        lists: ['newBooks', 'things'],
+        groups: ['newBooks', 'things'],
       },
     });
 
@@ -90,7 +90,7 @@ describe('remove - resources', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [],
       },
     });

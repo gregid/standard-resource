@@ -1,8 +1,8 @@
-import getList from '../../src/get-list';
+import getGroup from '../../src/get-group';
 import { warning } from '../../src/utils/warning';
 import defaultSchema from '../../src/utils/default-schema';
 
-describe('getList', function() {
+describe('getGroup', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -13,7 +13,7 @@ describe('getList', function() {
     };
 
     this.state = {
-      lists: {
+      groups: {
         newBooks: [
           {
             resourceType: 'books',
@@ -24,7 +24,7 @@ describe('getList', function() {
             id: 2,
           },
         ],
-        emptyList: [],
+        emptyGroup: [],
       },
       resources: {
         books: {
@@ -74,11 +74,11 @@ describe('getList', function() {
     };
   });
 
-  it('should warn when an invalid list name is passed', () => {
-    const result = getList({
+  it('should warn when an invalid group name is passed', () => {
+    const result = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: /a/,
+      groupName: /a/,
     });
 
     expect(warning).toHaveBeenCalledTimes(1);
@@ -88,10 +88,10 @@ describe('getList', function() {
   });
 
   it('should warn when invalid options are passed, but continue to work', () => {
-    const results = getList({
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'newBooks',
+      groupName: 'newBooks',
       options: true,
     });
 
@@ -123,33 +123,33 @@ describe('getList', function() {
     expect(warning.mock.calls[0][2]).toEqual('error');
   });
 
-  it('byId: false; should return an empty array for an empty list', () => {
-    const results = getList({
+  it('byId: false; should return an empty array for an empty group', () => {
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'emptyList',
+      groupName: 'emptyGroup',
     });
     expect(warning).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([]);
   });
 
-  it('byId: false; should return an empty array for a nonexistent list', () => {
-    const results = getList({
+  it('byId: false; should return an empty array for a nonexistent group', () => {
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'listThatDoesntExist',
+      groupName: 'groupThatDoesntExist',
     });
     expect(warning).toHaveBeenCalledTimes(0);
 
     expect(results).toEqual([]);
   });
 
-  it('byId: true; should return an empty object for a nonexistent list', () => {
-    const results = getList({
+  it('byId: true; should return an empty object for a nonexistent group', () => {
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'listThatDoesntExist',
+      groupName: 'groupThatDoesntExist',
       options: {
         byId: true,
       },
@@ -159,11 +159,11 @@ describe('getList', function() {
     expect(results).toEqual({});
   });
 
-  it('byId: false; should return the resources in the list', () => {
-    const results = getList({
+  it('byId: false; should return the resources in the group', () => {
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'newBooks',
+      groupName: 'newBooks',
     });
     expect(warning).toHaveBeenCalledTimes(0);
 
@@ -191,11 +191,11 @@ describe('getList', function() {
     ]);
   });
 
-  it('byId: true; should return the resources in the list', () => {
-    const results = getList({
+  it('byId: true; should return the resources in the group', () => {
+    const results = getGroup({
       state: this.state,
       schemas: this.schemas,
-      listName: 'newBooks',
+      groupName: 'newBooks',
       options: {
         byId: true,
       },

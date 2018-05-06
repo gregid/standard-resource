@@ -1,5 +1,5 @@
 import createSchema from './utils/create-schema';
-import getList from './get-list';
+import getGroup from './get-group';
 import getResources from './get-resources';
 import update from './update';
 import remove from './remove';
@@ -19,27 +19,27 @@ export default function createResourceStore(initialState = {}, options = {}) {
   // TEST: make sure that invalid initial states are warn'd
   let currentState = {
     resources: initialState ? initialState.resources : {},
-    lists: initialState ? initialState.lists : {},
+    groups: initialState ? initialState.groups : {},
   };
 
-  let listeners = [];
+  let groupeners = [];
 
   function getState() {
     return currentState;
   }
 
-  function subscribe(listener) {
-    if (!isFunction(listener)) {
+  function subscribe(groupener) {
+    if (!isFunction(groupener)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
-          `You passed an invalid listener to store.subscribe.` +
-            ` Listeners must be functions.`,
+          `You passed an invalid groupener to store.subscribe.` +
+            ` Groupeners must be functions.`,
           'LISTENER_INVALID_TYPE',
           'error'
         );
       }
     } else {
-      listeners.push(listener);
+      groupeners.push(groupener);
     }
 
     let subscribed = true;
@@ -51,24 +51,24 @@ export default function createResourceStore(initialState = {}, options = {}) {
 
       subscribed = false;
 
-      const index = listeners.indexOf(listener);
-      listeners.splice(index, 1);
+      const index = groupeners.indexOf(groupener);
+      groupeners.splice(index, 1);
     };
   }
 
   function onUpdate() {
-    for (let i = 0; i < listeners.length; i++) {
-      const listener = listeners[i];
-      listener();
+    for (let i = 0; i < groupeners.length; i++) {
+      const groupener = groupeners[i];
+      groupener();
     }
   }
 
   return {
     getState,
     subscribe,
-    getList(listName, options) {
-      return getList({
-        listName,
+    getGroup(groupName, options) {
+      return getGroup({
+        groupName,
         options,
         state: currentState,
         schemas,
@@ -97,8 +97,8 @@ export default function createResourceStore(initialState = {}, options = {}) {
     remove(path, changes) {
       // A `null` leaf within `changes` maps to removing the thing.
       //
-      // remove('lists.favorites')   <== this will delete the list (in other words, it is defaulting `changes` to null)
-      // remove('lists.favorites', undefined) <== this will not delete the list
+      // remove('groups.favorites')   <== this will delete the group (in other words, it is defaulting `changes` to null)
+      // remove('groups.favorites', undefined) <== this will not delete the group
       //
       // This system is powered by looking at the arguments length
       const defaultToNull = arguments.length === 1;

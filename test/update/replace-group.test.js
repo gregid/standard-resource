@@ -2,7 +2,7 @@ import update from '../../src/update';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('update - replace list', function() {
+describe('update - replace group', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -31,7 +31,7 @@ describe('update - replace list', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [
           {
             resourceType: 'books',
@@ -66,12 +66,12 @@ describe('update - replace list', function() {
     };
   });
 
-  it('should replace a list', () => {
+  it('should replace a group', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           favoriteBooks: [{ id: 10, resourceType: 'books' }],
         },
       },
@@ -99,7 +99,7 @@ describe('update - replace list', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [{ id: 10, resourceType: 'books' }],
         newBooks: [
           {
@@ -126,12 +126,12 @@ describe('update - replace list', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should replace a list, ignoring duplicates', () => {
+  it('should replace a group, ignoring duplicates', () => {
     const newState = update({
       state: this.state,
       schemas: this.schemas,
       changes: {
-        lists: {
+        groups: {
           favoriteBooks: [
             { id: 10, resourceType: 'books' },
             { id: 10, resourceType: 'books' },
@@ -163,7 +163,7 @@ describe('update - replace list', function() {
           b: { id: 'b' },
         },
       },
-      lists: {
+      groups: {
         favoriteBooks: [{ id: 10, resourceType: 'books' }],
         newBooks: [
           {

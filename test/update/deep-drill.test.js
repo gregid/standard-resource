@@ -40,7 +40,7 @@ describe('update - deep drill', function() {
           },
         },
       },
-      lists: {},
+      groups: {},
     };
   });
 
@@ -85,7 +85,7 @@ describe('update - deep drill', function() {
           },
         },
       },
-      lists: {},
+      groups: {},
     });
     expect(warning).toHaveBeenCalledTimes(0);
   });
