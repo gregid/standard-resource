@@ -63,18 +63,18 @@ Sometimes, you may need to display information about a Resource that is derived 
 information about the resource. Computed Attributes are functions that you can define. They
 receive the Resource as an argument, and return an attribute value.
 
-## Lists
+## Groups
 
 A collection of Resources. Because they are arrays, they can be ordered. But you can also
-use lists for unordered groupings of resources, too. You can make as many lists as you
+use groups for unordered groupings of resources, too. You can make as many groups as you
 would like.
 
-An example use case for a list is if your application allows a user to select Resources,
-perhaps by checking a checkbox. You may choose to store the selected resources in a List.
+An example use case for a group is if your application allows a user to select Resources,
+perhaps by checking a checkbox. You may choose to store the selected resources in a group.
 
-## List Name
+## Group Name
 
-A unique identifier for a List. It must be a string.
+A unique identifier for a Group. It must be a string.
 
 ## Schema
 

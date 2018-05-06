@@ -38,8 +38,8 @@ This is the state tree for an application with books and people:
       // The individual people resources are stored here
     }
   },
-  lists: {
-    // Lists are stored here
+  groups: {
+    // Groups are stored here
   }
 }
 ```
