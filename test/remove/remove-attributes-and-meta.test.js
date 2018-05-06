@@ -2,7 +2,7 @@ import remove from '../../src/remove';
 import defaultSchema from '../../src/utils/default-schema';
 import { warning } from '../../src/utils/warning';
 
-describe('remove - resources', function() {
+describe('remove - resource attributes and meta', function() {
   beforeEach(() => {
     this.schemas = {
       books: defaultSchema,
@@ -24,6 +24,15 @@ describe('remove - resources', function() {
           },
           10: {
             id: 10,
+            resourceType: 'books',
+            attributes: {
+              firstName: 'sandwiches',
+              lastName: 'aregood',
+            },
+            meta: {
+              isSelected: true,
+              isActive: false,
+            },
           },
         },
         authors: {
@@ -66,11 +75,11 @@ describe('remove - resources', function() {
     };
   });
 
-  it('should delete a single resource (object null form) that matches, leaving the rest of the state unchanged', () => {
+  it('should delete all attributes of a single resource', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
-      path: 'resources.books.10',
+      path: 'resources.books.10.attributes',
       changes: null,
     });
 
@@ -87,6 +96,15 @@ describe('remove - resources', function() {
           5: {
             id: 5,
           },
+          10: {
+            id: 10,
+            resourceType: 'books',
+            attributes: {},
+            meta: {
+              isSelected: true,
+              isActive: false,
+            },
+          },
         },
         authors: {
           a: { id: 'a' },
@@ -113,6 +131,10 @@ describe('remove - resources', function() {
             resourceType: 'books',
             id: 5,
           },
+          {
+            resourceType: 'books',
+            id: 10,
+          },
         ],
         things: [
           {
@@ -125,15 +147,12 @@ describe('remove - resources', function() {
     expect(warning).toHaveBeenCalledTimes(0);
   });
 
-  it('should delete a single resource (ID form) that matches, leaving the rest of the state unchanged', () => {
+  it('should delete all meta of a single resource', () => {
     const newState = remove({
       state: this.state,
       schemas: this.schemas,
-      changes: {
-        resources: {
-          books: [10],
-        },
-      },
+      path: 'resources.books.10.meta',
+      changes: null,
     });
 
     expect(newState).toEqual({
@@ -149,71 +168,14 @@ describe('remove - resources', function() {
           5: {
             id: 5,
           },
-        },
-        authors: {
-          a: { id: 'a' },
-          b: { id: 'b' },
-        },
-      },
-      lists: {
-        favoriteBooks: [
-          {
-            resourceType: 'books',
-            id: 2,
-          },
-          {
-            resourceType: 'books',
-            id: 5,
-          },
-        ],
-        newBooks: [
-          {
-            resourceType: 'books',
-            id: 1,
-          },
-          {
-            resourceType: 'books',
-            id: 5,
-          },
-        ],
-        things: [
-          {
+          10: {
             id: 10,
-            resourceType: 'authors',
-          },
-        ],
-      },
-    });
-    expect(warning).toHaveBeenCalledTimes(0);
-  });
-
-  it('should delete a single resource (ID form) that matches, leaving the rest of the state unchanged', () => {
-    const newState = remove({
-      state: this.state,
-      schemas: this.schemas,
-      changes: {
-        resources: {
-          books: [
-            {
-              id: 10,
-            },
-          ],
-        },
-      },
-    });
-
-    expect(newState).toEqual({
-      resources: {
-        books: {
-          2: {
-            id: 2,
+            resourceType: 'books',
             attributes: {
-              firstName: 'James',
-              lastName: 'Please',
+              firstName: 'sandwiches',
+              lastName: 'aregood',
             },
-          },
-          5: {
-            id: 5,
+            meta: {},
           },
         },
         authors: {
@@ -240,6 +202,10 @@ describe('remove - resources', function() {
           {
             resourceType: 'books',
             id: 5,
+          },
+          {
+            resourceType: 'books',
+            id: 10,
           },
         ],
         things: [

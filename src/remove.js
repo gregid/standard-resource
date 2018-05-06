@@ -59,6 +59,7 @@ export default function remove({ path, schemas, state, changes }) {
     const resourceChange = resourcesChanges[resourceType];
     const schema = schemas[resourceType] || defaultSchema;
 
+    // This handles: remove('resources.books')
     const deletingEntireSection = isNull(resourceChange);
 
     let idList = [];
@@ -71,6 +72,79 @@ export default function remove({ path, schemas, state, changes }) {
 
         return id;
       });
+    } else if (isObject(resourceChange)) {
+      // Iterate every one of these suckas
+      for (let resourceId in resourceChange) {
+        const targetResource = resourceChange[resourceId];
+
+        // This handles: `remove('resources.books.24')`
+        if (isNull(targetResource)) {
+          resourcesDeletedByType[resourceType][resourceId] = true;
+          idList.push(resourceId);
+        }
+
+        // This allows you to remove all or some of a resource's attributes
+        // or meta.
+        else if (isObject(targetResource)) {
+          if (process.env.NODE_ENV !== 'production') {
+            if (isNull(targetResource.resourceType)) {
+              warning(
+                `You attempted to remove the resourceType of a resource in`` a call to store.remove(). resourceType cannot be changed`` or removed. The resourceType has not changed.`,
+                'ATTEMPT_TO_REMOVE_RESOURCE_TYPE',
+                'warn'
+              );
+            } else if (isNull(targetResource[schema.idProperty])) {
+              warning(
+                `You attempted to remove the ${
+                  schema.idProperty
+                } of a resource in`` a call to store.remove(). The ${
+                  schema.idProperty
+                } cannot be changed`` or removed. The ${
+                  schema.idProperty
+                } has not changed.`,
+                'ATTEMPT_TO_REMOVE_RESOURCE_ID',
+                'warn'
+              );
+            } else if (isNull(targetResource.computedAttributes)) {
+              warning(
+                `You attempted to remove the computedAttributes of a resource in`` a call to store.remove(). computedAttributes cannot be changed`` or removed. The computedAttributes have not changed.`,
+                'ATTEMPT_TO_REMOVE_RESOURCE_ID',
+                'warn'
+              );
+            }
+          }
+
+          newResourceSection =
+            newResourceSection || merge(currentResourceSection);
+
+          // Remove all attributes from the resource:
+          // remove('resources.book.24.attributes');
+          if (isNull(targetResource.attributes)) {
+            newResourceSection[resourceId] = merge(
+              currentResourceSection[resourceId],
+              {
+                attributes: {},
+              }
+            );
+            // Use `merge` to delete the attributes
+          } else if (isObject(targetResource.attributes)) {
+            // Delete any attribute leaf that is `null`
+          }
+
+          // Remove all meta from the resource:
+          // remove('resources.book.24.meta');
+          if (isNull(targetResource.meta)) {
+            newResourceSection[resourceId] = merge(
+              currentResourceSection[resourceId],
+              {
+                meta: {},
+              }
+            );
+          } else if (isObject(targetResource.meta)) {
+            // Delete any meta leaf that is `null`
+          }
+        }
+      }
     } else if (deletingEntireSection) {
       newResourceSection = {};
       // This represents that every resource of this type has been deleted
@@ -80,7 +154,7 @@ export default function remove({ path, schemas, state, changes }) {
     const hasIds = idList && idList.length;
 
     if (hasIds) {
-      newResourceSection = merge(currentResourceSection);
+      newResourceSection = newResourceSection || merge(currentResourceSection);
 
       idList.map(id => {
         delete newResourceSection[id];
