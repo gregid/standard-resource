@@ -2,7 +2,7 @@
 
 Creating a store is the first thing you will do when getting started with Standard Resource.
 
-The export of the library is called `createResourceStore`; it is a function that returns a store:
+The default export of the library is called `createResourceStore`; it is a function that returns a store.
 
 ```js
 import createResourceStore from 'standard-resource';

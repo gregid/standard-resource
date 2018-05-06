@@ -1,3 +1,0 @@
-# Prior Art
-
-Coming soon.
