@@ -1,4 +1,4 @@
-# Computed Attributes
+# Defining Computed Attributes
 
 Computed attributes are values that are derived from other resource data. For instance, if you
 have the following resource,
