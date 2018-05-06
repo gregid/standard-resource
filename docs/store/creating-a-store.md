@@ -10,6 +10,9 @@ import createResourceStore from 'standard-resource';
 const store = createResourceStore();
 ```
 
+Because a store contains all of your resource data, you should not create more than one store for
+your application.
+
 ### Initial State
 
 Sometimes, you may want to instantiate a store with initial data. Typically, this is used
@@ -48,3 +51,7 @@ const store = createResourceStore(null, {
 
 The store provides methods to create and update resources and groups. The following guides
 will cover how you can do those things.
+
+### Tips
+
+* There should only ever be one store for each application.
