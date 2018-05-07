@@ -10,7 +10,7 @@ A normalized data store.
 ✓ Works in Node or in the browser  
 ✓ Normalizes data  
 ✓ Flexible: define schemas for extra robustness, or choose not to  
-✘ Sophisticated relationship support (_coming soon_)  
+✘ Sophisticated relationship support (_coming soon_)
 
 ### Installation
 
@@ -27,3 +27,49 @@ or [yarn](https://yarnpkg.com/):
 ```
 yarn add standard-resource
 ```
+
+### Documentation
+
+View the documentation at
+**[standard-resource.js.org ⇗](https://standard-resource.js.org/)**.
+
+### Quick Start
+
+Follow this guide to get a taste of what it's like to work with Standard
+Resource.
+
+First, we create a store. A store is where all of our resource data will be
+located.
+
+```js
+import createResourceStore from 'standard-resource';
+
+const store = createResourceStore();
+```
+
+Next, we can add a resource to the store. Let's create add a book
+with an ID of "24":
+
+```js
+store.update('resources.books.24', {
+  attributes: {
+    name: 'The Lord of the Rings',
+  },
+});
+```
+
+Now that we have created our book, we can retrieve it.
+
+```js
+console.log(store.getResources('books', ['24']));
+// [
+//   {
+//     id: '24',
+//     attributes: { name: 'Lord of the Rings' },
+//     meta: {},
+//     computedAttributes: {}
+//   }
+// ]
+```
+
+This is just a small sample of what it's like working with Standard Resource.
