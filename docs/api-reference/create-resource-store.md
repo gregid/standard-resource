@@ -22,7 +22,7 @@ import createResourceStore from 'standard-resource';
 
 const store = createResourceStore();
 
-stores.update('resources.books.24', {
+store.update('resources.books.24', {
   attributes: {
     name: 'Lord of the Rings',
   },
