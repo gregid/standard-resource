@@ -49,7 +49,7 @@ In the above example, performance should not be an issue because computing the d
 is a quick computation. However, that isn't always the case.
 
 You may have a resource with a computed attribute that is slow to compute.
-In those situations, we recommend using the [Reslect](https://github.com/reduxjs/reselect)
+In those situations, we recommend using the [Reselect](https://github.com/reduxjs/reselect)
 library. Reselect will memoize the slow computation, so that it is only re-evaluated when it
 needs to be.
 
