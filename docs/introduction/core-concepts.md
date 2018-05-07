@@ -1,6 +1,6 @@
 # Core Concepts
 
-Standard Resource has two core concepts: resources and groups.
+Standard Resource has two core concepts: **resources** and **groups**.
 
 ### Resources
 
