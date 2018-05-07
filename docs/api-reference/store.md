@@ -26,7 +26,7 @@ Description here.
 
 Return value here.
 
-<hr>
+---
 
 ### <a id='getGroup'></a>[`getGroup(groupName, [options])`](#getGroup)
 
@@ -48,7 +48,7 @@ Notes here.
 
 Example here.
 
-<hr>
+---
 
 ### <a id='update'></a>[`update([path], changes)`](#update)
 
@@ -70,7 +70,7 @@ Notes here.
 
 Example here.
 
-<hr>
+---
 
 ### <a id='remove'></a>[`remove([path], changes)`](#remove)
 
@@ -92,7 +92,7 @@ Notes here.
 
 Example here.
 
-<hr>
+---
 
 ### <a id='getState'></a>[`getState([path], changes)`](#getState)
 
@@ -114,7 +114,7 @@ Notes here.
 
 Example here.
 
-<hr>
+---
 
 ### <a id='subscribe'></a>[`subscribe(listener)`](#subscribe)
 

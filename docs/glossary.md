@@ -14,12 +14,13 @@ A JavaScript object that holds your data. It is the value returned when you call
 `store.getState()`.
 
 Although it is not necessary to keep the State serializable as JSON, we strongly encourage you
-to do that.
+to.
 
 ## Resource
 
 A JavaScript object that represents an individual unit of information. For instance,
-if you have a Resource Type “books,” then a book resource might be an object for “The Hobbit.”
+if you have a Resource Type “books,” then a book resource might be an object representing
+“The Hobbit.”
 
 ## Resource ID
 
@@ -51,11 +52,6 @@ to select Resources by clicking a checkbox, then you may put an `isSelected` boo
 
 Another example of meta is forms. If a user is allowed to make changes to a Resource,
 then you might decide to place the user’s changes within Meta.
-
-## Relationships
-
-Resource data is frequently relational. For instance, a book may have an author, and an
-author may have written multiple books.
 
 ## Computed Attributes
 
