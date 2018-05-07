@@ -20,7 +20,7 @@ update resources and resource groups, as well as methods to retrieve them from t
 ```js
 import createResourceStore from 'standard-resource';
 
-const stores = createResourceStore();
+const store = createResourceStore();
 
 stores.update('resources.books.24', {
   attributes: {
