@@ -5,14 +5,12 @@
 [![Test Coverage](https://coveralls.io/repos/github/jamesplease/standard-resource/badge.svg?branch=master)](https://coveralls.io/github/jamesplease/standard-resource?branch=master)
 [![gzip size](http://img.badgesize.io/https://unpkg.com/standard-resource/dist/standard-resource.min.js?compression=gzip)](https://unpkg.com/standard-resource/dist/standard-resource.min.js)
 
-> Note: this project is a work in progress.
-
-A standard API for resource management.
+A normalized data store.
 
 ✓ Works in Node or in the browser  
 ✓ Normalizes data  
 ✓ Flexible: define schemas for extra robustness, or choose not to  
-✓ Sophisticated relationship support  
+✘ Sophisticated relationship support (_coming soon_)  
 
 ### Installation
 
