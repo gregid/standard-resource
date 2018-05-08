@@ -45,7 +45,7 @@ Every resource must have a unique identifier, or ID for short. This ID is what d
 resource of a particular [resource type](./type.md) from another resource of the same
 type.
 
-In the following books resource, you can see the unique identifier under the `id` property:
+In the following books resource, you can see the unique identifier, `24`, under the `id` property:
 
 ```js
 {
@@ -56,6 +56,17 @@ In the following books resource, you can see the unique identifier under the `id
   computedAttributes: {},
 }
 ```
+
+Attributes is usually the data that the server understands. If your resources are stored in a
+database, then the attributes may be the columns of the table.
+
+We do not encourage placing client-side information within `attributes.` In fact, a best practice
+is to never modify `attributes` directly. Instead, treat `attributes` as the last known representation
+of the resource that the server understands.
+
+If a user can make changes to a resource, store that information elsewhere (such as in resource metadata,
+described below). You can update the attributes once you have synchronized the user's changes with the
+backend by making a network request to save the data.
 
 #### Uniqueness
 

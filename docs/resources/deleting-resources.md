@@ -12,8 +12,8 @@ store.remove('resources.books.24');
 
 ### Deleting Every Resource of a Type
 
-Sometimes, you may wish to delete every resource of a specific resource type.
-This example shows how you can go about doing that:
+Should you ever need to delete every resource of a specific resource type, you
+can also do that using `remove()`.
 
 ```js
 store.remove('resources.books');

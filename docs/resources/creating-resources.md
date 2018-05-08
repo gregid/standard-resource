@@ -24,7 +24,7 @@ Note that the following code is using the string `"24"` as the ID, rather than t
 number `24`. If you wish to make the ID a number, be sure to _also_ specify it in the
 resource object as well. Otherwise, it will be created as a string.
 
-In this next example, the ID will be created as the number `24`:
+In this next example, the resource will be created with a numeric ID of `24`:
 
 ```js
 store.update('resources.books.24', [
@@ -40,7 +40,7 @@ store.update('resources.books.24', [
 
 ### Creating Multiple Resources
 
-There are two ways to create multiple resources at a time. The first way is to
+There are several ways to create multiple resources at a time. One way is to
 pass an array of resources:
 
 ```js

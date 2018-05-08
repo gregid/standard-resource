@@ -2,6 +2,48 @@
 
 Use `store.update()` and `store.remove()` to change your resource data.
 
+### Updating a Single Resource
+
+Updating a resource is identical to the call to create one.
+
+In this example, we are updating the name and publish year of the resource with an
+ID of 24:
+
+```js
+store.update('resources.books.24', {
+  attributes: {
+    name: 'The Fellowship of the Ring',
+    publishYear: 1940,
+  },
+});
+```
+
+By default, the resource data that you pass will be _deeply_ merged with any
+existing resource.
+
+### Replacing Attributes
+
+If you would like to outright replace an existing resource, you can pass a
+third argument to `update`: an Object with `mergeResources: false`.
+
+```js
+store.update(
+  'resources.books.24',
+  {
+    attributes: {
+      name: 'The Fellowship of the Ring',
+      publishYear: 1940,
+    },
+  },
+  {
+    mergeResources: false,
+  }
+);
+```
+
+If this resource had any other attributes or meta before this call to `update()`,
+they would be removed.
+
 ### Updating a Single Attribute
 
 By using the first argument to `update`, you can scope your update to
@@ -58,30 +100,4 @@ we remove the `releaseYear` attribute from the book with ID of 24.
 
 ```js
 store.remove('resources.books.24.attributes.releaseYear');
-```
-
-### Merging or Replacing Attributes
-
-By default, an existing resource's attributes will be shallowly merged with the
-resource attributes that you pass in. If you would like to outright replace any
-existing attributes, you can pass a third argument to `update`: an Object with
-`mergeResources: false`:
-
-```js
-// In this example, we are completely replacing the attributes of this book
-store.update(
-  'resources.books',
-  [
-    {
-      id: 24,
-      attributes: {
-        name: 'The Fellowship of the Ring',
-        publishYear: 1940,
-      },
-    },
-  ],
-  {
-    mergeResources: false,
-  }
-);
 ```

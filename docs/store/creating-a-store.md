@@ -16,7 +16,7 @@ your application.
 ### Initial State
 
 Sometimes, you may want to instantiate a store with initial data. Typically, this feature is used
-when building progressive web apps and/or universal apps.
+when building progressive web apps, or universal apps.
 
 ```js
 import createResourceStore from 'standard-resource';
