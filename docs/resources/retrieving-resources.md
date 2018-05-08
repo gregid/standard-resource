@@ -5,7 +5,7 @@ Use `store.getResources()` to access resource data from the store.
 ### Filtering by ID
 
 Sometimes, you may have the specific IDs that you wish to pull from the
-store. In those situations, you can pass an array of IDs to `getResources`.
+store. In these situations, you can pass an array of IDs to `getResources`.
 
 ```js
 store.getResources('books', [24, 50]);

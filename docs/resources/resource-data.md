@@ -3,17 +3,11 @@
 Each resource has data associated with it. Resource data is organized
 into different categories:
 
-* `resourceType`: a string that represents the type of this resource. For instance,
-  `books` or `movies`
-* `id`: a unique identifier that distinguishes a resource from another resource
-  of the same type
-* `attributes`: the primary information about the resource. Typically, this is the
-  data that the server sends to you. If you have a book resource, then the `title`
-  and `releaseYear` would be `attributes`.
-* `meta`: similar to `attributes`, but this is for information that the server does
-  not understand. For instance, form data or other information that the client uses.
-* `computedAttributes`: information about the resource that is derived from the resource's
-  other information.
+* `resourceType`: a string that represents the type of this resource. For instance, `books` or `movies`
+* `id`: a unique identifier that distinguishes a resource from another resource of the same type
+* `attributes`: the primary information about the resource. Typically, this is the data that the server sends to you. If you have a book resource, then the `title` and `releaseYear` would be `attributes`.
+* `meta`: similar to `attributes`, but this is for information that the server does not understand. For instance, form data or other information that the client uses.
+* `computedAttributes`: information about the resource that is derived from the resource's other information.
 
 ### Resource Type
 
@@ -142,5 +136,4 @@ To learn more about them, refer to the [Using Computed Attributes guide](using-c
 
 ### Tips
 
-* We recommend using a plural name for your resource types. For instance, use
-  "people" and not "person".
+* We recommend using a plural name for your resource types. For instance, use "people" and not "person".

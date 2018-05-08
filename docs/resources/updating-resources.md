@@ -66,27 +66,23 @@ different resource types. In the following example, we update two books and an a
 with one call.
 
 ```js
-store.update({
+store.update('resources', {
   books: {
-    resources: {
-      24: {
-        attributes: {
-          name: 'The Lord of the Rings',
-        },
+    24: {
+      attributes: {
+        name: 'The Lord of the Rings',
       },
-      350: {
-        attributes: {
-          publishYear: 1998,
-        },
+    },
+    350: {
+      attributes: {
+        publishYear: 1998,
       },
     },
   },
   authors: {
-    resources: {
-      102: {
-        attributes: {
-          firstName: 'John',
-        },
+    102: {
+      attributes: {
+        firstName: 'John',
       },
     },
   },

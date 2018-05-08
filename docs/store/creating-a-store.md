@@ -10,8 +10,7 @@ import createResourceStore from 'standard-resource';
 const store = createResourceStore();
 ```
 
-Because a store contains all of your resource data, you should not create more than one store for
-your application.
+Because a store contains all of your resource data, you only need a single store for your application.
 
 ### Initial State
 
@@ -23,6 +22,9 @@ import createResourceStore from 'standard-resource';
 
 const store = createResourceStore(initialState);
 ```
+
+In the above example, `initialState` should be an entire state tree. If you have a store, you can
+access the state tree by calling `store.getState()`.
 
 ### Passing options
 
