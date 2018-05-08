@@ -43,6 +43,30 @@ export default {
 
 > Heads up: you must define a schema to use computed attributes.
 
+### Retrieving Computed Attributes
+
+Computed attributes are evaluated automatically any time that you are returned resources from a call to
+`getResources` or `getList`.
+
+Continuing the example from above:
+
+```js
+store.getResources('people', 24);
+// [
+//   {
+//     id: 24,
+//     resourceType: 'people',
+//     attributes: {
+//       firstName: 'James',
+//       lastName: 'Please'
+//     },
+//     computedAttributes: {
+//       displayName: 'James P.'
+//     }
+//   }
+// ]
+```
+
 ### Managing Slow Computed Attributes
 
 In the above example, performance should not be an issue because computing the display name
