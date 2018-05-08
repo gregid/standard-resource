@@ -66,10 +66,6 @@ may have the same ID, however.
 
 IDs must be either a string or a number.
 
-#### Configuring the ID
-
-To have further control over the ID, you can define a [resource schema](schemas.md).
-
 ### Attributes
 
 Attributes are the primary data about a resource. For instance, if you have a book, then some of its
@@ -98,8 +94,8 @@ is to never modify `attributes` unless the server tells you that they changed. T
 as the last known representation of the resource from the server.
 
 If a user can make changes to a resource, store those changes elsewhere. You can store the changes in
-resource metadata (described below), in a form library, or anywhere else. Whenever you persist those changes
-to the server, and you get a confirmation from the server that the changes have been accepted, you can update
+resource metadata (described below), in a form library, or somewhere else. Later, after you persist those changes
+to the server and you get a confirmation that the changes have been accepted, you can update
 the attributes.
 
 ### Meta
@@ -132,6 +128,10 @@ Here is an example resource with some metadata:
   computedAttributes: {},
 }
 ```
+
+> Note: you can also use groups for managing selected resources. This example is intended to show the
+> _kind_ of information that belongs in `meta`, rather than showing the best approach to handling
+> selected resources.
 
 ### Computed Attributes
 
