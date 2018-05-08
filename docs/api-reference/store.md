@@ -20,39 +20,74 @@ To create it, pass your root [reducing function](../Glossary.md#reducer) to [`cr
 
 ### <a id='getResources'></a>[`getResources(resourceType, [filter], [options])`](#getResources)
 
-Description here.
+Retrieve resources from the state tree.
+
+#### Arguments
+
+1.  `resourceType` _(string)_: The type of resource to be retrieved.
+2.  [`filter`] _(Array|Object|function)_: A filter to apply to the resources. By default, every resource
+    will be returned.
+3.  [`options`] _(Object)_: An object to customize the response. Presently, there is only one option:
+    `byId`. Pass `true` to receive the resources as an Object keyed by ID rather than as an array.
 
 #### Returns
 
-Return value here.
+_(Array|Object)_: The resources that match the filter.
+
+#### Example
+
+In this example, we return all of the books in the store.
+
+```js
+const allBooks = store.getResources('books');
+```
+
+Return every book published in 1970:
+
+```js
+const booksFrom1970 = store.getResources('books', {
+  attributes: {
+    publishYear: 1970,
+  },
+});
+```
+
+Return every book without a name:
+
+```js
+const booksFrom1970 = store.getResources(
+  'books',
+  resource => typeof resource.name === 'undefined'
+);
+```
 
 ---
 
 ### <a id='getGroup'></a>[`getGroup(groupName, [options])`](#getGroup)
 
-Description here.
+Retrieve a group from the state tree.
 
 #### Arguments
 
-1.  First argument here.
+1.  `groupName` _(string)_: The name of the group to be retrieved.
+2.  [`options`] _(Object)_: An object to customize the response. Presently, there is only one option:
+    `byId`. Pass `true` to receive the resources as an Object keyed by ID rather than as an array.
 
 #### Returns
 
-Return value here.
-
-#### Notes
-
-Notes here.
+_(Array|Object)_: The resources contained in the group.
 
 #### Example
 
-Example here.
+```js
+const selectedBooks = store.getGroup('selectedBooks', { byId: true });
+```
 
 ---
 
 ### <a id='update'></a>[`update([path], changes)`](#update)
 
-Description here.
+Create or update resources and groups within the state tree.
 
 #### Arguments
 
@@ -60,7 +95,7 @@ Description here.
 
 #### Returns
 
-Return value here.
+None.
 
 #### Notes
 
@@ -74,7 +109,12 @@ Example here.
 
 ### <a id='remove'></a>[`remove([path], changes)`](#remove)
 
-Description here.
+Remove things from the store. You can remove:
+
+* One or many resources from the store entirely
+* One or many groups from the store entirely
+* Specific resources from a group
+* Specific pieces of data from resources
 
 #### Arguments
 
@@ -82,7 +122,7 @@ Description here.
 
 #### Returns
 
-Return value here.
+None.
 
 #### Notes
 
@@ -94,44 +134,33 @@ Example here.
 
 ---
 
-### <a id='getState'></a>[`getState([path], changes)`](#getState)
+### <a id='getState'></a>[`getState()`](#getState)
 
-Description here.
-
-#### Arguments
-
-1.  First argument here.
+Returns the entire state tree.
 
 #### Returns
 
-Return value here.
+_(Object)_: The current state tree of your application.
 
 #### Notes
 
-Notes here.
-
-#### Example
-
-Example here.
+* You should prefer using `getResources` and `getGroup` over `getState`
+  within your application. `getState` can be useful for serializing your store
+  in a universal app, or for persisting user state between sessions. But it is
+  not intended to be used extensively within your application's code.
 
 ---
 
 ### <a id='subscribe'></a>[`subscribe(listener)`](#subscribe)
 
-Description here.
+Subscribe to changes to the store.
 
 #### Arguments
 
-1.  First argument here.
+1.  `listener` _(Function)_. A function that will be called anytime that `store.update()`
+    or `store.remove()` is called. The listener will be called whether or not the store
+    was changed.
 
 #### Returns
 
-Return value here.
-
-#### Notes
-
-Notes here.
-
-#### Example
-
-Example here.
+_(Function)_: A function that unsubscribes the listener when called.
