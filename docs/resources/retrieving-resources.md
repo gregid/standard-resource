@@ -2,17 +2,35 @@
 
 Use `store.getResources()` to access resource data from the store.
 
-By default, `getResources()` returns an array of resource objects. You can
-configure it to return an object instead by passing `{ byId: true }` as the
-third argument.
-
 ### Filtering by ID
 
 Sometimes, you may have the specific IDs that you wish to pull from the
 store. In those situations, you can pass an array of IDs to `getResources`.
 
 ```js
-store.getResources('books', [24, 50, 102]);
+store.getResources('books', [24, 50]);
+//
+// [
+//   {
+//     id: 24,
+//     attributes: {
+//       name: 'Harry Potter',
+//       publishYear: 1997
+//     },
+//     meta: {},
+//     computedAttributes: {}
+//   },
+//   {
+//     id: 50,
+//     attributes: {
+//       name: 'Lord of the Rings',
+//       publishYear: 1939
+//     },
+//     meta: {},
+//     computedAttributes: {}
+//   },
+// ]
+//
 ```
 
 ### Filtering with an object

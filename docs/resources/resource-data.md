@@ -33,7 +33,9 @@ resource is:
 {
   id: 24,
   resourceType: 'books',
-  // ...there are other things on a resource, as well.
+  attributes: {},
+  meta: {},
+  computedAttributes: {},
 }
 ```
 
@@ -49,7 +51,9 @@ In the following books resource, you can see the unique identifier under the `id
 {
   id: 24,
   resourceType: 'books',
-  // ...there are other things on a resource, as well.
+  attributes: {},
+  meta: {},
+  computedAttributes: {},
 }
 ```
 
@@ -64,7 +68,7 @@ IDs must be either a string or a number.
 
 #### Configuring the ID
 
-To have further control over the ID, you can define a resource schema.
+To have further control over the ID, you can define a [resource schema](schemas.md).
 
 ### Attributes
 
@@ -81,8 +85,8 @@ This is an example resource with some attributes:
     name: 'The Fellowship of the Ring',
     publishYear: 1940
   },
+  meta: {},
   computedAttributes: {},
-  meta: {}
 }
 ```
 

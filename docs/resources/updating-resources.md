@@ -59,3 +59,29 @@ we remove the `releaseYear` attribute from the book with ID of 24.
 ```js
 store.remove('resources.books.24.attributes.releaseYear');
 ```
+
+### Merging or Replacing Attributes
+
+By default, an existing resource's attributes will be shallowly merged with the
+resource attributes that you pass in. If you would like to outright replace any
+existing attributes, you can pass a third argument to `update`: an Object with
+`mergeResources: false`:
+
+```js
+// In this example, we are completely replacing the attributes of this book
+store.update(
+  'resources.books',
+  [
+    {
+      id: 24,
+      attributes: {
+        name: 'The Fellowship of the Ring',
+        publishYear: 1940,
+      },
+    },
+  ],
+  {
+    mergeResources: false,
+  }
+);
+```

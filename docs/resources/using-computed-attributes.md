@@ -60,6 +60,7 @@ store.getResources('people', 24);
 //       firstName: 'James',
 //       lastName: 'Please'
 //     },
+//     meta: {},
 //     computedAttributes: {
 //       displayName: 'James P.'
 //     }
