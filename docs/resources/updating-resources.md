@@ -1,6 +1,16 @@
 # Updating Resources
 
-Use `store.update()` and `store.remove()` to change your resource data.
+Use `store.update()` and `store.remove()` to change resource data. The following operations are possible:
+
+Using `update()`:
+
+* merge new data with an existing resource
+* replace a resource with new data
+* update a single attribute of a resource
+
+Using `remove()`:
+
+* remove attributes and meta from an existing resource
 
 ### Updating a Single Resource
 
@@ -21,7 +31,7 @@ store.update('resources.books.24', {
 By default, the resource data that you pass will be _deeply_ merged with any
 existing resource.
 
-### Replacing Attributes
+### Replacing a Resource
 
 If you would like to outright replace an existing resource, you can pass a
 third argument to `update`: an Object with `mergeResources: false`.
