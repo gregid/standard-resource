@@ -20,10 +20,13 @@ in the tree.
 
 ### Groups
 
-A common requirement of applications is to group resources together. You might need an ordered
-group of resources, such as when a user arranges some resources within a list in the UI. Or,
-you might need an unordered group, like when a user selects some resources by checking
-checkboxes in the app.
+A group is a collection of resources. Groups can be ordered, or they can be unordered.
 
-Groups were designed to support these sorts of situations. Like resources, groups are stored in
-the state tree.
+Groups are designed for the common use case applications have of needing to organize resources together.
+Your application need an ordered group of resources, such as when a user arranges some resources within
+a list in the UI. Or, it may might need an unordered group, like when a user selects some resources by
+checking checkboxes in the app.
+
+Anytime that you need to organize resources together for any use case, you can use groups.
+
+Groups are stored in the state tree alongside your resources.
