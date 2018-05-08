@@ -60,6 +60,6 @@ store.update({
 });
 ```
 
-Because it is not possible to update a resource when using `store.remove()`, it was preferable
-to use `store.update()` to remove the group so that both operations occurred in one update to the
-store.
+Had we used `remove()` to delete this list, we would have had to create the resource in a
+separate call to `update()`, which is why in this situation it made more sense to use
+`update` to delete the list.

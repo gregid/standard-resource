@@ -52,12 +52,12 @@ const booksFrom1970 = store.getResources('books', {
 });
 ```
 
-Return every book without a name:
+Return every book without a publish year:
 
 ```js
 const booksFrom1970 = store.getResources(
   'books',
-  resource => typeof resource.name === 'undefined'
+  book => typeof book.publishYear === 'undefined'
 );
 ```
 

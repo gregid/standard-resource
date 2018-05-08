@@ -39,11 +39,12 @@ If you want a set of resources with specific attributes, meta, or computed attri
 you can pass an object as the second argument. Any resource that matches the object
 will be returned.
 
+In the following example, we return every book that was published in 1970.
+
 ```js
-// Return all of the books that have `isSelected: true` within their meta.
 store.getResources('books', {
-  meta: {
-    isSelected: true,
+  attributes: {
+    publishedYear: 1970,
   },
 });
 ```
@@ -58,8 +59,10 @@ arguments:
 
 Return `true` from the function to include the `resource` in the results.
 
+In this example, we return every book that doesn't have a publish year:
+
 ```js
-store.getResources('books', resource => resource.meta.isSelected);
+store.getResources('books', book => typeof book.publishYear === 'undefined');
 ```
 
 ### Options
