@@ -9,16 +9,16 @@ To create it, pass your root [reducing function](../Glossary.md#reducer) to [`cr
 
 ### Store Methods
 
-* [`getResources()`](#getResources)
-* [`getGroup()`](#getGroup)
-* [`update()`](#update)
-* [`remove()`](#remove)
-* [`getState()`](#getState)
-* [`subscribe(listener)`](#subscribe)
+* [`getResources()`](#getresources-resourcetype-filter-options)
+* [`getGroup()`](#getgroup-groupname-options)
+* [`update()`](#update-path-changes)
+* [`remove()`](#remove-path-changes)
+* [`getState()`](#getstate)
+* [`subscribe(listener)`](#subscribe-listener)
 
 ## Store Methods
 
-### <a id='getResources'></a>[`getResources(resourceType, [filter], [options])`](#getResources)
+### `getResources(resourceType, [filter], [options])`
 
 Retrieve resources from the state tree.
 
@@ -63,7 +63,7 @@ const booksFrom1970 = store.getResources(
 
 ---
 
-### <a id='getGroup'></a>[`getGroup(groupName, [options])`](#getGroup)
+### `getGroup(groupName, [options])`
 
 Retrieve a group from the state tree.
 
@@ -85,7 +85,7 @@ const selectedBooks = store.getGroup('selectedBooks', { byId: true });
 
 ---
 
-### <a id='update'></a>[`update([path], changes)`](#update)
+### `update([path], changes)`
 
 Create or update resources and groups within the state tree.
 
@@ -107,7 +107,7 @@ Example here.
 
 ---
 
-### <a id='remove'></a>[`remove([path], changes)`](#remove)
+### `remove([path], changes)`
 
 Remove things from the store. You can remove:
 
@@ -134,7 +134,7 @@ Example here.
 
 ---
 
-### <a id='getState'></a>[`getState()`](#getState)
+### `getState()`
 
 Returns the entire state tree.
 
@@ -151,7 +151,7 @@ _(Object)_: The current state tree of your application.
 
 ---
 
-### <a id='subscribe'></a>[`subscribe(listener)`](#subscribe)
+### `subscribe(listener)`
 
 Subscribe to changes to the store.
 
