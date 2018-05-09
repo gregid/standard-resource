@@ -3,12 +3,47 @@ import getGroup from './get-group';
 import getResources from './get-resources';
 import update from './update';
 import remove from './remove';
-import { exists, isFunction } from './utils/identification';
+import { exists, isFunction, isObject, isNull } from './utils/identification';
 import { warning } from './utils/warning';
 
 export default function createResourceStore(initialState = {}, options = {}) {
   const schemaInputs = options.schemas;
   let schemas = {};
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (exists(schemaInputs) && !isObject(schemaInputs)) {
+      warning(
+        `You passed invalid schemas to createResourceStore. options.schema must be an` +
+          ` object. The schemas configuration that you passed has been ignored.`,
+        'CREATE_STORE_INVALID_SCHEMAS',
+        'error'
+      );
+    }
+
+    if (
+      exists(initialState) &&
+      !isObject(initialState) &&
+      !isNull(initialState)
+    ) {
+      warning(
+        `You passed an invalid initialState to createResourceStore. The initialState must be an` +
+          ` object. The initialState that you passed has been ignored.`,
+        'CREATE_STORE_INVALID_INITIAL_STATE',
+        'error'
+      );
+    } else {
+      for (let initialStateKey in initialState) {
+        if (initialStateKey !== 'resources' && initialStateKey !== 'groups') {
+          warning(
+            `You passed an invalid initial state value to createResourceStore: ${initialStateKey}.` +
+              ` Valid keys of initial state are "resources" and "groups". This value has been ignored.`,
+            'CREATE_STORE_INVALID_INITIAL_STATE_KEY',
+            'error'
+          );
+        }
+      }
+    }
+  }
 
   for (let resourceType in schemaInputs) {
     const schema = schemaInputs[resourceType];

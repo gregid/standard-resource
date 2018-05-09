@@ -1,5 +1,5 @@
-import { createResourceStore } from '../src';
-import { warning } from '../src/utils/warning';
+import { createResourceStore } from '../../src';
+import { warning } from '../../src/utils/warning';
 
 describe('createResourceStore', () => {
   it('returns an object with the right shape', () => {
@@ -26,6 +26,43 @@ describe('createResourceStore', () => {
       expect(state).toEqual({
         groups: {},
         resources: {},
+      });
+      expect(warning).toHaveBeenCalledTimes(0);
+    });
+
+    it('with valid initial state returns the initial state', () => {
+      const store = createResourceStore({
+        resources: {
+          books: {
+            24: {
+              id: 24,
+              resourceType: 'books',
+              attributes: {
+                name: 'Blah',
+              },
+            },
+          },
+        },
+        groups: {
+          favoriteBooks: [{ id: 24, resourceType: 'books' }],
+        },
+      });
+      const state = store.getState();
+      expect(state).toEqual({
+        resources: {
+          books: {
+            24: {
+              id: 24,
+              resourceType: 'books',
+              attributes: {
+                name: 'Blah',
+              },
+            },
+          },
+        },
+        groups: {
+          favoriteBooks: [{ id: 24, resourceType: 'books' }],
+        },
       });
       expect(warning).toHaveBeenCalledTimes(0);
     });
