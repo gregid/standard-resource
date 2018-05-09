@@ -4,13 +4,11 @@ A store holds the whole state tree of your application.
 
 To create a store, use [`createResourceStore`](create-resource-store.md).
 
-A store is not a class. It's just an object with a few methods on it.
-
 ### Store Methods
 
 * [`getResources()`](#getresources-resourcetype-filter-options)
 * [`getGroup()`](#getgroup-groupname-options)
-* [`update()`](#update-path-changes)
+* [`update()`](#update-path-changes-options)
 * [`remove()`](#remove-path-changes)
 * [`getState()`](#getstate)
 * [`subscribe(listener)`](#subscribe-listener)
@@ -218,7 +216,7 @@ _(Object)_: The current state tree of your application.
 #### Notes
 
 * You should use `getResources` and `getGroup` instead of `getState` within your application.
-  They are typically more convenient to use compared with `getState`. `getState` should be
+  They are typically more convenient to use than `getState`. `getState` should be
   used for serializing your store in a universal app, or for persisting user state between
   sessions.
 
