@@ -30,10 +30,10 @@ store.remove({
 });
 ```
 
-### Using `update()` to delete a group
+### Using `update()` to Delete a Group
 
-Passing `null` or an empty array to `store.update()` has the same effect as deleting
-the group.
+Passing `null` or an empty array to [`store.update()`](../api-reference/store.md#update-path-changes-options) will
+delete the group.
 
 ```js
 store.update('groups.selectedBooks', []);

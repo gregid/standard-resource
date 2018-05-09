@@ -107,7 +107,7 @@ with the PropTypes library by reading its
 ### `meta`
 
 This property is identical in structure to `attributes`, except that it applies to the
-[resource metadata](./meta.md) instead.
+[resource metadata](resource-data.md#meta) instead.
 
 ```js
 import PropTypes from 'prop-types';
@@ -122,7 +122,7 @@ export default {
 ### `computedAttributes`
 
 Computed attributes allow you to specify the computed attributes for your resource. We encourage you
-to read [the guide](./computed-attributes.md) on computed attributes to learn more about them.
+to read [the guide](using-computed-attributes.md) on computed attributes to learn more about them.
 
 In this example, we define a display name that is computed from the first and last name of the resource.
 
