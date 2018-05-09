@@ -1,6 +1,6 @@
 # Deleting Resources
 
-Use `store.remove()` to delete resources.
+Use [`store.remove()`](../api-reference/store.md#remove-path-changes) to delete resources.
 
 ### Deleting a Single Resource
 

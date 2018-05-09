@@ -1,6 +1,8 @@
 # Updating Resources
 
-Use `store.update()` and `store.remove()` to change resource data. The following operations are possible:
+Use [`store.update()`](../api-reference/store.md#update-path-changes-options) and
+[`store.remove()`](../api-reference/store.md#remove-path-changes) to change resource data. The following
+operations are possible:
 
 Using `update()`:
 

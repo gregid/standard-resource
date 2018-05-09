@@ -1,6 +1,6 @@
 # Creating Resources
 
-Use `store.update()` to create a resource.
+Use [`store.update()`](../api-reference/store.md#update-path-changes-options) to create a resource.
 
 ### Creating a Single Resource
 

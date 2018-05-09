@@ -46,7 +46,8 @@ export default {
 ### Retrieving Computed Attributes
 
 Computed attributes are evaluated automatically any time that you are returned resources from a call to
-`getResources` or `getList`.
+[`getResources`](../api-reference/store.md#getresources-resourcetype-filter-options) or
+[`getGroup`](../api-reference/store.md#getgroup-groupname-options).
 
 Continuing the example from above:
 

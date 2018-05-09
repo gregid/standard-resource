@@ -1,7 +1,7 @@
 # Creating Groups
 
-Use `store.update()` to create a group. You need two things to create
-a group: a name and the resources that you would like to add to the group.
+Use [`store.update()`](../api-reference/store.md#update-path-changes-options) to create a group. You need
+two things to create a group: a name and the resources that you would like to add to the group.
 
 ### Group Names
 

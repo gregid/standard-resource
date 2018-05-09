@@ -1,6 +1,6 @@
 # Retrieving Groups
 
-Use `store.getGroup()` to access a group from the store:
+Use [`store.getGroup()`](../api-reference/store.md#getgroup-groupname-options) to access a group from the store:
 
 ```js
 store.getGroup('selectedBooks');
@@ -62,4 +62,4 @@ This would return an object like the following:
 
 ### Tips
 
-* Although you can also use `store.getState()` to retrieve a group by directly accessing the state tree, we do not encourage that approach.
+* Although you can also use [`store.getState()`](../api-reference/store.md#getstate) to retrieve a group by directly accessing the state tree, we do not encourage that approach.

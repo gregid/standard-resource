@@ -1,6 +1,6 @@
 # Retrieving Resources
 
-Use `store.getResources()` to access resource data from the store.
+Use [`store.getResources()`](../api-reference/store.md#getresources-resourcetype-filter-options) to access resource data from the store.
 
 ### Filtering by ID
 

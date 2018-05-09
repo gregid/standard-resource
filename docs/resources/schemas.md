@@ -25,8 +25,8 @@ In this guide, we will cover all of the properties of a schema.
 ### Using a Schema
 
 Once you have your schemas defined, you can add it to your store when you create the store
-using the second argument to `createResourceStore()`. In this example, we add a few
-schemas to our store:
+using the second argument to [`createResourceStore()`](../api-reference/create-resource-store.md). In
+this example, we add a few schemas to our store:
 
 ```js
 import createResourceStore from 'standard-resource';

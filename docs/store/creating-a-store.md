@@ -1,8 +1,10 @@
 # Creating a Store
 
-Creating a store is the first thing you must do when getting started with Standard Resource.
+Creating a [store](../glossary.md#store) is the first thing you must do when getting started with Standard Resource.
 
-The default export of the library is called `createResourceStore`; it is a function that returns a store.
+The default export of the library is called
+[`createResourceStore`](../api-reference/create-resource-store.md); it is a function that
+returns a store.
 
 ```js
 import createResourceStore from 'standard-resource';
@@ -10,7 +12,8 @@ import createResourceStore from 'standard-resource';
 const store = createResourceStore();
 ```
 
-Because a store contains all of your resource data, you only need a single store for your application.
+Because a store contains all of your [resource data](../glossary.md#resource-data), you only need a single store
+for your application.
 
 ### Initial State
 
@@ -24,7 +27,7 @@ const store = createResourceStore(initialState);
 ```
 
 In the above example, `initialState` should be an entire state tree. If you have a store, you can
-access the state tree by calling `store.getState()`.
+access the state tree by calling [`store.getState()`](../api-reference/store.md#getstate).
 
 ### Passing options
 
@@ -32,7 +35,7 @@ access the state tree by calling `store.getState()`.
 configure the store.
 
 Presently, there is only one option: `schemas`. Use this option to configure the store with the
-schemas for your resource types.
+[schemas](../glossary.md#schema) for your resource types.
 
 ```js
 import createResourceStore from 'standard-resource';

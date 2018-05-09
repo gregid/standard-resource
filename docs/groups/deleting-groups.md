@@ -1,6 +1,6 @@
 ### Deleting Groups
 
-You can use `store.remove()` to delete an entire group.
+You can use [`store.remove()`](../api-reference/store.md#remove-path-changes) to delete an entire group.
 
 ```js
 store.remove('groups.selectedBooks');
