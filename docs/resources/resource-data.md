@@ -36,7 +36,7 @@ resource is:
 ### ID
 
 Every resource must have a unique identifier, or ID for short. This ID is what distinguishes one
-resource of a particular [resource type](./type.md) from another resource of the same
+resource of a particular [resource type](../glossary.md#resource-type) from another resource of the same
 type.
 
 In the following books resource, you can see the unique identifier, `24`, under the `id` property:
