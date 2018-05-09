@@ -8,14 +8,6 @@ import { exists, isObject, isArray, isBoolean } from './utils/identification';
 import merge from './utils/merge';
 import { warning } from './utils/warning';
 
-// update({
-//   groups: {},
-//   resources: {
-//     authors: {},
-//     books: {}
-//   }
-// });
-
 export default function update({ path, schemas, state, changes, options }) {
   options = options || {};
   const { concatGroups } = options;

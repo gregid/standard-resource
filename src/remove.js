@@ -5,14 +5,6 @@ import { isArray, isObject, isNull } from './utils/identification';
 import objectFromPath from './utils/object-from-path';
 import { warning } from './utils/warning';
 
-// remove({
-//   groups: {} / [],
-//   resources: {
-//     authors: {} / [],
-//     books: {} / []
-//   }
-// });
-
 export default function remove({ path, schemas, state, changes }) {
   changes = objectFromPath(path, changes);
 
@@ -73,7 +65,6 @@ export default function remove({ path, schemas, state, changes }) {
         return id;
       });
     } else if (isObject(resourceChange)) {
-      // Iterate every one of these suckas
       for (let resourceId in resourceChange) {
         const targetResource = resourceChange[resourceId];
 
