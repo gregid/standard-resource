@@ -118,7 +118,7 @@ export default function createResourceStore(initialState = {}, options = {}) {
         schemas,
       });
     },
-    update(path, changes) {
+    update(path, changes, options) {
       currentState = update({
         state: currentState,
         schemas,
