@@ -1,6 +1,10 @@
-### Deleting Groups
+# Deleting Groups
 
-You can use [`store.remove()`](../api-reference/store.md#remove-path-changes) to delete an entire group.
+Use [`store.remove()`](../api-reference/store.md#remove-path-changes) to delete groups.
+
+### Deleting a Single Group
+
+In this example, we delete the group with the name `"selectedBooks"`.
 
 ```js
 store.remove('groups.selectedBooks');

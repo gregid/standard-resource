@@ -31,7 +31,7 @@ store.getGroup('aGroupThatDoesNotExist');
 // => []
 ```
 
-### Accessing a Group By ID
+### Returning the Group as an Object
 
 Although groups are stored as arrays, it is not always the case that the order of that array matters for
 your use case. In those situations, it may be preferable to get an object returned from the call to
