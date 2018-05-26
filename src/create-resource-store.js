@@ -53,28 +53,29 @@ export default function createResourceStore(initialState = {}, options = {}) {
 
   // TEST: make sure that invalid initial states are warn'd
   let currentState = {
-    resources: initialState ? initialState.resources : {},
-    groups: initialState ? initialState.groups : {},
+    resources:
+      initialState && initialState.resources ? initialState.resources : {},
+    groups: initialState && initialState.resources ? initialState.groups : {},
   };
 
-  let groupeners = [];
+  let listeners = [];
 
   function getState() {
     return currentState;
   }
 
-  function subscribe(groupener) {
-    if (!isFunction(groupener)) {
+  function subscribe(listener) {
+    if (!isFunction(listener)) {
       if (process.env.NODE_ENV !== 'production') {
         warning(
-          `You passed an invalid groupener to store.subscribe.` +
+          `You passed an invalid listener to store.subscribe.` +
             ` Groupeners must be functions.`,
           'LISTENER_INVALID_TYPE',
           'error'
         );
       }
     } else {
-      groupeners.push(groupener);
+      listeners.push(listener);
     }
 
     let subscribed = true;
@@ -86,15 +87,15 @@ export default function createResourceStore(initialState = {}, options = {}) {
 
       subscribed = false;
 
-      const index = groupeners.indexOf(groupener);
-      groupeners.splice(index, 1);
+      const index = listeners.indexOf(listener);
+      listeners.splice(index, 1);
     };
   }
 
   function onUpdate() {
-    for (let i = 0; i < groupeners.length; i++) {
-      const groupener = groupeners[i];
-      groupener();
+    for (let i = 0; i < listeners.length; i++) {
+      const listener = listeners[i];
+      listener();
     }
   }
 

@@ -160,4 +160,24 @@ describe('merge', () => {
     expect(result).not.toBe(big);
     expect(result).not.toBe(deepUpdateWithObject);
   });
+
+  it('should merge shallow results as expected', () => {
+    const result = merge({ loading: true }, { loading: false }, true);
+
+    expect(result).toEqual({
+      loading: false,
+    });
+  });
+
+  it('should replace an object with a primitive', () => {
+    const result = merge({ loading: true }, 'sandwich', true);
+
+    expect(result).toEqual({ loading: true });
+  });
+
+  it('should smartly deep merge an object with a primitive', () => {
+    const result = merge('sandwich', { hungry: true }, true);
+
+    expect(result).toEqual({ hungry: true });
+  });
 });

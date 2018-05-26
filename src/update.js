@@ -32,7 +32,7 @@ export default function update({ path, schemas, state, changes, options }) {
       newResources[resourceType] = {};
     }
 
-    const currentResourceSection = newResources[resourceType];
+    const currentResourceSection = merge(newResources[resourceType]);
 
     const schema = schemas[resourceType] || defaultSchema;
     const idProperty = schema.idProperty;
@@ -100,6 +100,8 @@ export default function update({ path, schemas, state, changes, options }) {
         currentResourceSection[id] = resourceToInsert;
       }
     }
+
+    newResources[resourceType] = currentResourceSection;
   }
 
   const newGroups = merge(state.groups);
