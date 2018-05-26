@@ -57,6 +57,7 @@ export default function update({ path, schemas, state, changes, options }) {
         }
 
         const resourceToInsert = createResource({
+          id,
           input: resource,
           existing: currentResourceSection[id],
           resourceType,
@@ -86,6 +87,7 @@ export default function update({ path, schemas, state, changes, options }) {
         }
 
         const resourceToInsert = createResource({
+          id,
           input: resource,
           existing: currentResourceSection[id],
           resourceType,
@@ -145,6 +147,7 @@ export default function update({ path, schemas, state, changes, options }) {
           // a group.
           if (!resourceSection[id]) {
             resourceSection[id] = createResource({
+              id,
               input: resource,
               resourceType,
               schema,

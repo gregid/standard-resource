@@ -2,6 +2,7 @@ import merge from './merge';
 import { isObject } from './identification';
 
 export default function createResource({
+  id,
   input,
   existing,
   schema,
@@ -30,7 +31,7 @@ export default function createResource({
     : inputObject[schema.idProperty];
 
   return {
-    [schema.idProperty]: idValue,
+    [schema.idProperty]: idValue || id,
     resourceType,
     attributes: merge(existingObj.attributes, inputObject.attributes, true),
     meta: merge(existingObj.meta, inputObject.meta, true),
