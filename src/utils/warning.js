@@ -12,7 +12,7 @@ export function warning(message, code, level = 'warn') {
     codeCache[code] = true;
   }
 
-  if (exists(exists) && isFunction(console[level])) {
+  if (exists(console) && isFunction(console[level])) {
     console[level](message);
   }
 
