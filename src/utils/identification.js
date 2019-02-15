@@ -36,3 +36,11 @@ export function isFunction(val) {
 export function isNull(val) {
   return val === null;
 }
+
+export function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+export function isNil(val) {
+  return isNull(val) || isUndefined(val);
+}
