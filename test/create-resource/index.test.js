@@ -8,7 +8,8 @@ describe('createResource', () => {
 
     expect(typeof resource.getState).toEqual('function');
     expect(typeof resource.read).toEqual('function');
-    expect(typeof resource.write).toEqual('function');
+    expect(typeof resource.upsertResources).toEqual('function');
+    expect(typeof resource.deleteResources).toEqual('function');
 
     expect(warning).toHaveBeenCalledTimes(0);
   });
@@ -19,7 +20,7 @@ describe('createResource', () => {
       const state = resource.getState();
 
       expect(state).toEqual({
-        resourceName: 'books',
+        resourceType: 'books',
         resources: {},
       });
 
@@ -27,57 +28,33 @@ describe('createResource', () => {
     });
   });
 
-  // To test:
-  // update('24');
-  // update('24', null);
-  // update('24.attributes.firstName', 'Wot');
-  // update('24.attributes.firstName', null);
-  // update({
-  //   24: { ... },
-  //   50: { ... }
-  // });
-  describe('resource.write()', () => {
-    // TODO: add warning here
-    it('calling it with no arguments is a noop', () => {
-      const resource = createResource('books');
-      const initialState = resource.getState();
-
-      expect(initialState).toEqual({
-        resourceName: 'books',
-        resources: {},
+  describe('passing initialState', () => {
+    it('returns the state', () => {
+      const resource = createResource('books', {
+        resources: {
+          13: {
+            id: '13',
+            resourceType: 'books',
+            attributes: {
+              name: 'The Blade Itself',
+            },
+          },
+        },
       });
+      const state = resource.getState();
 
-      resource.write();
-
-      const finalState = resource.getState();
-      expect(finalState).toEqual({
-        resourceName: 'books',
-        resources: {},
+      expect(state).toEqual({
+        resourceType: 'books',
+        resources: {
+          13: {
+            id: '13',
+            resourceType: 'books',
+            attributes: {
+              name: 'The Blade Itself',
+            },
+          },
+        },
       });
-
-      expect(finalState).toBe(initialState);
-
-      expect(warning).toHaveBeenCalledTimes(0);
-    });
-
-    it('calling it with null wipes the existing state', () => {
-      const resource = createResource('books');
-      const initialState = resource.getState();
-
-      expect(initialState).toEqual({
-        resourceName: 'books',
-        resources: {},
-      });
-
-      resource.write(null);
-
-      const finalState = resource.getState();
-      expect(finalState).toEqual({
-        resourceName: 'books',
-        resources: {},
-      });
-
-      expect(finalState).not.toBe(initialState);
 
       expect(warning).toHaveBeenCalledTimes(0);
     });
