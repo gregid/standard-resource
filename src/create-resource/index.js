@@ -1,9 +1,15 @@
-import { isNil, isString, isObject, isArray } from '../utils/identification';
+import { isString, isObject, isArray } from '../utils/identification';
+import read from './read';
 import upsertResources from './upsert-resources';
 import deleteResources from './delete-resources';
 import { warning } from '../utils/warning';
+import defaultSchema from '../utils/default-schema';
 
-export default function createResource(resourceType, initialState = {}) {
+export default function createResource(
+  resourceType,
+  initialState = {},
+  schema = defaultSchema
+) {
   if (process.env.NODE_ENV !== 'production') {
     if (!isString(resourceType)) {
       warning(
@@ -14,11 +20,13 @@ export default function createResource(resourceType, initialState = {}) {
     }
   }
 
+  // TODO: validate initial state
   const initialResources = isObject(initialState.resources)
     ? initialState.resources
     : {};
 
   const internalStore = {
+    schema,
     state: {
       resourceType,
       resources: initialResources,
@@ -30,12 +38,12 @@ export default function createResource(resourceType, initialState = {}) {
       return internalStore.state;
     },
 
-    read(filter) {
-      if (isNil(filter)) {
-        return internalStore.state.resources;
-      } else {
-        // Complex filtering logic, or whatever
-      }
+    read(filter, options) {
+      return read({
+        resources: internalStore.state.resources,
+        filter,
+        options,
+      });
     },
 
     upsertResources(resourceList, mergeResources) {
