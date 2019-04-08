@@ -5,11 +5,8 @@ describe('createResourceStore', () => {
   it('returns an object with the right shape', () => {
     const store = createResourceStore();
 
-    expect(typeof store.getState).toEqual('function');
-    expect(typeof store.getGroup).toEqual('function');
     expect(typeof store.getResources).toEqual('function');
-    expect(typeof store.update).toEqual('function');
-    expect(typeof store.remove).toEqual('function');
+    expect(typeof store.getState).toEqual('function');
     expect(typeof store.subscribe).toEqual('function');
   });
 

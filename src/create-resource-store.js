@@ -1,10 +1,14 @@
+import createResource from './create-resource';
 import createSchema from './utils/create-schema';
-import getGroup from './get-group';
-import getResources from './get-resources';
-import update from './update';
-import remove from './remove';
-import { exists, isFunction, isObject, isNull } from './utils/identification';
+import {
+  isNull,
+  exists,
+  isObject,
+  isFunction,
+  isBoolean,
+} from './utils/identification';
 import { warning } from './utils/warning';
+import objectFromPath from './utils/object-from-path';
 
 export default function createResourceStore(initialState = {}, options = {}) {
   const schemaInputs = options.schemas;
@@ -51,19 +55,26 @@ export default function createResourceStore(initialState = {}, options = {}) {
     schemas[resourceType] = createSchema(schema);
   }
 
-  // TEST: make sure that invalid initial states are warn'd
-  let currentState = {
-    resources:
-      initialState && initialState.resources ? initialState.resources : {},
-    groups: initialState && initialState.resources ? initialState.groups : {},
-  };
+  const resourceSections = {};
+  function ensureResourceSectionsExist(resources, mapsToInitialState) {
+    for (let resourceType in resources) {
+      const resourceState = resources[resourceType];
 
-  let listeners = [];
-
-  function getState() {
-    return currentState;
+      if (!resourceSections[resourceType]) {
+        resourceSections[resourceType] = createResource(
+          resourceState,
+          mapsToInitialState ? resourceState : {},
+          schemas[resourceType]
+        );
+      }
+    }
   }
 
+  if (initialState.resources) {
+    ensureResourceSectionsExist(initialState.resources, true);
+  }
+
+  let listeners = [];
   function subscribe(listener) {
     if (!isFunction(listener)) {
       if (process.env.NODE_ENV !== 'production') {
@@ -99,58 +110,67 @@ export default function createResourceStore(initialState = {}, options = {}) {
     }
   }
 
+  function updateState() {
+    let state = {
+      resources: {},
+    };
+
+    for (let resourceType in resourceSections) {
+      const section = resourceSections[resourceType];
+      state.resources[resourceType] = section.getState();
+    }
+
+    return state;
+  }
+
+  let currentState = updateState();
+
   return {
-    getState,
     subscribe,
-    getGroup(groupName, options) {
-      return getGroup({
-        groupName,
-        options,
-        state: currentState,
-        schemas,
-      });
+    getState() {
+      return currentState;
     },
-    getResources(resourceType, filter, options) {
-      return getResources({
-        resourceType,
-        filter,
-        options,
-        state: currentState,
-        schemas,
-      });
+    getResources(resourceType, filter, options = {}) {
+      const resourceSection = resourceSections[resourceType];
+
+      if (!resourceSection) {
+        const byId = options.byId;
+        if (byId) {
+          return {};
+        } else {
+          return [];
+        }
+      } else {
+        return resourceSection.read(filter, options);
+      }
     },
+
+    // TODO: go through and find the things that need to be deleted
     update(path, changes, options) {
-      currentState = update({
-        state: currentState,
-        schemas,
-        path,
-        changes,
-        options,
-      });
+      options = options || {};
 
-      onUpdate();
-    },
-    remove(path, changes) {
-      // A `null` leaf within `changes` maps to removing the thing.
-      //
-      // remove('groups.favorites')   <== this will delete the group (in other words, it is defaulting `changes` to null)
-      // remove('groups.favorites', undefined) <== this will not delete the group
-      //
-      // This system is powered by looking at the arguments length
-      const defaultToNull = arguments.length === 1;
+      changes = objectFromPath(path, changes);
 
-      if (defaultToNull && !exists(changes)) {
-        changes = null;
+      const resourcesChanges = changes.resources;
+      ensureResourceSectionsExist(resourcesChanges);
+
+      let mergeOption;
+      if (isBoolean(options.merge)) {
+        mergeOption = options.merge;
+      } else {
+        mergeOption = true;
       }
 
-      currentState = remove({
-        state: currentState,
-        schemas,
-        path,
-        changes,
-      });
+      for (let resourceType in resourcesChanges) {
+        const resourceSection = resourceSections[resourceType];
+        const resourceList = resourcesChanges[resourceType];
 
+        resourceSection.upsertResources(resourceList, mergeOption);
+      }
+
+      currentState = updateState();
       onUpdate();
+      return currentState;
     },
   };
 }
